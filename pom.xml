@@ -54,6 +54,12 @@
             <artifactId>android</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>android.support</groupId>
+            <artifactId>compatibility-v4</artifactId>
+            <version>11</version>
+        </dependency>
+
         <!-- Only for pre-market builds -->
         <dependency>
             <groupId>ch.acra</groupId>

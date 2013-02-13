@@ -1,5 +1,6 @@
 package com.idamobile.vpb.courier;
 
+import android.app.Activity;
 import android.app.Application;
 import com.idamobile.vpb.courier.util.Debug;
 import org.acra.ACRA;
@@ -12,11 +13,27 @@ import org.acra.annotation.ReportsCrashes;
         resToastText = R.string.acra_toast_text)
 public class CoreApplication extends Application {
 
+    private ApplicationMediator mediator;
+
     @Override
     public void onCreate() {
         super.onCreate();
         if (Debug.isEnabled(this)) {
             ACRA.init(this);
         }
+
+        this.mediator = new ApplicationMediator(this);
+    }
+
+    public ApplicationMediator getMediator() {
+        return mediator;
+    }
+
+    public static CoreApplication from(Activity activity) {
+        return (CoreApplication) activity.getApplication();
+    }
+
+    public static ApplicationMediator getMediator(Activity activity) {
+        return from(activity).getMediator();
     }
 }
