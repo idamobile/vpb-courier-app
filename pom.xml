@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>VPB Courier</name>
+
+    <groupId>com.idamobile.vpb.courier</groupId>
+    <artifactId>vpb-courier</artifactId>
+    <version>0.1-SNAPSHOT</version>
+
+    <packaging>apk</packaging>
+
+    <inceptionYear>2013</inceptionYear>
+
+    <scm>
+        <url>https://github.com/idamobile/vpb-courier-app</url>
+        <connection>scm:git:git://github.com/idamobile/vpb-courier-app.git</connection>
+        <developerConnection>scm:git:git@github.com:idamobile/vpb-courier-app.git</developerConnection>
+    </scm>
+
+    <organization>
+        <name>iDa Mobile</name>
+        <url>http://idamob.com</url>
+    </organization>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <android.version>4.2_r1</android.version>
+        <android.platform>17</android.platform>
+
+        <debug.name>vpb-courier-${project.version}-${maven.build.timestamp}</debug.name>
+        <release.name>vpb-courier-${project.version}-${maven.build.timestamp}</release.name>
+
+        <manifest.folder>${project.build.directory}/generated-sources/manifest</manifest.folder>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Android SDK -->
+            <dependency>
+                <groupId>android</groupId>
+                <artifactId>android</artifactId>
+                <version>${android.version}</version>
+                <scope>provided</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>android</groupId>
+            <artifactId>android</artifactId>
+        </dependency>
+
+        <!-- Only for pre-market builds -->
+        <dependency>
+            <groupId>ch.acra</groupId>
+            <artifactId>acra</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>ida-repo-public</id>
+            <url>http://nexus.idamob.ru/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>ida-repo-releases</id>
+            <name>iDa Mobile Repo - Releases</name>
+            <url>http://nexus.idamob.ru/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>ida-repo-snapshots</id>
+            <name>iDa Mobile Repo - Snapshots</name>
+            <url>http://nexus.idamob.ru/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+
+    <profiles>
+        <profile>
+            <id>debug</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <build.mode>debug</build.mode>
+                <vpb.courier.host>http://vpb.ru</vpb.courier.host>
+
+                <log.level>DEBUG</log.level>
+                <lock.screen.timeout>30000</lock.screen.timeout>
+
+                <sign.keystore>debug.keystore</sign.keystore>
+                <sign.storepass>android</sign.storepass>
+                <sign.alias>androiddebugkey</sign.alias>
+                <sign.keypass>android</sign.keypass>
+
+                <final.name>${debug.name}</final.name>
+            </properties>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <configuration>
+                            <skipAttach>true</skipAttach>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>release</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <properties>
+                <vpb.courier.host>https://vpb.ru</vpb.courier.host>
+                <build.mode>release</build.mode>
+
+                <log.level>INFO</log.level>
+                <lock.screen.timeout>30000</lock.screen.timeout>
+
+                <sign.keystore>debug.keystore</sign.keystore>
+                <sign.storepass>android</sign.storepass>
+                <sign.alias>androiddebugkey</sign.alias>
+                <sign.keypass>android</sign.keypass>
+
+                <final.name>${release.name}</final.name>
+            </properties>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                        <artifactId>android-maven-plugin</artifactId>
+                        <configuration>
+                            <release>true</release>
+                            <proguard>
+                                <skip>false</skip>
+                            </proguard>
+                            <zipalign>
+                                <skip>false</skip>
+                            </zipalign>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jarsigner-plugin</artifactId>
+                        <configuration>
+                            <verbose>true</verbose>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <build>
+        <finalName>${final.name}</finalName>
+
+        <sourceDirectory>src</sourceDirectory>
+
+        <resources>
+            <resource>
+                <directory>${project.basedir}/config/mvn</directory>
+                <filtering>true</filtering>
+                <targetPath>${project.basedir}/res/values</targetPath>
+                <includes>
+                    <include>*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>${project.basedir}/config/mvn</directory>
+                <filtering>true</filtering>
+                <targetPath>${project.basedir}/src/com/idamobile/vpb/courier/config</targetPath>
+                <includes>
+                    <include>*.java</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>${project.basedir}</directory>
+                <filtering>false</filtering>
+                <targetPath>${manifest.folder}</targetPath>
+                <includes>
+                    <include>AndroidManifest.xml</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.kuali.maven.plugins</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.5.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>default-resources</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>resources</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jarsigner-plugin</artifactId>
+                <version>1.2</version>
+                <configuration>
+                    <arguments>
+                        <argument>-sigalg</argument><argument>MD5withRSA</argument>
+                        <argument>-digestalg</argument><argument>SHA1</argument>
+                    </arguments>
+
+                    <removeExistingSignatures>true</removeExistingSignatures>
+
+                    <keystore>${sign.keystore}</keystore>
+                    <storepass>${sign.storepass}</storepass>
+                    <alias>${sign.alias}</alias>
+                    <keypass>${sign.keypass}</keypass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>signing</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>sign</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <sdk>
+                        <platform>${android.platform}</platform>
+                    </sdk>
+                    <undeployBeforeDeploy>true</undeployBeforeDeploy>
+
+                    <androidManifestFile>${manifest.folder}/AndroidManifest.xml</androidManifestFile>
+
+                    <manifest>
+                        <versionCodeUpdateFromVersion>true</versionCodeUpdateFromVersion>
+                        <!--<providerAuthorities>
+                            <property>
+                                <name>com.idamobile.platform.android.core.persistence.MapSearchRecentSuggestionsProvider</name>
+                                <value>${manifest.package}.RecentSuggestionsProvider</value>
+                            </property>
+                        </providerAuthorities>-->
+                    </manifest>
+
+                    <proguard>
+                        <config>proguard.cfg</config>
+                    </proguard>
+
+                    <!-- TODO test scopes -->
+                    <!--<testSkip>true</testSkip>-->
+
+                    <lazyLibraryUnpack>true</lazyLibraryUnpack>
+                    <sign>
+                        <debug>false</debug>
+                    </sign>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>manifestUpdate</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>manifest-update</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>zipalign</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>zipalign</goal>
+                        </goals>
+                        <configuration>
+                            <zipalign>
+                                <verbose>true</verbose>
+                                <inputApk>${project.build.directory}/${project.build.finalName}.apk</inputApk>
+                                <outputApk>${project.build.directory}/${project.build.finalName}-signed-aligned.apk</outputApk>
+                            </zipalign>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>attach-signed-aligned</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>${project.build.directory}/${project.build.finalName}-signed-aligned.apk</file>
+                                    <type>apk</type>
+                                    <classifier>signed-aligned</classifier>
+                                </artifact>
+                                <artifact>
+                                    <file>${project.build.directory}/proguard/mapping.txt</file>
+                                    <type>map</type>
+                                    <classifier>release</classifier>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>2.5.2</version>
+                <executions>
+                    <execution>
+                        <phase>site</phase>
+                        <goals>
+                            <goal>findbugs</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <xmlOutput>true</xmlOutput>
+                    <findbugsXmlOutput>true</findbugsXmlOutput>
+                    <onlyAnalyze>com.idamobile.vpb.courier.-</onlyAnalyze>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

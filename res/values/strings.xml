@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ВПБ Курьер</string>
+
+    <!-- ACRA -->
+    <string name="acra_dialog_text">Произошла непредвиденная ошибка. Пожалуйста, помогите нам исправить эту проблему, отправив отчет.</string>
+    <string name="acra_toast_text">Ой! Видимо, что-то случилось</string>
+
+
+</resources>

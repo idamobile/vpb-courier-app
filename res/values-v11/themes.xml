@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ACRATheme" parent="@android:style/Theme.Holo.Light.Dialog">
+    </style>
+
+    <style name="VPBTheme" parent="@android:style/Theme.Holo.Light">
+    </style>
+
+</resources>
