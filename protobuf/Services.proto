@@ -1,0 +1,100 @@
+option java_outer_classname = "ServicesDTO";
+option java_package = "com.idamobile.vpb.protobuf";
+option optimize_for = LITE_RUNTIME;
+
+message LoginRequestProtobufDTO {
+    required string login = 1;
+    required string passwordHash = 2;
+}
+
+message CourierProtobufDTO {
+    required string firstName = 1;
+    required string lastName = 2;
+    required string id = 3;
+}
+
+message LoginResponseProtobufDTO {
+    enum Result {
+        OK = 1;
+        WRONG_CREDENTIALS = 2;
+        BLOCKED_ACCOUNT = 3;
+    }
+    required Result loginResult = 1;
+    required CourierProtobufDTO courierInfo = 2;
+}
+
+enum OrderStatus {
+    NEW = 1;
+    DOCUMENTS_SUBMITTED = 2;
+    DOCUMENTS_NOT_SUBMITTED = 3;
+}
+
+message OrderProtobufDTO {
+    required string id = 1;
+    required OrderStatus status = 2;
+    required string clientFirstName = 3;
+    required string clientSecondName = 4;
+    optional string clientMiddleName = 5;
+    required string clientPhone = 6;
+    required string clientAddress = 7;
+    required double clientAddressLat = 8;
+    required double clientAddressLng = 9;
+    required string subway = 10;
+    required int64 meetTimeFrom = 11;
+    required int64 meetTimeTo = 12;
+    required string orderType = 13;
+    optional string uploadImagesUrl = 14;
+    optional Map attributes = 15;
+}
+
+message Map {
+    repeated Entry entries = 1;
+}
+
+message Entry {
+    required string key = 1;
+    optional string value = 2;
+}
+
+message GetOrdersRequestProtobufDTO {
+    required string courierId = 1;
+}
+
+message GetOrdersResponseProtobufDTO {
+    repeated OrderProtobufDTO orders = 1;
+}
+
+//Документы переданы
+//--Нужно вносить правки или нет
+//--Резидент не резидент
+message SetOrderCompletedProtobufDTO {
+    required string orderId = 1;
+    required bool resident = 2;
+    optional bool hasCorrections = 3;
+}
+
+//Документы не переданы
+//--Встреча не состоялась, причина
+//--Встреча состоялась, но договор не может быть подписан
+//--Встреча состоялась, но клиент отказался от выпуска карты, причина (список будет позже)
+message CancelOrderRequestProtobufDTO {
+    enum CancellationReason {
+        CLIENT_DID_NOT_ANSWER_THE_PHONE = 1;
+        CLIENT_MISSED_MEETING = 2;
+        COURIER_MISSED_MEETING = 3;
+        CLIENT_FORGOT_PASSPORT = 4;
+        CLIENT_REJECTED_ORDER = 5;
+        AGREEMENT_CAN_NOT_BE_SIGNED = 6;
+    }        
+    required string orderId = 1;
+    required CancellationReason reason = 2;
+    required bool metWithClient = 3;
+    optional string comment = 4;
+}
+
+//ответ на SetOrderDoneProtobufDTO и CancelOrderRequestProtobufDTO
+message UpdateOrderResopnseProtobufDTO {
+    required string orderId = 1;
+    required OrderStatus newStatus = 2;
+    optional string uploadImagesUrl = 3;
+}

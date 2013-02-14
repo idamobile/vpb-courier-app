@@ -6,8 +6,14 @@
     <string name="acra_dialog_text">Произошла непредвиденная ошибка. Пожалуйста, помогите нам исправить эту проблему, отправив отчет.</string>
     <string name="acra_toast_text">Ой! Видимо, что-то случилось</string>
 
+    <!-- Common messages -->
     <string name="response_internet_error_msg">Проверьте, что интернет доступен и попробуйте ещё раз.</string>
     <string name="response_error_msg_format">Ошибка при загрузке. (%s)</string>
     <string name="response_unknown_error">Ошибка при загрузке.</string>
+
+    <!-- Login Activity -->
+    <string name="login_hint">Логин</string>
+    <string name="login_empty_error">Введите логин</string>
+
 
 </resources>

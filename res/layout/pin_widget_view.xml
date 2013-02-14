@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <com.idamobile.vpb.courier.widget.view.PinDigitEditText
+        android:id="@+id/first_field"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:nextFocusDown="@+id/second_field"
+    />
+    <com.idamobile.vpb.courier.widget.view.PinDigitEditText
+        android:id="@id/second_field"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:nextFocusUp="@id/first_field"
+        android:nextFocusDown="@+id/third_field"
+    />
+    <com.idamobile.vpb.courier.widget.view.PinDigitEditText
+        android:id="@id/third_field"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:nextFocusUp="@id/second_field"
+        android:nextFocusDown="@+id/last_field"
+    />
+    <com.idamobile.vpb.courier.widget.view.PinDigitEditText
+        android:id="@id/last_field"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:nextFocusUp="@id/third_field"
+    />
+</merge>
