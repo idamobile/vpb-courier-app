@@ -1,4 +1,4 @@
-package com.idamobile.vpb.courier.network;
+package com.idamobile.vpb.courier.network.core;
 
 public interface ResponseDTOPreProcessor {
 

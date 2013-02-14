@@ -1,11 +1,11 @@
 package com.idamobile.vpb.courier;
 
 import android.content.Context;
-import com.idamobile.vpb.courier.model.Cache;
-import com.idamobile.vpb.courier.model.DefaultCache;
-import com.idamobile.vpb.courier.model.DefaultFullNameMapper;
-import com.idamobile.vpb.courier.network.NetworkManager;
-import com.idamobile.vpb.courier.network.NotAuthorizedResponseProcessor;
+import com.idamobile.vpb.courier.model.cache.Cache;
+import com.idamobile.vpb.courier.model.cache.DefaultCache;
+import com.idamobile.vpb.courier.model.cache.DefaultFullNameMapper;
+import com.idamobile.vpb.courier.network.core.NetworkManager;
+import com.idamobile.vpb.courier.network.core.NotAuthorizedResponseProcessor;
 
 public class ApplicationMediator {
 

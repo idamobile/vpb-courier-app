@@ -1,7 +1,7 @@
-package com.idamobile.vpb.courier.model;
+package com.idamobile.vpb.courier.model.cache;
 
 import android.content.Context;
-import com.idamobile.vpb.courier.network.DataHolder;
+import com.idamobile.vpb.courier.network.core.DataHolder;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

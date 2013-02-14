@@ -1,6 +1,6 @@
-package com.idamobile.vpb.courier.model;
+package com.idamobile.vpb.courier.model.cache;
 
-import com.idamobile.vpb.courier.network.DataHolder;
+import com.idamobile.vpb.courier.network.core.DataHolder;
 
 public interface Cache {
 

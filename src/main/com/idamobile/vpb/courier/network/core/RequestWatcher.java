@@ -1,4 +1,4 @@
-package com.idamobile.vpb.courier.network;
+package com.idamobile.vpb.courier.network.core;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;

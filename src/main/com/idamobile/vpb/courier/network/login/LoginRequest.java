@@ -1,6 +1,6 @@
 package com.idamobile.vpb.courier.network.login;
 
-import com.idamobile.vpb.courier.network.AbstractRequest;
+import com.idamobile.vpb.courier.network.core.AbstractRequest;
 
 import java.io.IOException;
 import java.io.InputStream;

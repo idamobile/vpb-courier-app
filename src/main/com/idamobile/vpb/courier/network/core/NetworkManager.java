@@ -1,4 +1,4 @@
-package com.idamobile.vpb.courier.network;
+package com.idamobile.vpb.courier.network.core;
 
 import android.net.SSLCertificateSocketFactory;
 import android.net.SSLSessionCache;

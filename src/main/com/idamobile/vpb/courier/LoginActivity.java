@@ -27,13 +27,13 @@ public class LoginActivity extends Activity {
         });
     }
 
-    private void tryToLogin(String login, int pin) {
+    public void tryToLogin(String login, int pin) {
         if (validateParams(login, pin)) {
             Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private boolean validateParams(String login, int pin) {
+    public boolean validateParams(String login, int pin) {
         if (TextUtils.isEmpty(login)) {
             loginField.setError(getText(R.string.login_empty_error));
         } else {

@@ -1,4 +1,4 @@
-package com.idamobile.vpb.courier.network;
+package com.idamobile.vpb.courier.network.core;
 
 import com.idamobile.vpb.courier.util.HttpUtils;
 import com.idamobile.vpb.courier.util.Logger;

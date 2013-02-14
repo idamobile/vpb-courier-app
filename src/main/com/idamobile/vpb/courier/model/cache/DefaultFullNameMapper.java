@@ -1,4 +1,4 @@
-package com.idamobile.vpb.courier.model;
+package com.idamobile.vpb.courier.model.cache;
 
 public class DefaultFullNameMapper implements BroadcastActionMapper {
 
