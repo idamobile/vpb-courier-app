@@ -76,7 +76,6 @@ public class NetworkManager {
         cleanUpSession();
     }
 
-
     public void cleanUpSession() {
         cookieStore = new BasicCookieStore();
         httpContext = new BasicHttpContext();
@@ -102,9 +101,11 @@ public class NetworkManager {
         SchemeRegistry schemeRegistry = new SchemeRegistry();
         schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
         SSLSocketFactory sslSocketFactory = SSLCertificateSocketFactory.getHttpSocketFactory(HANDSHAKE_TIMEOUT, sessionCache);
+        if (sslSocketFactory == null) {
+            sslSocketFactory = SSLSocketFactory.getSocketFactory();
+        }
         sslSocketFactory.setHostnameVerifier(SSLSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
-        schemeRegistry.register(new Scheme("https", sslSocketFactory, 8443));
-//        schemeRegistry.register(new Scheme("https", new EasySSLSocketFactory(), 443));
+        schemeRegistry.register(new Scheme("https", sslSocketFactory, 443));
 
         ThreadSafeClientConnManager manager = new ThreadSafeClientConnManager(params, schemeRegistry);
         return new DefaultHttpClient(manager, params);

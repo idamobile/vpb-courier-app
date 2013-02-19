@@ -35,6 +35,8 @@
 
         <manifest.folder>${project.build.directory}/generated-sources/manifest</manifest.folder>
         <generated.resources.folder>${project.build.directory}/generated-sources/r</generated.resources.folder>
+
+        <dozer.version>5.5.0b</dozer.version>
     </properties>
 
     <dependencyManagement>
@@ -56,11 +58,6 @@
             <version>2.4.1</version>
         </dependency>
 
-        <dependency>
-            <groupId>net.sf.dozer</groupId>
-            <artifactId>dozer</artifactId>
-            <version>5.4.0</version>
-        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -89,6 +86,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.9.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-core</artifactId>
             <version>1.2</version>
@@ -105,6 +108,12 @@
             <artifactId>maps</artifactId>
             <version>17_r1</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.shaubert</groupId>
+            <artifactId>proto-mapper-processor</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <!-- Only for pre-market builds -->
@@ -156,10 +165,6 @@
             </activation>
             <properties>
                 <build.mode>debug</build.mode>
-                <vpb.courier.host>http://vpb.ru</vpb.courier.host>
-
-                <log.level>DEBUG</log.level>
-                <lock.screen.timeout>30000</lock.screen.timeout>
 
                 <sign.keystore>debug.keystore</sign.keystore>
                 <sign.storepass>android</sign.storepass>
@@ -194,11 +199,7 @@
                 </property>
             </activation>
             <properties>
-                <vpb.courier.host>https://vpb.ru</vpb.courier.host>
                 <build.mode>release</build.mode>
-
-                <log.level>INFO</log.level>
-                <lock.screen.timeout>30000</lock.screen.timeout>
 
                 <sign.keystore>debug.keystore</sign.keystore>
                 <sign.storepass>android</sign.storepass>
@@ -304,7 +305,7 @@
             <resource>
                 <directory>${project.basedir}/config/mvn</directory>
                 <filtering>true</filtering>
-                <targetPath>src/main/com/idamobile/vpb/courier/config</targetPath>
+                <targetPath>${project.basedir}/src/main/com/idamobile/vpb/courier/config</targetPath>
                 <includes>
                     <include>*.java</include>
                 </includes>
@@ -323,6 +324,21 @@
             <plugin>
                 <groupId>org.kuali.maven.plugins</groupId>
                 <artifactId>properties-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>read-props-from-file</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <locations>
+                                <location>${project.basedir}/build/${build.mode}.properties</location>
+                            </locations>
+                            <verbose>true</verbose>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

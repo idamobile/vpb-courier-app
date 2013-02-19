@@ -2,6 +2,8 @@
 <resources>
     <string name="app_name">ВПБ Курьер</string>
 
+    <string name="press_back_again_to_exit">Нажмите еще раз для выхода</string>
+
     <!-- ACRA -->
     <string name="acra_dialog_text">Произошла непредвиденная ошибка. Пожалуйста, помогите нам исправить эту проблему, отправив отчет.</string>
     <string name="acra_toast_text">Ой! Видимо, что-то случилось</string>
@@ -14,6 +16,13 @@
     <!-- Login Activity -->
     <string name="login_hint">Логин</string>
     <string name="login_empty_error">Введите логин</string>
+    <string name="password_empty_error">Введите пароль</string>
+    <string name="logiin_progress_dialog_message">Выполняется вход…</string>
+    <string name="login_account_is_blocked">Ваш аккаунт заблокирован.</string>
+    <string name="login_wrong_credentials">Неправильный логин или пароль.</string>
+    <string name="login_error_dialog_title">Ошибка входа</string>
 
+    <!-- OrderList Activity -->
+    <string name="order_list_activity_label">Заявки</string>
 
 </resources>

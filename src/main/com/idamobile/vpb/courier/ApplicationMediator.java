@@ -1,6 +1,7 @@
 package com.idamobile.vpb.courier;
 
 import android.content.Context;
+import com.idamobile.vpb.courier.controllers.LoginManager;
 import com.idamobile.vpb.courier.model.cache.Cache;
 import com.idamobile.vpb.courier.model.cache.DefaultCache;
 import com.idamobile.vpb.courier.model.cache.DefaultFullNameMapper;
@@ -13,10 +14,12 @@ public class ApplicationMediator {
     private Cache cache;
 
     private NetworkManager networkManager;
+    private LoginManager loginManager;
 
     public ApplicationMediator(Context ctx) {
         context = ctx;
         setupNetworkManager();
+        loginManager = new LoginManager(this);
 
         cache = new DefaultCache(context, new DefaultFullNameMapper());
     }
@@ -38,4 +41,7 @@ public class ApplicationMediator {
         return networkManager;
     }
 
+    public LoginManager getLoginManager() {
+        return loginManager;
+    }
 }

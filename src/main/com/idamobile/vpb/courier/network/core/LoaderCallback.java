@@ -1,5 +1,6 @@
 package com.idamobile.vpb.courier.network.core;
 
+import android.text.TextUtils;
 import com.idamobile.vpb.courier.ApplicationMediator;
 
 import java.io.Serializable;
@@ -13,9 +14,14 @@ import java.io.Serializable;
 public class LoaderCallback<Q> implements Serializable {
 
     private String broadcastAction;
+    private Class<Q> qClass;
 
-    protected LoaderCallback(String broadcastAction) {
+    public LoaderCallback(String broadcastAction) {
         this.broadcastAction = broadcastAction;
+    }
+
+    public LoaderCallback(Class<Q> qClass) {
+        this.qClass = qClass;
     }
 
     public void onStartLoading(Request<Q> request, ApplicationMediator mediator) {
@@ -23,7 +29,11 @@ public class LoaderCallback<Q> implements Serializable {
     }
 
     protected DataHolder<Q> getHolder(ApplicationMediator mediator) {
-        return mediator.getCache().getHolder(broadcastAction);
+        if (!TextUtils.isEmpty(broadcastAction)) {
+            return mediator.getCache().getHolder(broadcastAction);
+        } else {
+            return mediator.getCache().getHolder(qClass);
+        }
     }
 
     public void onDataReady(Request<Q> request, ResponseDTO<Q> response, ApplicationMediator mediator) {

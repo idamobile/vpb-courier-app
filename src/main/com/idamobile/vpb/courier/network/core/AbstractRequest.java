@@ -1,7 +1,12 @@
 package com.idamobile.vpb.courier.network.core;
 
+import com.google.protobuf.GeneratedMessage;
+import com.google.protobuf.GeneratedMessageLite;
 import com.idamobile.vpb.courier.util.HttpUtils;
 import com.idamobile.vpb.courier.util.Logger;
+import com.shaubert.protomapper.ProtoMappers;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.CookieStore;
@@ -20,6 +25,8 @@ import java.util.UUID;
 @SuppressWarnings("serial")
 public abstract class AbstractRequest<T> implements Request<T> {
 
+    private static final ProtoMappers protoMappers = new ProtoMappers();
+
     public static enum HttpMethod {
         GET,
         POST,
@@ -29,13 +36,13 @@ public abstract class AbstractRequest<T> implements Request<T> {
 
     private final String TAG = this.getClass().getSimpleName();
 
-    private String url;
+    private @Getter String url;
     private HttpMethod method;
 
     private final String uuid = UUID.randomUUID().toString();
-    private boolean isCancelled;
+    private @Getter boolean cancelled;
 
-    private LoaderCallback<T> updateModelCallback;
+    private @Getter @Setter LoaderCallback<T> updateModelCallback;
 
     public AbstractRequest(String url) {
         this(url, HttpMethod.POST);
@@ -46,26 +53,13 @@ public abstract class AbstractRequest<T> implements Request<T> {
         this.method = method;
     }
 
-    public String getUrl() {
+    protected String formatFinalUrl(String url) {
         return url;
-    }
-
-    public void setUpdateModelCallback(LoaderCallback<T> updateModelCallback) {
-        this.updateModelCallback = updateModelCallback;
-    }
-
-    @Override
-    public LoaderCallback<T> getUpdateModelCallback() {
-        return updateModelCallback;
     }
 
     @Override
     public String getRequestUuid() {
         return uuid;
-    }
-
-    protected String formatFinalUrl(String url) {
-        return url;
     }
 
     public HttpUriRequest createHttpRequest() {
@@ -127,9 +121,29 @@ public abstract class AbstractRequest<T> implements Request<T> {
         throw new IllegalStateException("Unknown http method: " + method);
     }
 
-    protected abstract byte[] createHttpPostOrPutEntity();
+    @SuppressWarnings("unchecked")
+    protected byte[] createHttpPostOrPutEntity() {
+        Class thisClass = getClass();
+        Object protoClass = protoMappers.getMapper(thisClass,
+                getRequestProtoClass()).mapToProto(this);
+        if (protoClass instanceof GeneratedMessageLite) {
+            return  ((GeneratedMessageLite) protoClass).toByteArray();
+        } else if (protoClass instanceof GeneratedMessage) {
+            return  ((GeneratedMessage) protoClass).toByteArray();
+        } else {
+            throw new IllegalStateException("Unknown protobuf class: " + protoClass);
+        }
+    }
 
-    protected abstract T parseResponseEntity(InputStream inputStream) throws IOException;
+    protected abstract Class<T> getResultClass();
+
+    protected abstract Class<?> getRequestProtoClass();
+
+    protected abstract Class<?> getResultProtoClass();
+
+    protected T parseResponseEntity(InputStream inputStream) throws IOException {
+        return protoMappers.getMapper(getResultClass(), getResultProtoClass()).mapFromProto(inputStream);
+    }
 
     public ResponseDTO<T> parseResponse(HttpResponse httpResponse) {
         ResponseDTO<T> responseDTO;
@@ -153,9 +167,6 @@ public abstract class AbstractRequest<T> implements Request<T> {
 
     @Override
     public void cancel() {
-    }
-
-    public boolean isCancelled() {
-        return isCancelled;
+        cancelled = true;
     }
 }

@@ -1,23 +1,39 @@
 package com.idamobile.vpb.courier.network.login;
 
 import com.idamobile.vpb.courier.network.core.AbstractRequest;
+import com.idamobile.vpb.courier.network.core.Hosts;
+import com.idamobile.vpb.protobuf.Services;
+import com.shaubert.protomapper.annotations.Field;
+import com.shaubert.protomapper.annotations.Mapper;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-import java.io.IOException;
-import java.io.InputStream;
+@Mapper(protoClass = Services.LoginRequestProtobufDTO.class)
+@ToString
+public class LoginRequest extends AbstractRequest<LoginResponse> {
+    @Field
+    private @Getter @Setter String login;
 
-public class LoginRequest extends AbstractRequest{
+    @Field
+    private @Getter @Setter String passwordHash;
 
-    public LoginRequest(String url) {
-        super(url);
+    public LoginRequest() {
+        super(Hosts.LOGIN_URL);
     }
 
     @Override
-    protected byte[] createHttpPostOrPutEntity() {
-        return new byte[0];
+    protected Class<LoginResponse> getResultClass() {
+        return LoginResponse.class;
     }
 
     @Override
-    protected Object parseResponseEntity(InputStream inputStream) throws IOException {
-        return null;
+    protected Class<?> getRequestProtoClass() {
+        return Services.LoginRequestProtobufDTO.class;
+    }
+
+    @Override
+    protected Class<?> getResultProtoClass() {
+        return Services.LoginResponseProtobufDTO.class;
     }
 }
