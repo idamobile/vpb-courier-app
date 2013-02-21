@@ -1,4 +1,4 @@
-package com.idamobile.vpb.courier.widget.view;
+package com.idamobile.vpb.courier.widget.login;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -73,7 +73,7 @@ public class PinWidget extends LinearLayout {
         try {
             return Integer.parseInt(sb.toString());
         } catch (Exception ex) {
-            Logger.warn(TAG, "error parsing pin", ex);
+            Logger.warn(TAG, "error parsing login", ex);
             return -1;
         }
     }
@@ -104,7 +104,7 @@ public class PinWidget extends LinearLayout {
     public interface OnSubmitListener {
         /**
          * @param pin
-         *            inputed pin
+         *            inputed login
          * @return true to hide keyboard, false otherwise
          */
         boolean submit(int pin);

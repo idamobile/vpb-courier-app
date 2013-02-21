@@ -53,6 +53,8 @@ public class LoginPresenter {
 
         loginFailedDialog = new AlertDialogFactory(activity, "login-failed-dialog");
         loginFailedDialog.setTitle(activity.getText(R.string.login_error_dialog_title));
+        loginFailedDialog.setCancellable(true);
+        loginFailedDialog.setPosButtonText(activity.getText(android.R.string.ok));
     }
 
     private void createCallbacks() {
@@ -89,6 +91,10 @@ public class LoginPresenter {
         if (validateLoginAndPassoword(login, password)) {
             loginManager.login(watcherCallbacks, login, password);
         }
+    }
+
+    public boolean isProgressDialogShown() {
+        return loginProgressDialog.findDialog() != null;
     }
 
     public boolean validateLoginAndPassoword(String login, String password) {

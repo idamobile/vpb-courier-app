@@ -15,7 +15,7 @@ public class ResultCodeToMessageConverter {
 
     public CharSequence convert(ResponseDTO.ResultCode resultCode) {
         if (resultCode == null) {
-            return context.getString(R.string.response_unknown_error);
+            return null;
         } else if (resultCode == ResponseDTO.ResultCode.SUCCESS) {
             return null;
         } else if (!NetworkUtils.hasInternet(context)) {

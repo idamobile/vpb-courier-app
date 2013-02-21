@@ -1,11 +1,14 @@
-package com.idamobile.vpb.courier.network.core;
+package com.idamobile.vpb.courier.network.login;
 
 import android.content.Context;
 import android.content.Intent;
+import com.idamobile.vpb.courier.network.core.ResponseDTO;
+import com.idamobile.vpb.courier.network.core.ResponseDTOPreProcessor;
 
 public class NotAuthorizedResponseProcessor implements ResponseDTOPreProcessor {
 
-    public static final String NOT_AUTHORIZED_BROADCAST_ACTION = "com.idamobile.platform.android.core.network.NotAuthorizedResponseProcessor.NOT_AUTHORIZED_BROADCAST_ACTION";
+    public static final String NOT_AUTHORIZED_BROADCAST_ACTION
+            = "com.idamobile.vpb.courier.network.login.NotAuthorizedResponseProcessor.NOT_AUTHORIZED_BROADCAST_ACTION";
 
     private Context context;
 

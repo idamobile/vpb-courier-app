@@ -1,4 +1,4 @@
-package com.idamobile.vpb.courier.widget.view;
+package com.idamobile.vpb.courier.widget.login;
 
 import android.content.Context;
 import android.graphics.Rect;

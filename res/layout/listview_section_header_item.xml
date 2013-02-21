@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/normal_padding"
+    android:paddingRight="@dimen/normal_padding"
+    android:orientation="vertical" >
+
+    <View 
+        android:id="@+id/section_padding"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/large_padding"/>
+    
+    <TextView
+        android:id="@+id/section_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/normal_padding"
+        android:paddingBottom="@dimen/small_padding"
+        android:text="Текущие"/>
+
+    <View
+        android:id="@+id/section_padding"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#aaa"/>
+</LinearLayout>

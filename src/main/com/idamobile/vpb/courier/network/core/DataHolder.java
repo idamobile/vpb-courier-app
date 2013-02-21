@@ -13,6 +13,7 @@ public class DataHolder<T> {
     private boolean loading;
     private long lastUpdateTime;
     private boolean lastUpdateWithErrors;
+    private ResponseDTO.ResultCode lastErrorCode;
 
     private boolean notifyOnChange;
 
@@ -39,10 +40,16 @@ public class DataHolder<T> {
         notifyChanged();
     }
 
-    public void markLoaded(boolean hasErrors) {
+    public void markLoaded(ResponseDTO.ResultCode resultCode) {
         this.loading = false;
         this.lastUpdateTime = System.currentTimeMillis();
-        this.lastUpdateWithErrors = hasErrors;
+        if (resultCode == ResponseDTO.ResultCode.SUCCESS) {
+            this.lastErrorCode = null;
+            this.lastUpdateWithErrors = false;
+        } else {
+            this.lastErrorCode = resultCode;
+            this.lastUpdateWithErrors = true;
+        }
         notifyChanged();
     }
 
@@ -75,6 +82,10 @@ public class DataHolder<T> {
 
     public boolean isLastUpdateWithErrors() {
         return lastUpdateWithErrors;
+    }
+
+    public ResponseDTO.ResultCode getLastErrorCode() {
+        return lastErrorCode;
     }
 
     public void clear() {

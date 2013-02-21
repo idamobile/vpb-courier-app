@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="order_time_normal">#070</color>
+    <color name="order_time_warn">#770</color>
+    <color name="order_time_missed">#700</color>
+</resources>

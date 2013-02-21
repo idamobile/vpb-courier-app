@@ -31,7 +31,7 @@
             android:inputType="text|textNoSuggestions"
             android:maxLines="1" />
 
-        <com.idamobile.vpb.courier.widget.view.PinWidget
+        <com.idamobile.vpb.courier.widget.login.PinWidget
             android:id="@+id/widget_set_pin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

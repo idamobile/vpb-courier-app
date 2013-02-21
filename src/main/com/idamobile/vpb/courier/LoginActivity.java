@@ -5,7 +5,7 @@ import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.idamobile.vpb.courier.presenters.LoginPresenter;
-import com.idamobile.vpb.courier.widget.view.PinWidget;
+import com.idamobile.vpb.courier.widget.login.PinWidget;
 
 
 @EActivity(R.layout.login_activity)

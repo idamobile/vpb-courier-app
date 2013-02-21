@@ -29,7 +29,7 @@ message LoginResponseProtobufDTO {
         BLOCKED_ACCOUNT = 3;
     }
     required Result loginResult = 1;
-    required CourierProtobufDTO courierInfo = 2;
+    optional CourierProtobufDTO courierInfo = 2;
 }
 
 enum OrderStatus {

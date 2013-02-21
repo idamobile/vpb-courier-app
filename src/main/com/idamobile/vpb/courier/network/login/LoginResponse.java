@@ -11,5 +11,5 @@ import java.io.Serializable;
 @Mapper(protoClass = Services.LoginResponseProtobufDTO.class)
 public @Data class LoginResponse implements Serializable {
     private @Field LoginResult loginResult;
-    private @Field Courier courierInfo;
+    private @Field(optional = true) Courier courierInfo;
 }

@@ -1,31 +1,15 @@
 package com.idamobile.vpb.courier.network.core;
 
-import android.net.SSLCertificateSocketFactory;
-import android.net.SSLSessionCache;
 import android.os.AsyncTask;
 import com.idamobile.vpb.courier.ApplicationMediator;
 import com.idamobile.vpb.courier.util.HttpUtils;
 import com.idamobile.vpb.courier.util.Logger;
-import org.apache.http.HttpVersion;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.params.HttpClientParams;
 import org.apache.http.client.protocol.ClientContext;
-import org.apache.http.conn.params.ConnManagerParams;
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 
 import java.util.HashMap;
@@ -40,10 +24,6 @@ public class NetworkManager {
         void onCancelled(Request<T> request);
     }
 
-    private static final int HANDSHAKE_TIMEOUT = 30000;
-    private static final int CONNECTION_TIMEOUT = 30000;
-    private static final int SO_TIMEOUT = 30000;
-
     private String bankId;
 
     private HttpContext httpContext;
@@ -55,11 +35,11 @@ public class NetworkManager {
 
     private ResponsePreProcessorGroup preProcessorGroup;
 
-    public NetworkManager(ApplicationMediator mediator) {
+    public NetworkManager(ApplicationMediator mediator, HttpClientFactory httpClientFactory) {
         this.mediator = mediator;
         this.preProcessorGroup = new ResponsePreProcessorGroup();
 
-        initHttpClient();
+        initHttpClient(httpClientFactory);
     }
 
     public void addProcessor(ResponseDTOPreProcessor processor) {
@@ -70,8 +50,8 @@ public class NetworkManager {
         preProcessorGroup.removeProcessor(processor);
     }
 
-    private void initHttpClient() {
-        httpClient = createHttpClient();
+    private void initHttpClient(HttpClientFactory httpClientFactory) {
+        httpClient = httpClientFactory.createClient();
         HttpUtils.enableGzip(httpClient);
         cleanUpSession();
     }
@@ -80,35 +60,6 @@ public class NetworkManager {
         cookieStore = new BasicCookieStore();
         httpContext = new BasicHttpContext();
         httpContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
-    }
-
-    private HttpClient createHttpClient() {
-        HttpParams params = new BasicHttpParams();
-        HttpConnectionParams.setStaleCheckingEnabled(params, false);
-        HttpConnectionParams.setConnectionTimeout(params, CONNECTION_TIMEOUT);
-        HttpConnectionParams.setSoTimeout(params, SO_TIMEOUT);
-        HttpConnectionParams.setSocketBufferSize(params, 8192);
-        HttpClientParams.setRedirecting(params, false);
-
-        ConnManagerParams.setTimeout(params, CONNECTION_TIMEOUT);
-        HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-        HttpProtocolParams.setContentCharset(params, HTTP.DEFAULT_CONTENT_CHARSET);
-
-        SSLSessionCache sessionCache = new SSLSessionCache(mediator.getContext());
-
-        HttpProtocolParams.setUserAgent(params, "Android");
-
-        SchemeRegistry schemeRegistry = new SchemeRegistry();
-        schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-        SSLSocketFactory sslSocketFactory = SSLCertificateSocketFactory.getHttpSocketFactory(HANDSHAKE_TIMEOUT, sessionCache);
-        if (sslSocketFactory == null) {
-            sslSocketFactory = SSLSocketFactory.getSocketFactory();
-        }
-        sslSocketFactory.setHostnameVerifier(SSLSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
-        schemeRegistry.register(new Scheme("https", sslSocketFactory, 443));
-
-        ThreadSafeClientConnManager manager = new ThreadSafeClientConnManager(params, schemeRegistry);
-        return new DefaultHttpClient(manager, params);
     }
 
     public void addCookie(Cookie cookie) {

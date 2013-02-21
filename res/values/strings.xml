@@ -18,11 +18,48 @@
     <string name="login_empty_error">Введите логин</string>
     <string name="password_empty_error">Введите пароль</string>
     <string name="logiin_progress_dialog_message">Выполняется вход…</string>
-    <string name="login_account_is_blocked">Ваш аккаунт заблокирован.</string>
+    <string name="login_account_is_blocked">Ваш аккаунт заблокирован. Свяжитесь с руководителем.</string>
     <string name="login_wrong_credentials">Неправильный логин или пароль.</string>
     <string name="login_error_dialog_title">Ошибка входа</string>
 
+    <!-- Login Dialog -->
+    <string name="login_dialog_title">Вход</string>
+    <string name="login_dialog_message">Введите свои учетные данные. Сессия истекла</string>
+    <string name="login_dialog_logout_button">Завершить сеанс</string>
+
     <!-- OrderList Activity -->
     <string name="order_list_activity_label">Заявки</string>
+
+    <string name="refresh_menu_item">Обновить</string>
+    <string name="upload_images_menu_title">Загрузить фотографии</string>
+    <string name="logout_menu_title">Выйти</string>
+
+    <string name="order_time_missed_format">Встреча с %1$s до %2$s (встреча пропущена)</string>
+    <string name="order_time_remaining_format">Встреча с %1$s до %2$s (%3$s до окончания)</string>
+    <string name="order_time_normal_format">Встреча с %1$s до %2$s (%3$s до начала)</string>
+
+    <string name="time_diff_less_then_n_min_one">менее %d минуты</string>
+    <string name="time_diff_less_then_n_min_many">менее %d минут</string>
+    <string name="time_diff_more_then_30min">более получаса</string>
+    <string name="time_diff_more_then_45min">более 45 минут</string>
+    <string name="time_diff_more_then_1h">более часа</string>
+    <string name="time_diff_more_then_1_5h">более полутора часов</string>
+    <string name="time_diff_more_then_2h">более 2 часов</string>
+
+    <string name="all_photos_uploaded">Отправлены все фотографии</string>
+    <string name="one_photo">фотография</string>
+    <string name="many_photos">фотографии</string>
+    <string name="many_of_photos">фотографий</string>
+    <string name="one_uploaded">отправлена</string>
+    <string name="many_uploaded">оправлены</string>
+    <string name="photos_not_uploaded_format">%1$s не %2$s</string>
+    <string name="uploaded_n_of_m_photos_format">%1$s %2$d из %3$d %4$s</string>
+
+    <string name="call_activity_failed">Не удалось запустить телефон</string>
+    <string name="map_activity_failed">Не удалось запустить Гугл Карты</string>
+
+    <string name="active_orders_section">Активные заказы</string>
+    <string name="success_orders_section">Документы переданы</string>
+    <string name="failed_orders_section">Не удалось доставить</string>
 
 </resources>

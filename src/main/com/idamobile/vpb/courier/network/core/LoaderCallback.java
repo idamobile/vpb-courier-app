@@ -41,8 +41,17 @@ public class LoaderCallback<Q> implements Serializable {
         holder.beginUpdate();
         if (response.isSuccess()) {
             holder.set(response.getData());
+            onSuccess(request, response.getData(), mediator);
+        } else {
+            onError(request, response, mediator);
         }
-        holder.markLoaded(!response.isSuccess());
+        holder.markLoaded(response.getResultCode());
         holder.endUpdate();
+    }
+
+    protected void onError(Request<Q> request, ResponseDTO<Q> response, ApplicationMediator mediator) {
+    }
+
+    protected void onSuccess(Request<Q> request, Q data, ApplicationMediator mediator) {
     }
 }

@@ -1,7 +1,7 @@
 package com.idamobile.vpb.courier.navigation;
 
 import android.content.Context;
-import com.idamobile.vpb.courier.LoginActivity;
+import com.idamobile.vpb.courier.LoginActivity_;
 import com.idamobile.vpb.courier.OrderListActivity_;
 
 public abstract class AbstractNavigationController implements NavigationController {
@@ -24,7 +24,7 @@ public abstract class AbstractNavigationController implements NavigationControll
 
     @Override
     public NavigationMethod getLogin() {
-        return factory.createNavigationMethod(context, LoginActivity.class);
+        return factory.createNavigationMethod(context, LoginActivity_.class);
     }
 
     @Override
