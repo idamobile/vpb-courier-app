@@ -6,7 +6,6 @@ import android.content.Intent;
 import com.idamobile.vpb.courier.CoreApplication;
 import com.idamobile.vpb.courier.LoginActivity;
 import com.idamobile.vpb.courier.OrderListActivity;
-import com.idamobile.vpb.courier.controllers.LoginManager;
 
 public class AlwaysOpenNewNavigationController extends AbstractNavigationController {
 
@@ -24,8 +23,9 @@ public class AlwaysOpenNewNavigationController extends AbstractNavigationControl
     @Override
     public boolean onBackPressed() {
         Activity activity = (Activity) getContext();
+        boolean loggedIn = CoreApplication.getMediator(activity).getLoginManager().isLoggedIn();
         boolean hasPrevious = AlwaysOpenNewNavigationUtils.hasPreviousActivity(activity);
-        if (!hasPrevious && backButtonController.dispatchOnBackPressed()) {
+        if (loggedIn && !hasPrevious && backButtonController.dispatchOnBackPressed()) {
             return true;
         } else {
             if (activity instanceof OrderListActivity) {
@@ -52,13 +52,8 @@ public class AlwaysOpenNewNavigationController extends AbstractNavigationControl
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Activity activity = (Activity) getContext();
         if (activity instanceof LoginActivity) {
-            LoginManager loginManager = ((CoreApplication) activity.getApplication()).getMediator().getLoginManager();
             if (requestCode == NEXT_ACTIVITY_REQUEST_CODE) {
-//                if (resultCode == Activity.RESULT_OK) {
-//                    if (loginManager.isLoggedIn()) {
-                        activity.finish();
-//                    }
-//                }
+                activity.finish();
             }
         }
     }

@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import com.idamobile.vpb.courier.CoreApplication;
-import com.idamobile.vpb.courier.LoginActivity;
+import com.idamobile.vpb.courier.LoginActivity_;
 
 public class AlwaysOpenNewNavigationUtils {
 
@@ -15,11 +15,11 @@ public class AlwaysOpenNewNavigationUtils {
             Activity activity = (Activity) context;
             Class<?> actClass = activity.getClass();
 
-            if (actClass.equals(LoginActivity.class)) {
+            if (actClass.equals(LoginActivity_.class)) {
                 CoreApplication coreApplication = (CoreApplication) activity.getApplication();
                 boolean loggedIn = coreApplication.getMediator().getLoginManager().isLoggedIn();
-                if (!loggedIn) {
-                    actClass = LoginActivity.class;
+                if (loggedIn) {
+                    actClass = null;
                 }
             }
 

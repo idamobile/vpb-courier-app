@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import com.idamobile.vpb.courier.CoreApplication;
-import com.idamobile.vpb.courier.LoginActivity;
+import com.idamobile.vpb.courier.LoginActivity_;
 import com.idamobile.vpb.courier.controllers.LoginManager;
 
 public class AlwaysOpenNewLoginNavigationMethod extends AbstractNavigationMethod {
@@ -13,7 +13,7 @@ public class AlwaysOpenNewLoginNavigationMethod extends AbstractNavigationMethod
     private boolean signOut;
 
     public AlwaysOpenNewLoginNavigationMethod(Context context) {
-        super(context, LoginActivity.class);
+        super(context, LoginActivity_.class);
 
         Activity act = (Activity) context;
         CoreApplication coreApp = (CoreApplication) act.getApplication();
