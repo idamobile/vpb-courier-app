@@ -9,7 +9,7 @@ import android.text.TextUtils;
 public class Intents {
 
     public static Intent createCallIntent(String phoneNumber) {
-        return new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
+        return new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber));
     }
 
     public static Intent createRouteIntent(String address) {

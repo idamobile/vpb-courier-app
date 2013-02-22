@@ -1,17 +1,15 @@
 package com.idamobile.vpb.courier.widget.orders;
 
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.idamobile.vpb.courier.ApplicationMediator;
 import com.idamobile.vpb.courier.R;
 import com.idamobile.vpb.courier.model.Order;
 import com.idamobile.vpb.courier.network.images.OrderImages;
-import com.idamobile.vpb.courier.util.Intents;
 
 public class OrderPresenter {
 
@@ -22,11 +20,6 @@ public class OrderPresenter {
     private TextView metroView;
     private TextView nameView;
     private TextView uploadedImagesView;
-
-    private ViewGroup buttonsGroup;
-    private View callButton;
-    private View metroButton;
-    private View navigateButton;
 
     private Order order;
     private OrderTimeFormatter timeFormatter;
@@ -57,52 +50,9 @@ public class OrderPresenter {
         timeView = (TextView) view.findViewById(R.id.client_time);
         metroView = (TextView) view.findViewById(R.id.client_metro);
         nameView = (TextView) view.findViewById(R.id.client_name);
-        uploadedImagesView = (TextView) view.findViewById(R.id.upload_images);
-
-        buttonsGroup = (ViewGroup) view.findViewById(R.id.action_buttons);
-        callButton = view.findViewById(R.id.call_button);
-        metroButton = view.findViewById(R.id.metro_button);
-        navigateButton = view.findViewById(R.id.navigate_button);
-
-        setupButtons();
+        uploadedImagesView = (TextView) view.findViewById(R.id.photos_uploaded);
 
         view.setTag(this);
-    }
-
-    private void setupButtons() {
-        callButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = Intents.createCallIntent(order.getClientPhone());
-                if (!Intents.startActivityIfExists(intent, context)) {
-                    showActivityNotFoundError(R.string.call_activity_failed);
-                }
-            }
-        });
-
-        metroButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = Intents.createUndergroundIntent(order.getSubway());
-                if (!Intents.startActivityIfExists(intent, context)) {
-                    showActivityNotFoundError(R.string.map_activity_failed);
-                }
-            }
-        });
-
-        navigateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = Intents.createRouteIntent(order.getClientAddress());
-                if (!Intents.startActivityIfExists(intent, context)) {
-                    showActivityNotFoundError(R.string.map_activity_failed);
-                }
-            }
-        });
-    }
-
-    private void showActivityNotFoundError(int messageId) {
-        Toast.makeText(context, messageId, Toast.LENGTH_SHORT).show();
     }
 
     public View getView() {
@@ -134,8 +84,9 @@ public class OrderPresenter {
                     metroView.setVisibility(View.GONE);
                     timeView.setVisibility(View.GONE);
 
-                    addressView.setCompoundDrawables(context.getResources().getDrawable(R.drawable.status_ok),
-                            null, null, null);
+                    Drawable okDrawable = context.getResources().getDrawable(R.drawable.status_ok);
+                    okDrawable.setBounds(0, 0, okDrawable.getIntrinsicWidth(), okDrawable.getMinimumHeight());
+                    addressView.setCompoundDrawables(okDrawable, null, null, null);
 
                     OrderImages images = mediator.getImageManager().getImages(order);
                     if (images == null) {
@@ -150,8 +101,9 @@ public class OrderPresenter {
                     metroView.setVisibility(View.GONE);
                     timeView.setVisibility(View.GONE);
 
-                    addressView.setCompoundDrawables(context.getResources().getDrawable(R.drawable.status_fail),
-                            null, null, null);
+                    Drawable errDrawable = context.getResources().getDrawable(R.drawable.status_fail);
+                    errDrawable.setBounds(0, 0, errDrawable.getIntrinsicWidth(), errDrawable.getMinimumHeight());
+                    addressView.setCompoundDrawables(errDrawable, null, null, null);
                     break;
                 default:
                     throw new IllegalArgumentException("Unknown order status: " + order.getStatus());
@@ -163,9 +115,6 @@ public class OrderPresenter {
             timeView.setText(null);
             uploadedImagesView.setText(null);
         }
-        metroButton.setEnabled(order != null);
-        callButton.setEnabled(order != null);
-        navigateButton.setEnabled(order != null);
     }
 
     private void refreshTime() {

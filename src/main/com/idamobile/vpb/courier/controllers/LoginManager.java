@@ -14,9 +14,7 @@ import com.idamobile.vpb.courier.network.login.LoginRequest;
 import com.idamobile.vpb.courier.network.login.LoginResponse;
 import com.idamobile.vpb.courier.network.login.LoginResult;
 import com.idamobile.vpb.courier.preferences.LoginPreference;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import com.idamobile.vpb.courier.util.Hashs;
 
 public class LoginManager {
 
@@ -33,7 +31,7 @@ public class LoginManager {
     }
 
     public void login(RequestWatcherCallbacks<LoginResponse> watcher, String login, String password) {
-        String passwordMd5 = getMD5(password);
+        String passwordMd5 = Hashs.getSHA1(password);
 
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setLogin(login);
@@ -58,17 +56,6 @@ public class LoginManager {
     public Courier getCourier() {
         DataHolder<LoginResponse> loginHolder = getLoginHolder();
         return !loginHolder.isEmpty() ? loginHolder.get().getCourierInfo() : null;
-    }
-
-    private String getMD5(String text) {
-        try {
-            MessageDigest md5 = MessageDigest.getInstance("MD5");
-            byte[] textBytes = text.getBytes();
-            byte[] result = md5.digest(textBytes);
-            return new String(result);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public void logout() {

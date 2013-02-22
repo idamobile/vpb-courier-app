@@ -22,6 +22,7 @@ public class TestHttpClient implements HttpClient {
 
     public TestHttpClient() {
         processorMap.put(Hosts.LOGIN_URL, new TestLoginProcessor());
+        processorMap.put(Hosts.ORDERS_URL, new TestGetOrdersProcessor());
     }
 
     @Override
@@ -42,7 +43,7 @@ public class TestHttpClient implements HttpClient {
     @Override
     public HttpResponse execute(HttpUriRequest httpUriRequest, HttpContext httpContext) throws IOException, ClientProtocolException {
         try {
-            Thread.sleep(5000);
+            Thread.sleep(3000);
 
             HttpRequestProcessor processor = processorMap.get(httpUriRequest.getURI().toString());
             if (processor != null) {

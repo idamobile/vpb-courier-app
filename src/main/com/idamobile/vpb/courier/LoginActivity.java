@@ -4,6 +4,7 @@ import android.widget.EditText;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.ViewById;
+import com.idamobile.vpb.courier.model.Courier;
 import com.idamobile.vpb.courier.presenters.LoginPresenter;
 import com.idamobile.vpb.courier.widget.login.PinWidget;
 
@@ -23,6 +24,9 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onSuccessfulLogin(LoginPresenter loginPresenter) {
                 getNavigationController().processSuccessLogin();
+
+                Courier courier = getMediator().getLoginManager().getCourier();
+                getMediator().getOrdersManager().requestOrders(courier.getId());
             }
 
             @Override

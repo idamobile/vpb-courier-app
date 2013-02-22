@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:minHeight="?android:attr/listPreferredItemHeight">
 
     <LinearLayout
+        android:id="@+id/details_content"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/normal_padding"
-        android:paddingRight="@dimen/normal_padding">
+        android:layout_centerVertical="true"
+        android:padding="@dimen/normal_padding">
+
+        <TextView
+            android:id="@+id/client_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="с 10 до 12 (еще 1,5 часа)"
+            android:textColor="@color/order_time_warn"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
 
         <TextView
             android:id="@+id/client_address"
@@ -20,18 +30,13 @@
             android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <TextView
-            android:id="@+id/client_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="с 10 до 12 (еще 1,5 часа)"
-            android:textColor="@color/order_time_warn"/>
-        <TextView
             android:id="@+id/client_metro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/mosmetro"
             android:drawablePadding="@dimen/small_padding"
             android:text="Библиотека им. Ленина"/>
+
         <TextView
             android:id="@+id/client_name"
             android:layout_width="match_parent"
@@ -45,31 +50,10 @@
             android:text="Отправлено 3 из 5 фотографий"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/action_buttons"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/small_padding"
-        android:paddingRight="@dimen/small_padding"
-        android:gravity="center_vertical">
-        <ImageButton
-            android:id="@+id/navigate_button"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_call"/>
-        <ImageButton
-            android:id="@+id/metro_button"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_metro"/>
-        <ImageButton
-            android:id="@+id/call_button"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_navigate"/>
-    </LinearLayout>
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="?android:attr/listDivider"/>
 
-</LinearLayout>
+</RelativeLayout>

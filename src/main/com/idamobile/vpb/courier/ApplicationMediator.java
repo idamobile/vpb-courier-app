@@ -26,6 +26,7 @@ public class ApplicationMediator {
         setupNetworkManager();
         loginManager = new LoginManager(this);
         ordersManager = new OrdersManager(this);
+        imageManager = new ImageManager(this);
 
         cache = new DefaultCache(context, new DefaultFullNameMapper());
     }

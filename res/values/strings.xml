@@ -34,16 +34,17 @@
     <string name="upload_images_menu_title">Загрузить фотографии</string>
     <string name="logout_menu_title">Выйти</string>
 
-    <string name="order_time_missed_format">Встреча с %1$s до %2$s (встреча пропущена)</string>
-    <string name="order_time_remaining_format">Встреча с %1$s до %2$s (%3$s до окончания)</string>
-    <string name="order_time_normal_format">Встреча с %1$s до %2$s (%3$s до начала)</string>
+    <string name="order_time_missed_format">%1$s−%2$s\n(пропущена)</string>
+    <string name="order_time_remaining_format">%1$s−%2$s\n(осталось %3$s)</string>
+    <string name="order_time_normal_format">%1$s−%2$s\n(%3$s до начала)</string>
 
-    <string name="time_diff_less_then_n_min_one">менее %d минуты</string>
-    <string name="time_diff_less_then_n_min_many">менее %d минут</string>
-    <string name="time_diff_more_then_30min">более получаса</string>
-    <string name="time_diff_more_then_45min">более 45 минут</string>
-    <string name="time_diff_more_then_1h">более часа</string>
-    <string name="time_diff_more_then_1_5h">более полутора часов</string>
+    <string name="minutes_format">%1$d %2$s</string>
+    <string name="one_minute">минута</string>
+    <string name="few_minutes">минуты</string>
+    <string name="many_minutes">минут</string>
+
+    <string name="time_diff_more_then_1h">час с лишним</string>
+    <string name="time_diff_more_then_1_5h">более 1,5 часов</string>
     <string name="time_diff_more_then_2h">более 2 часов</string>
 
     <string name="all_photos_uploaded">Отправлены все фотографии</string>
@@ -61,5 +62,8 @@
     <string name="active_orders_section">Активные заказы</string>
     <string name="success_orders_section">Документы переданы</string>
     <string name="failed_orders_section">Не удалось доставить</string>
+
+    <string name="call_item_title">Позвонить</string>
+    <string name="navigate_item_title">Посмотреть на карте</string>
 
 </resources>

@@ -2,9 +2,12 @@ package com.idamobile.vpb.courier.widget.orders;
 
 import android.content.Context;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import com.idamobile.vpb.courier.R;
 import com.idamobile.vpb.courier.model.Order;
+import com.idamobile.vpb.courier.util.PluralHelper;
 import com.idamobile.vpb.courier.util.SpannableUtils;
 
 import java.text.DateFormat;
@@ -31,7 +34,7 @@ public class OrderTimeFormatter {
         int color = R.color.order_time_normal;
         String fromTime = formatTime(orderStartTime);
         String endTime = formatTime(orderEndTime);
-        final CharSequence text;
+        final String text;
         if (timeToStart < 0) {
             color = R.color.order_time_warn;
             if (timeToEnd <= 60 * 1000) {
@@ -47,6 +50,10 @@ public class OrderTimeFormatter {
         }
         SpannableStringBuilder builder = new SpannableStringBuilder();
         SpannableUtils.append(builder, text, new ForegroundColorSpan(context.getResources().getColor(color)));
+        int index = text.indexOf("\n");
+        if (index > 0) {
+            builder.setSpan(new RelativeSizeSpan(0.6f), index, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
         return builder;
     }
 
@@ -61,17 +68,20 @@ public class OrderTimeFormatter {
             return context.getString(R.string.time_diff_more_then_1_5h);
         } else if (time > 60 * 60 * 1000) {
             return context.getString(R.string.time_diff_more_then_1h);
-        } else if (time > 45 * 60 * 1000) {
-            return context.getString(R.string.time_diff_more_then_45min);
-        } else if (time > 30 * 60 * 1000) {
-            return context.getString(R.string.time_diff_more_then_30min);
         } else {
-            int minutes = (int) (time / (60 * 1000));
-            if (minutes == 1 || minutes % 10 == 1) {
-                return context.getString(R.string.time_diff_less_then_n_min_one, minutes);
-            } else {
-                return context.getString(R.string.time_diff_less_then_n_min_many, minutes);
+            int minutes = (int) ((time + 59 * 1000) / (60 * 1000));
+            final String minutesWord;
+            switch (PluralHelper.getForm(minutes)) {
+                case ONE:
+                    minutesWord = context.getString(R.string.one_minute);
+                    break;
+                case FEW:
+                    minutesWord = context.getString(R.string.few_minutes);
+                    break;
+                default:
+                    minutesWord = context.getString(R.string.many_minutes);
             }
+            return context.getString(R.string.minutes_format, minutes, minutesWord);
         }
     }
 
