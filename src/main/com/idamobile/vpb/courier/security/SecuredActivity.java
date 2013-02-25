@@ -58,12 +58,4 @@ public class SecuredActivity extends BaseActivity {
         super.onPause();
         securityManager.dispatchOnPause();
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (!securityManager.dispatchOnActivityResult(requestCode, resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
 }

@@ -1,13 +1,11 @@
 package com.idamobile.vpb.courier.security;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.WindowManager;
 import com.idamobile.vpb.courier.ApplicationMediator;
-import com.idamobile.vpb.courier.BuildConfig;
 import com.idamobile.vpb.courier.CoreApplication;
 import com.idamobile.vpb.courier.config.Config;
 import com.idamobile.vpb.courier.navigation.NavigationController;
@@ -18,8 +16,6 @@ import com.idamobile.vpb.courier.util.Versions;
 public class SecurityManager {
 
     private static final String TAG = SecurityManager.class.getSimpleName();
-
-    private static final int LOGIN_REQUEST = 138;
 
     private boolean movementDetected;
     private boolean startingLoginActivity;
@@ -51,7 +47,7 @@ public class SecurityManager {
 
     public void setShouldFinishIfNotLoggedIn() {
         this.shouldFinishIfNotLoggedIn = true;
-        if (Versions.hasHoneycombApi() && !BuildConfig.DEBUG) {
+        if (Versions.hasHoneycombApi()) {
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         }
     }
@@ -95,10 +91,11 @@ public class SecurityManager {
     }
 
     private void openLoginDialog() {
-        mediator.getLoginManager().logout();
         NotAuthorizedDialogPresenter presenter = NotAuthorizedDialogPresenter.find(activity);
         if (presenter != null && !TextUtils.isEmpty(mediator.getLoginManager().getLastLogin())) {
-            presenter.showNotAuthorizedDialogIfNeeded();
+            if (presenter.showNotAuthorizedDialogIfNeeded()) {
+                mediator.getNetworkManager().cleanUpSession();
+            }
         } else {
             closeAllAndOpenLoginActivity();
         }
@@ -112,15 +109,5 @@ public class SecurityManager {
         if (!movementDetected && isLoggedIn()) {
             securityPreferences.startConfidenceInterval();
         }
-    }
-
-    public boolean dispatchOnActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == LOGIN_REQUEST) {
-            if (resultCode != Activity.RESULT_OK) {
-                closeAllAndOpenLoginActivity();
-            }
-            return true;
-        }
-        return false;
     }
 }

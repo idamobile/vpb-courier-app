@@ -41,17 +41,20 @@ public class OrdersManager {
     }
 
     public void registerForOrders(Context context, BroadcastReceiver receiver) {
-        context.registerReceiver(receiver, new IntentFilter(
-                mediator.getCache().getHolder(GetOrdersResponse.class).getBroadcastAction()));
+        context.registerReceiver(receiver, new IntentFilter(getOrdersHolder().getBroadcastAction()));
     }
 
     public List<Order> getOrders() {
         List<Order> result = new ArrayList<Order>();
-        DataHolder<GetOrdersResponse> holder = mediator.getCache().getHolder(GetOrdersResponse.class);
+        DataHolder<GetOrdersResponse> holder = getOrdersHolder();
         if (!holder.isEmpty()) {
             result.addAll(holder.get().getOrders());
         }
         return result;
+    }
+
+    public DataHolder<GetOrdersResponse> getOrdersHolder() {
+        return mediator.getCache().getHolder(GetOrdersResponse.class);
     }
 
 }

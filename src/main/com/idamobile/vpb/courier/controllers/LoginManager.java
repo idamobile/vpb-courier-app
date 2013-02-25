@@ -7,9 +7,9 @@ import android.preference.PreferenceManager;
 import com.idamobile.vpb.courier.ApplicationMediator;
 import com.idamobile.vpb.courier.model.Courier;
 import com.idamobile.vpb.courier.network.core.DataHolder;
-import com.idamobile.vpb.courier.network.core.LoaderCallback;
 import com.idamobile.vpb.courier.network.core.RequestService;
 import com.idamobile.vpb.courier.network.core.RequestWatcherCallbacks;
+import com.idamobile.vpb.courier.network.login.LoginCallback;
 import com.idamobile.vpb.courier.network.login.LoginRequest;
 import com.idamobile.vpb.courier.network.login.LoginResponse;
 import com.idamobile.vpb.courier.network.login.LoginResult;
@@ -36,7 +36,7 @@ public class LoginManager {
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setLogin(login);
         loginRequest.setPasswordHash(passwordMd5);
-        loginRequest.setUpdateModelCallback(new LoaderCallback<LoginResponse>(LoginResponse.class));
+        loginRequest.setUpdateModelCallback(new LoginCallback());
         if (watcher != null) {
             watcher.execute(loginRequest);
         } else {
@@ -59,9 +59,7 @@ public class LoginManager {
     }
 
     public void logout() {
-        DataHolder<LoginResponse> holder = getLoginHolder();
-        holder.clear();
-
+        mediator.getCache().clear();
         mediator.getNetworkManager().cleanUpSession();
     }
 

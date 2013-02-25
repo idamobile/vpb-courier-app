@@ -124,10 +124,13 @@ public class NotAuthorizedDialogPresenter extends Fragment {
         }
     }
 
-    public void showNotAuthorizedDialogIfNeeded() {
+    public boolean showNotAuthorizedDialogIfNeeded() {
         if (loginDialogFactory.findDialog() == null
                 && !loginPresenter.isProgressDialogShown()) {
             loginDialogFactory.showDialog();
+            return true;
+        } else {
+            return false;
         }
     }
 

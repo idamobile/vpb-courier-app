@@ -9,6 +9,7 @@ import android.widget.ListView;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.ViewById;
+import com.idamobile.vpb.courier.controllers.OrdersManager;
 import com.idamobile.vpb.courier.model.Courier;
 import com.idamobile.vpb.courier.model.Order;
 import com.idamobile.vpb.courier.network.core.DataHolder;
@@ -24,6 +25,9 @@ import com.idamobile.vpb.courier.widget.orders.*;
 public class OrderListActivity extends SecuredActivity {
 
     @ViewById(R.id.orders_list) ListView orderList;
+    @ViewById(R.id.progress) View progress;
+    @ViewById(android.R.id.empty) View emptyView;
+
     private SectionListAdapter<Order> ordersAdapter;
 
     private ActionMode orderActionMode;
@@ -82,6 +86,7 @@ public class OrderListActivity extends SecuredActivity {
                 }
             }
         });
+        orderList.setEmptyView(emptyView);
 
         if (!Versions.hasHoneycombApi()) {
             registerForContextMenu(orderList);
@@ -104,6 +109,7 @@ public class OrderListActivity extends SecuredActivity {
             }
             orderActionModeCallback.setOrder(order);
             orderActionMode = startActionMode(orderActionModeCallback);
+            orderActionMode.setTitle(order.getFullName());
             return true;
         } else {
             return false;
@@ -114,6 +120,7 @@ public class OrderListActivity extends SecuredActivity {
     protected void onResume() {
         super.onResume();
         getMediator().getOrdersManager().registerForOrders(this, ordersWatcher);
+        refreshOrders();
     }
 
     @Override
@@ -123,7 +130,17 @@ public class OrderListActivity extends SecuredActivity {
     }
 
     private void refreshOrders() {
-        ordersAdapter.replaceAll(getMediator().getOrdersManager().getOrders());
+        OrdersManager ordersManager = getMediator().getOrdersManager();
+        DataHolder<GetOrdersResponse> holder = ordersManager.getOrdersHolder();
+        if (holder.isEmpty()) {
+            progress.setVisibility(View.VISIBLE);
+            orderList.setVisibility(View.GONE);
+            emptyView.setVisibility(View.GONE);
+        } else {
+            progress.setVisibility(View.GONE);
+            orderList.setVisibility(View.VISIBLE);
+            ordersAdapter.replaceAll(ordersManager.getOrders());
+        }
     }
 
     @Override

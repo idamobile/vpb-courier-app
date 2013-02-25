@@ -56,7 +56,7 @@ public class CourierNamePresenter extends Fragment {
         } else {
             Courier courierInfo = loginResponse.getCourierInfo();
             getActivity().setTitle(getString(R.string.order_list_activity_label)
-                    + "(" + courierInfo.getFirstName() + " " + courierInfo.getLastName() + ")");
+                    + " (" + courierInfo.getFirstName() + " " + courierInfo.getLastName() + ")");
         }
     }
 
@@ -64,6 +64,7 @@ public class CourierNamePresenter extends Fragment {
     public void onResume() {
         super.onResume();
         registerListener();
+        refreshName();
     }
 
     private void registerListener() {

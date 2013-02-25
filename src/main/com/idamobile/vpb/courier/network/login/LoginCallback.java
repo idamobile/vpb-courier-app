@@ -5,6 +5,7 @@ import com.idamobile.vpb.courier.network.core.LoaderCallback;
 import com.idamobile.vpb.courier.network.core.Request;
 
 public class LoginCallback extends LoaderCallback<LoginResponse> {
+
     public LoginCallback() {
         super(LoginResponse.class);
     }

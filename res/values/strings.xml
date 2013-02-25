@@ -64,6 +64,7 @@
     <string name="failed_orders_section">Не удалось доставить</string>
 
     <string name="call_item_title">Позвонить</string>
-    <string name="navigate_item_title">Посмотреть на карте</string>
+    <string name="navigate_item_title">На карте</string>
+    <string name="order_list_empty_message">Заявок нет</string>
 
 </resources>
