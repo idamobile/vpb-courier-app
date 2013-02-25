@@ -3,6 +3,7 @@ package com.idamobile.vpb.courier;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -12,6 +13,7 @@ import com.googlecode.androidannotations.annotations.ViewById;
 import com.idamobile.vpb.courier.controllers.OrdersManager;
 import com.idamobile.vpb.courier.model.Courier;
 import com.idamobile.vpb.courier.model.Order;
+import com.idamobile.vpb.courier.navigation.ExtrasBuilder;
 import com.idamobile.vpb.courier.network.core.DataHolder;
 import com.idamobile.vpb.courier.network.orders.GetOrdersResponse;
 import com.idamobile.vpb.courier.presenters.CourierNamePresenter;
@@ -83,6 +85,17 @@ public class OrderListActivity extends SecuredActivity {
                     return createOrdersActionMode((Order) item);
                 } else {
                     return false;
+                }
+            }
+        });
+        orderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Object item = ordersAdapter.getItem(position);
+                if (item instanceof Order) {
+                    int orderId = ((Order) item).getId();
+                    Bundle extras = ExtrasBuilder.orderDetailsBundle(orderId);
+                    getNavigationController().getOrderDetails().start(extras);
                 }
             }
         });

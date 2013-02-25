@@ -23,6 +23,14 @@ public class OrderTimeFormatter {
         this.context = context;
     }
 
+    public CharSequence formatSimpleOrderTime(Order order) {
+        long orderStartTime = order.getMeetTimeFrom();
+        long orderEndTime = order.getMeetTimeTo();
+        String fromTime = formatTime(orderStartTime);
+        String endTime = formatTime(orderEndTime);
+        return context.getString(R.string.order_time_simple_format, fromTime, endTime);
+    }
+
     public CharSequence formatOrderTime(Order order) {
         long curTime = System.currentTimeMillis();
         long orderStartTime = order.getMeetTimeFrom();

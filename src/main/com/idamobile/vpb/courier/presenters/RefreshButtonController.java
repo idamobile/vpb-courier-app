@@ -1,5 +1,6 @@
 package com.idamobile.vpb.courier.presenters;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -27,10 +28,10 @@ public class RefreshButtonController {
     private BroadcastReceiver broadcastForHolders;
 
     private RefreshButtonListener refreshButtonListener;
-    private final Context context;
+    private final Activity activity;
 
-    public RefreshButtonController(Context context, RefreshButtonListener refreshButtonListener) {
-        this.context = context;
+    public RefreshButtonController(Activity activity, RefreshButtonListener refreshButtonListener) {
+        this.activity = activity;
         this.refreshButtonListener = refreshButtonListener;
     }
 
@@ -58,7 +59,7 @@ public class RefreshButtonController {
 
     public void dispatchOnPause() {
         unregisterBroadcastForRefreshButtonHolders();
-        hideRefreshButtonAnimation();
+        hideRefreshAnimation();
     }
 
     private void onRefreshClicked() {
@@ -86,14 +87,14 @@ public class RefreshButtonController {
 
     private void unregisterBroadcastForRefreshButtonHolders() {
         if (broadcastForHolders != null) {
-            context.unregisterReceiver(broadcastForHolders);
+            activity.unregisterReceiver(broadcastForHolders);
             broadcastForHolders = null;
         }
     }
 
     private void registerBroadcastForRefreshButtonHolders() {
         unregisterBroadcastForRefreshButtonHolders();
-        showRefreshButtonAnimation();
+        showRefreshAnimation();
         broadcastForHolders = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -101,7 +102,7 @@ public class RefreshButtonController {
             }
         };
         for (DataHolder<?> holder : currentRefreshingHolders) {
-            context.registerReceiver(broadcastForHolders, new IntentFilter(holder.getBroadcastAction()));
+            activity.registerReceiver(broadcastForHolders, new IntentFilter(holder.getBroadcastAction()));
         }
     }
 
@@ -130,18 +131,20 @@ public class RefreshButtonController {
         unregisterBroadcastForRefreshButtonHolders();
         currentRefreshingHolders = null;
         queuedHolderBroadcastActionsForRefresh.clear();
-        hideRefreshButtonAnimation();
+        hideRefreshAnimation();
     }
 
-    protected void showRefreshButtonAnimation() {
+    protected void showRefreshAnimation() {
         if (Versions.hasHoneycombApi()) {
             if (refreshItem != null && refreshItem.getActionView() == null) {
                 refreshItem.setActionView(R.layout.action_bar_proress_view);
             }
+        } else {
+            activity.setProgressBarIndeterminateVisibility(true);
         }
     }
 
-    protected void hideRefreshButtonAnimation() {
+    protected void hideRefreshAnimation() {
         if (Versions.hasHoneycombApi()) {
             if (refreshItem != null && refreshItem.getActionView() != null) {
                 Animation animation = refreshItem.getActionView().getAnimation();
@@ -151,6 +154,8 @@ public class RefreshButtonController {
                     refreshItem.setActionView(null);
                 }
             }
+        } else {
+            activity.setProgressBarIndeterminateVisibility(false);
         }
     }
 

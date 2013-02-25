@@ -7,6 +7,8 @@ public interface NavigationController extends NavigationListener {
 
     NavigationMethod getOrdersList();
 
+    NavigationMethod getOrderDetails();
+
     void processSuccessLogin();
 
     void processSignOut();

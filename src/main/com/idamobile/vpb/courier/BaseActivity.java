@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.MenuItem;
+import android.view.Window;
 import com.idamobile.vpb.courier.navigation.NavigationController;
 import com.idamobile.vpb.courier.navigation.NavigationControllerFactory;
 import com.idamobile.vpb.courier.network.core.DataHolder;
 import com.idamobile.vpb.courier.network.core.ResultCodeToMessageConverter;
 import com.idamobile.vpb.courier.presenters.RefreshButtonController;
+import com.idamobile.vpb.courier.util.Versions;
 
 public class BaseActivity extends FragmentActivity implements RefreshButtonController.RefreshButtonListener {
 
@@ -19,6 +21,9 @@ public class BaseActivity extends FragmentActivity implements RefreshButtonContr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!Versions.hasHoneycombApi()) {
+            requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        }
 
         refreshButtonController = new RefreshButtonController(this, this);
         converter = new ResultCodeToMessageConverter(this);

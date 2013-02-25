@@ -24,4 +24,11 @@ public class ProtoMap {
         return null;
     }
 
+    public void put(ProtoMapEntry entry) {
+        entries.add(entry);
+    }
+
+    public boolean isEmpty() {
+        return entries.isEmpty();
+    }
 }

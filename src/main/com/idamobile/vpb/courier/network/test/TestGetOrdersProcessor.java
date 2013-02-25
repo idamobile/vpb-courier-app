@@ -2,6 +2,8 @@ package com.idamobile.vpb.courier.network.test;
 
 import com.idamobile.vpb.courier.model.Order;
 import com.idamobile.vpb.courier.model.OrderStatus;
+import com.idamobile.vpb.courier.model.ProtoMap;
+import com.idamobile.vpb.courier.model.ProtoMapEntry;
 import com.idamobile.vpb.courier.network.orders.GetOrdersResponse;
 import com.idamobile.vpb.courier.network.orders.GetOrdersResponseMapper;
 import org.apache.http.HttpResponse;
@@ -82,8 +84,20 @@ public class TestGetOrdersProcessor extends AbstractHttpRequestProcessor {
         order.setClientAddress(getRandomString(address));
         order.setClientPhone("+7 912 372-43-12");
         order.setSubway(getRandomString(subwayNames));
-        order.setOrderType("");
+        order.setOrderType("Из интернет-банка");
         order.setId(id);
+        if (random.nextBoolean()) {
+            ProtoMap protoMap = new ProtoMap();
+            ProtoMapEntry entry = new ProtoMapEntry();
+            entry.setKey("Код домофона");
+            entry.setValue("135");
+            protoMap.put(entry);
+            entry = new ProtoMapEntry();
+            entry.setKey("Дополнительно");
+            entry.setValue("клиент будет в синей шапке");
+            protoMap.put(entry);
+            order.setAttributes(protoMap);
+        }
 
         long startTime = System.currentTimeMillis() + (5 - random.nextInt(8)) * 60 * 60 * 1000;
         long endTime = startTime + 2 * 60 * 60 * 1000;

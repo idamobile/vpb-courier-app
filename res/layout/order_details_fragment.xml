@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbarStyle="outsideInset">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/normal_padding"
+        android:paddingRight="@dimen/normal_padding">
+
+        <TextView
+            android:id="@+id/client_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_padding"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Шопенгауэр Михаил Семенович"
+            android:paddingLeft="@dimen/normal_padding"/>
+
+        <TextView
+            android:id="@+id/client_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/normal_padding"
+            android:paddingTop="@dimen/small_padding"
+            android:text="@string/order_status_new_format"
+            android:drawablePadding="@dimen/normal_padding"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_padding">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/normal_padding"
+                android:paddingBottom="@dimen/small_padding"
+                android:text="@string/order_details_type_section"
+                android:textAppearance="@style/OrderDetailsSection"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/normal_padding"
+                android:background="@color/order_details_sections"/>
+
+            <TextView
+                android:id="@+id/client_order_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/normal_padding"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Кредитная карта"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_padding">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/normal_padding"
+                android:paddingBottom="@dimen/small_padding"
+                android:text="@string/order_details_address_section"
+                android:textAppearance="@style/OrderDetailsSection"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/normal_padding"
+                android:background="@color/order_details_sections"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/client_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/normal_padding"
+                        android:text="ул. Садово-Преображенская дом 123, корпус 3, кабинет 45"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:drawablePadding="@dimen/normal_padding"/>
+
+                    <TextView
+                        android:id="@+id/client_metro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/mosmetro"
+                        android:paddingLeft="@dimen/normal_padding"
+                        android:drawablePadding="@dimen/small_padding"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Библиотека им. Ленина"/>
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/navigate_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_navigate"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_padding">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/normal_padding"
+                android:paddingBottom="@dimen/small_padding"
+                android:text="@string/order_details_phone_section"
+                android:textAppearance="@style/OrderDetailsSection"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/normal_padding"
+                android:background="@color/order_details_sections"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/client_phone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="@dimen/normal_padding"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="+7 917 439-43-11"/>
+
+                <ImageButton
+                    android:id="@+id/call_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_call"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_padding">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/normal_padding"
+                android:paddingBottom="@dimen/small_padding"
+                android:text="@string/order_details_time_section"
+                android:textAppearance="@style/OrderDetailsSection"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/normal_padding"
+                android:background="@color/order_details_sections"/>
+
+            <TextView
+                android:id="@+id/client_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/normal_padding"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="с 10 до 12"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/additional_params_section"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_padding">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/normal_padding"
+                android:paddingBottom="@dimen/small_padding"
+                android:text="@string/order_details_additional_section"
+                android:textAppearance="@style/OrderDetailsSection"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/normal_padding"
+                android:background="@color/order_details_sections"/>
+
+            <TextView
+                android:id="@+id/client_additional"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/normal_padding"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="код домофона 123"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

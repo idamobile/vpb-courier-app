@@ -28,15 +28,17 @@
     <string name="login_dialog_logout_button">Завершить сеанс</string>
 
     <!-- OrderList Activity -->
-    <string name="order_list_activity_label">Заявки</string>
+    <string name="order_list_activity_label">Заказы</string>
 
     <string name="refresh_menu_item">Обновить</string>
-    <string name="upload_images_menu_title">Загрузить фотографии</string>
+
+    <string name="upload_images_menu_title">Отправить снимки</string>
     <string name="logout_menu_title">Выйти</string>
 
     <string name="order_time_missed_format">%1$s−%2$s\n(пропущена)</string>
     <string name="order_time_remaining_format">%1$s−%2$s\n(осталось %3$s)</string>
     <string name="order_time_normal_format">%1$s−%2$s\n(%3$s до начала)</string>
+    <string name="order_time_simple_format">с %1$s до %2$s</string>
 
     <string name="minutes_format">%1$d %2$s</string>
     <string name="one_minute">минута</string>
@@ -66,5 +68,19 @@
     <string name="call_item_title">Позвонить</string>
     <string name="navigate_item_title">На карте</string>
     <string name="order_list_empty_message">Заявок нет</string>
+
+    <!-- OrderDetails Activity -->
+    <string name="order_details_activity_label_format">Детали заказа №%d</string>
+
+    <string name="order_details_address_section">Адрес</string>
+    <string name="order_details_time_section">Время</string>
+    <string name="order_details_phone_section">Телефон</string>
+
+    <string name="order_status_submitted">Документы переданы</string>
+    <string name="order_status_not_submitted">Передача документов не состоялась</string>
+    <string name="order_status_new_format">Предстоит встреча %s</string>
+    <string name="order_details_additional_section">Прочее</string>
+    <string name="order_details_type_section">Тип заявки</string>
+    <string name="order_not_found">Заказ не найден</string>
 
 </resources>

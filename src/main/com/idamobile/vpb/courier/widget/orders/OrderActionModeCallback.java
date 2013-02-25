@@ -6,6 +6,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import com.idamobile.vpb.courier.R;
 import com.idamobile.vpb.courier.model.Order;
+import com.idamobile.vpb.courier.util.Versions;
 
 public class OrderActionModeCallback implements ActionMode.Callback {
 
@@ -25,6 +26,10 @@ public class OrderActionModeCallback implements ActionMode.Callback {
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
         MenuInflater inflater = mode.getMenuInflater();
         inflater.inflate(R.menu.order_item_context_menu, menu);
+        if (!Versions.isApiLevelAvailable(14)) {
+            menu.findItem(R.id.call_item).setIcon(R.drawable.ic_call);
+            menu.findItem(R.id.navigate_item).setIcon(R.drawable.ic_navigate);
+        }
         return true;
     }
 

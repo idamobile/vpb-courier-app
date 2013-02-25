@@ -3,4 +3,6 @@
     <color name="order_time_normal">#669900</color>
     <color name="order_time_warn">#FF8800</color>
     <color name="order_time_missed">#CC0000</color>
+
+    <color name="order_details_sections">#0099CC</color>
 </resources>

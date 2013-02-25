@@ -2,6 +2,7 @@ package com.idamobile.vpb.courier.navigation;
 
 import android.content.Context;
 import com.idamobile.vpb.courier.LoginActivity_;
+import com.idamobile.vpb.courier.OrderDetailsActivity_;
 import com.idamobile.vpb.courier.OrderListActivity_;
 
 public abstract class AbstractNavigationController implements NavigationController {
@@ -32,4 +33,8 @@ public abstract class AbstractNavigationController implements NavigationControll
         return factory.createNavigationMethod(context, OrderListActivity_.class);
     }
 
+    @Override
+    public NavigationMethod getOrderDetails() {
+        return factory.createNavigationMethod(context, OrderDetailsActivity_.class);
+    }
 }

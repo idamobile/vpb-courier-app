@@ -53,6 +53,16 @@ public class OrdersManager {
         return result;
     }
 
+    public Order getOrder(int id) {
+        List<Order> orders = getOrders();
+        for (Order order : orders) {
+            if (order.getId() == id) {
+                return order;
+            }
+        }
+        return null;
+    }
+
     public DataHolder<GetOrdersResponse> getOrdersHolder() {
         return mediator.getCache().getHolder(GetOrdersResponse.class);
     }
