@@ -4,7 +4,10 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.text.TextUtils;
+
+import java.io.File;
 
 public class Intents {
 
@@ -29,6 +32,14 @@ public class Intents {
     public static Intent createUndergroundIntent(String subwayStation) {
         subwayStation = subwayStation.replaceAll("[Мм]\\.", "");
         return createRouteIntent("Москва метро " + subwayStation);
+    }
+
+    public static Intent takePictureIntent(File output) {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (output != null) {
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(output));
+        }
+        return takePictureIntent;
     }
 
     public static boolean startActivityIfExists(Intent intent, Context context) {

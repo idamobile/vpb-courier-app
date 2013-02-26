@@ -14,7 +14,8 @@ public class LoginCallback extends LoaderCallback<LoginResponse> {
     protected void onSuccess(Request<LoginResponse> request, LoginResponse data, ApplicationMediator mediator) {
         super.onSuccess(request, data, mediator);
         String login = ((LoginRequest) request).getLogin();
-        mediator.getLoginManager().saveLastLogin(login);
+        String passwordHash = ((LoginRequest) request).getPasswordHash();
+        mediator.getLoginManager().saveLastCredentials(login, passwordHash);
     }
 
 }

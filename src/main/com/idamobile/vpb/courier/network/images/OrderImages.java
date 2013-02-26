@@ -26,4 +26,27 @@ public class OrderImages {
     public boolean isAllUploaded() {
         return getUploadedCount() == getCount();
     }
+
+    public void merge(OrderImages newImages) {
+        for (ImageInfo info : newImages.getImages()) {
+            ImageInfo oldInfo = getInfoByImageType(info.getTypeId());
+            if (oldInfo != null) {
+                info.setTotalBytes(oldInfo.getTotalBytes());
+                info.setUploadedBytes(oldInfo.getUploadedBytes());
+            }
+        }
+
+        images.clear();
+        images.addAll(newImages.getImages());
+    }
+
+    public ImageInfo getInfoByImageType(int typeId) {
+        for (ImageInfo info : images) {
+            if (info.getTypeId() == typeId) {
+                return info;
+            }
+        }
+        return null;
+    }
+
 }

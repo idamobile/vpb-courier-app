@@ -1,9 +1,6 @@
 package com.idamobile.vpb.courier.network.test;
 
-import com.idamobile.vpb.courier.model.Order;
-import com.idamobile.vpb.courier.model.OrderStatus;
-import com.idamobile.vpb.courier.model.ProtoMap;
-import com.idamobile.vpb.courier.model.ProtoMapEntry;
+import com.idamobile.vpb.courier.model.*;
 import com.idamobile.vpb.courier.network.orders.GetOrdersResponse;
 import com.idamobile.vpb.courier.network.orders.GetOrdersResponseMapper;
 import org.apache.http.HttpResponse;
@@ -98,7 +95,6 @@ public class TestGetOrdersProcessor extends AbstractHttpRequestProcessor {
             protoMap.put(entry);
             order.setAttributes(protoMap);
         }
-
         long startTime = System.currentTimeMillis() + (5 - random.nextInt(8)) * 60 * 60 * 1000;
         long endTime = startTime + 2 * 60 * 60 * 1000;
         order.setMeetTimeFrom(startTime);
@@ -114,6 +110,16 @@ public class TestGetOrdersProcessor extends AbstractHttpRequestProcessor {
             default:
                 order.setStatus(OrderStatus.STATUS_NEW);
                 break;
+        }
+
+        if (order.getStatus() == OrderStatus.STATUS_DOCUMENTS_SUBMITTED) {
+            int count = 1 + random.nextInt(10);
+            for (int i = 0; i < count; i++) {
+                ImageType imageType = new ImageType();
+                imageType.setId(i);
+                imageType.setDescription("Описание фотографии " + (i + 1));
+                order.getImageTypes().add(imageType);
+            }
         }
 
         return order;

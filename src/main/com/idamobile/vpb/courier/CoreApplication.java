@@ -3,6 +3,7 @@ package com.idamobile.vpb.courier;
 import android.app.Activity;
 import android.app.Application;
 import com.idamobile.vpb.courier.util.Debug;
+import com.idamobile.vpb.courier.util.Files;
 import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
@@ -21,6 +22,8 @@ public class CoreApplication extends Application {
         if (Debug.isEnabled(this)) {
             ACRA.init(this);
         }
+
+        Files.createNoMedia(this);
 
         this.mediator = new ApplicationMediator(this);
     }

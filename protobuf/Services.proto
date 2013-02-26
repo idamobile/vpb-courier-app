@@ -38,6 +38,11 @@ enum OrderStatus {
     STATUS_DOCUMENTS_NOT_SUBMITTED = 3;
 }
 
+message ImageType {
+    required int32 id = 1;
+    required string description = 2;
+}
+
 message OrderProtobufDTO {
     required int32 id = 1;
     required OrderStatus status = 2;
@@ -52,6 +57,7 @@ message OrderProtobufDTO {
     required string orderType = 13;
     optional string uploadImagesUrl = 14;
     optional Map attributes = 15;
+    repeated ImageType imageTypes = 16;
 }
 
 message GetOrdersRequestProtobufDTO {

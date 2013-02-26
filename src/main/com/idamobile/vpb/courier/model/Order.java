@@ -7,6 +7,8 @@ import com.shaubert.protomapper.annotations.Mapper;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Mapper(protoClass = Services.OrderProtobufDTO.class)
 @Data
@@ -24,6 +26,7 @@ public class Order implements Serializable {
     @Field private String orderType;
     @Field(optional = true) private String uploadImagesUrl;
     @Field(optional = true) private ProtoMap attributes = new ProtoMap();
+    @Field private List<ImageType> imageTypes = new ArrayList<ImageType>();
 
     public String getFullName() {
         StringBuffer buffer = new StringBuffer();
@@ -34,5 +37,18 @@ public class Order implements Serializable {
             buffer.append(" ").append(clientMiddleName);
         }
         return buffer.toString();
+    }
+
+    public boolean hasImageType(int id) {
+        return getImageType(id) != null;
+    }
+
+    public ImageType getImageType(int id) {
+        for (ImageType type : imageTypes) {
+            if (type.getId() == id) {
+                return type;
+            }
+        }
+        return null;
     }
 }

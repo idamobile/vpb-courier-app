@@ -14,16 +14,26 @@ import com.idamobile.vpb.courier.network.login.LoginRequest;
 import com.idamobile.vpb.courier.network.login.LoginResponse;
 import com.idamobile.vpb.courier.network.login.LoginResult;
 import com.idamobile.vpb.courier.preferences.LoginPreference;
+import com.idamobile.vpb.courier.security.crypto.CryptoPreferences;
+import com.idamobile.vpb.courier.util.CryptoUtil;
 import com.idamobile.vpb.courier.util.Hashs;
+import com.idamobile.vpb.courier.util.Logger;
+
+import javax.crypto.spec.SecretKeySpec;
 
 public class LoginManager {
 
+    public static final String TAG = LoginManager.class.getSimpleName();
+
     private ApplicationMediator mediator;
     private LoginPreference loginPreference;
+    private SecretKeySpec cryptoKey;
+    private CryptoPreferences cryptoPreferences;
 
     public LoginManager(ApplicationMediator mediator) {
         this.mediator = mediator;
         this.loginPreference = new LoginPreference(PreferenceManager.getDefaultSharedPreferences(mediator.getContext()));
+        this.cryptoPreferences = new CryptoPreferences();
     }
 
     public void login(String login, String password) {
@@ -59,12 +69,26 @@ public class LoginManager {
     }
 
     public void logout() {
+        cryptoKey = null;
+        loginPreference.clear();
+
         mediator.getCache().clear();
         mediator.getNetworkManager().cleanUpSession();
     }
 
-    public void saveLastLogin(String login) {
+    public void saveLastCredentials(String login, String passwordHash) {
         loginPreference.setLogin(login);
+        String key = login + "-" + passwordHash;
+        try {
+            this.cryptoKey = CryptoUtil.getKey(key, cryptoPreferences.getSalt(),
+                    cryptoPreferences.getIterationsCount(), cryptoPreferences.getKeyLength());
+        } catch (Exception e) {
+            Logger.debug(TAG, "error getting crypto key", e);
+        }
+    }
+
+    public SecretKeySpec getSecretKey() {
+        return cryptoKey;
     }
 
     public String getLastLogin() {

@@ -18,4 +18,8 @@ public class LoginPreference {
     public void setLogin(String login) {
         preferences.edit().putString(LAST_LOGIN_PREF, login).commit();
     }
+
+    public void clear() {
+        preferences.edit().remove(LAST_LOGIN_PREF).commit();
+    }
 }

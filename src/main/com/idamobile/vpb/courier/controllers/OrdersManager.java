@@ -6,11 +6,11 @@ import android.content.IntentFilter;
 import com.idamobile.vpb.courier.ApplicationMediator;
 import com.idamobile.vpb.courier.model.Order;
 import com.idamobile.vpb.courier.network.core.DataHolder;
-import com.idamobile.vpb.courier.network.core.LoaderCallback;
 import com.idamobile.vpb.courier.network.core.RequestService;
 import com.idamobile.vpb.courier.network.core.RequestWatcherCallbacks;
 import com.idamobile.vpb.courier.network.orders.GetOrdersRequest;
 import com.idamobile.vpb.courier.network.orders.GetOrdersResponse;
+import com.idamobile.vpb.courier.network.orders.GetOrdersResponseCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +31,7 @@ public class OrdersManager {
                               RequestWatcherCallbacks<GetOrdersResponse> callback) {
         GetOrdersRequest request = new GetOrdersRequest();
         request.setCourierId(courierId);
-        request.setUpdateModelCallback(
-                new LoaderCallback<GetOrdersResponse>(GetOrdersResponse.class));
+        request.setUpdateModelCallback(new GetOrdersResponseCallback());
         if (callback != null) {
             callback.execute(request);
         } else {

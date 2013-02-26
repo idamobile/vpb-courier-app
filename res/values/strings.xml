@@ -83,4 +83,7 @@
     <string name="order_details_type_section">Тип заявки</string>
     <string name="order_not_found">Заказ не найден</string>
 
+    <string name="confirm_remove_image_dialog_title">Удалить?</string>
+    <string name="unable_to_process_image">Не удалось обработать изображение</string>
+
 </resources>

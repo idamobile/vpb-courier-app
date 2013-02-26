@@ -18,6 +18,7 @@ public class OrderDetailsActivity extends SecuredActivity {
 
     public OrderDetailsActivity() {
         setShouldFinishIfNotLoggedIn();
+        setShouldAttachNotAuthorizedListener();
     }
 
     @AfterViews
