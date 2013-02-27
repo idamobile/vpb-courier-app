@@ -4,6 +4,9 @@
 
     <string name="press_back_again_to_exit">Нажмите еще раз для выхода</string>
 
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+
     <!-- ACRA -->
     <string name="acra_dialog_text">Произошла непредвиденная ошибка. Пожалуйста, помогите нам исправить эту проблему, отправив отчет.</string>
     <string name="acra_toast_text">Ой! Видимо, что-то случилось</string>
@@ -78,12 +81,36 @@
 
     <string name="order_status_submitted">Документы переданы</string>
     <string name="order_status_not_submitted">Передача документов не состоялась</string>
-    <string name="order_status_new_format">Предстоит встреча %s</string>
+    <string name="order_status_new_format">Клиент ожидает %s. Статус встречи:</string>
     <string name="order_details_additional_section">Прочее</string>
     <string name="order_details_type_section">Тип заявки</string>
     <string name="order_not_found">Заказ не найден</string>
 
     <string name="confirm_remove_image_dialog_title">Удалить?</string>
     <string name="unable_to_process_image">Не удалось обработать изображение</string>
+
+    <string name="order_action_met">Cостоялась</string>
+    <string name="order_action_close">Не состоялась</string>
+
+    <string name="client_did_not_answer_the_phone">Клиент не отвечает на звонки</string>
+    <string name="client_missed_meeting">Клиент не приехал</string>
+    <string name="courier_missed_meeting">Я пропустил(а) встречу</string>
+    <string name="client_forgot_passport">Клиент без паспорта</string>
+    <string name="client_rejected_order">Отказ</string>
+    <string name="agreement_can_not_be_signed">Договор не может быть подписан</string>
+
+    <string name="reject_order_dialog_title">Выберите причину</string>
+
+    <string name="confirm_dialog_title">Подтвердите изменение</string>
+    <string name="confirm_reject_dialog_message_format">Встреча не состоялась. Причина: %s.\nВнимание, после подтверждения изменения нельзя будет внести</string>
+    <string name="confirm_submit_dialog_message_format">Встреча состоялась. Клиент подтвердил желание выпустить карту.\nКлиент является резидентом: %1$s\nВносились правки: %1$s</string>
+
+    <string name="met_result_documents_ok">Документы в порядке</string>
+    <string name="met_result_cannot_bi_signed">Договор не может быть подписан</string>
+
+    <string name="client_resident_option">Клиент является резидентом</string>
+    <string name="marks_option">Вносились правки</string>
+
+    <string name="final_options_dialog_title">Отметьте нужное</string>
 
 </resources>

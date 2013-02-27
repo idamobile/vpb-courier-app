@@ -47,6 +47,9 @@ public class OrderDetailsFragment extends Fragment {
 
     @ViewById(R.id.client_name) TextView nameView;
     @ViewById(R.id.client_status) TextView statusView;
+    @ViewById(R.id.order_actions) ViewGroup orderActionButtons;
+    @ViewById(R.id.met_with_client_button) View metWithClientButton;
+    @ViewById(R.id.met_with_client_cancelled_button) View metWithClientCancelledButton;
     @ViewById(R.id.images_grid) ViewGroup imagesView;
     @ViewById(R.id.client_order_type) TextView orderTypeView;
     @ViewById(R.id.client_address) TextView addressView;
@@ -68,6 +71,7 @@ public class OrderDetailsFragment extends Fragment {
 
     private Order order;
     private OrderTimeFormatter orderTimeFormatter;
+    private OrderStatusPresenter orderStatusPresenter;
     private OrderActions orderActions;
     private ImagesGrid imagesGrid;
     private ApplicationMediator mediator;
@@ -82,6 +86,7 @@ public class OrderDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         orderTimeFormatter = new OrderTimeFormatter(getActivity());
         orderActions = new OrderActions(getActivity());
+        orderStatusPresenter = new OrderStatusPresenter(getActivity());
         mediator = CoreApplication.getMediator(getActivity());
         restoreOrder(savedInstanceState);
         restoreProcessingPictureParams(savedInstanceState);
@@ -120,6 +125,19 @@ public class OrderDetailsFragment extends Fragment {
                     }
                 });
                 confirmRemoveImageDialog.showDialog();
+            }
+        });
+
+        metWithClientButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                orderStatusPresenter.showMetWithClientDialog();
+            }
+        });
+        metWithClientCancelledButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                orderStatusPresenter.showRejectOrderDialog();
             }
         });
     }
@@ -184,12 +202,15 @@ public class OrderDetailsFragment extends Fragment {
             CharSequence orderTime = orderTimeFormatter.formatSimpleOrderTime(order);
             switch (order.getStatus()) {
                 case STATUS_NEW:
+                    orderActionButtons.setVisibility(View.VISIBLE);
                     statusView.setText(getActivity().getString(R.string.order_status_new_format, orderTime));
                     break;
                 case STATUS_DOCUMENTS_SUBMITTED:
+                    orderActionButtons.setVisibility(View.GONE);
                     statusView.setText(R.string.order_status_submitted);
                     break;
                 case STATUS_DOCUMENTS_NOT_SUBMITTED:
+                    orderActionButtons.setVisibility(View.GONE);
                     statusView.setText(R.string.order_status_not_submitted);
                     break;
                 default:

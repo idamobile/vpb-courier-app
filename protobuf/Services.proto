@@ -90,7 +90,7 @@ message CancelOrderRequestProtobufDTO {
     optional string comment = 4;
 }
 
-message UpdateOrderResopnseProtobufDTO {
+message UpdateOrderResponseProtobufDTO {
     required int32 orderId = 1;
     required OrderStatus newStatus = 2;
     optional string uploadImagesUrl = 3;

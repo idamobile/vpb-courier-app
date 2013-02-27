@@ -29,6 +29,29 @@
             android:text="@string/order_status_new_format"
             android:drawablePadding="@dimen/normal_padding"/>
 
+        <LinearLayout
+            android:id="@+id/order_actions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_padding">
+
+            <Button
+                android:id="@+id/met_with_client_cancelled_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/order_action_close"/>
+
+            <Button
+                android:id="@+id/met_with_client_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/order_action_met"/>
+
+        </LinearLayout>
+
+
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
