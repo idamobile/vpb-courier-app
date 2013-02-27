@@ -2,6 +2,7 @@ package com.idamobile.vpb.courier.network.test;
 
 import com.idamobile.vpb.courier.model.Courier;
 import com.idamobile.vpb.courier.network.login.*;
+import com.idamobile.vpb.courier.util.Hashs;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -18,6 +19,7 @@ public class TestLoginProcessor extends AbstractHttpRequestProcessor {
             LoginResponse response = new LoginResponse();
             response.setCourierInfo(createInfo());
             response.setLoginResult(LoginResult.OK);
+            response.setKeyHash(Hashs.getSHA1("test"));
             return makeResponse(response);
         } else if ("blocked".equals(loginRequest.getLogin())) {
             LoginResponse response = new LoginResponse();

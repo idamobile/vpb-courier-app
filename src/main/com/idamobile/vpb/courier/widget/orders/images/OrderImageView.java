@@ -35,6 +35,7 @@ public class OrderImageView {
     private View view;
     private ImageView imageView;
     private View removeView;
+    private View progressView;
     private TextView descriptionView;
 
     private OrderImageImageCallbacks imageCallbacks;
@@ -51,6 +52,7 @@ public class OrderImageView {
         view = inflater.inflate(R.layout.order_image_item, parent, false);
         imageView = (ImageView) view.findViewById(R.id.image_placeholder);
         removeView = view.findViewById(R.id.remove_icon);
+        progressView = view.findViewById(R.id.image_progress);
         descriptionView = (TextView) view.findViewById(R.id.image_description);
 
         view.setOnClickListener(new View.OnClickListener() {
@@ -97,15 +99,19 @@ public class OrderImageView {
     public void setImage(Order order, ImageType image) {
         this.order = order;
         this.image = image;
-        refresh(image);
+        refresh();
     }
 
-    public void refresh(ImageType image) {
+    public void refresh() {
         ImageInfo imageInfo = getImageInfo();
         if (imageInfo != null) {
+            progressView.setVisibility(imageInfo.isProcessing() ? View.VISIBLE : View.GONE);
+            imageView.setVisibility(imageInfo.isProcessing() ? View.GONE : View.VISIBLE);
             if (imageInfo.getFile().exists()) {
                 removeView.setVisibility(View.VISIBLE);
-                loadImage(imageInfo.getFile());
+                if (!imageInfo.isProcessing()) {
+                    loadImage(imageInfo.getFile());
+                }
             } else {
                 removeView.setVisibility(View.GONE);
                 imageView.setImageResource(R.drawable.ic_take_picture);
@@ -113,6 +119,7 @@ public class OrderImageView {
             }
             descriptionView.setText(image.getDescription());
         } else {
+            progressView.setVisibility(View.GONE);
             imageView.setImageDrawable(null);
             descriptionView.setText(null);
         }
@@ -125,6 +132,16 @@ public class OrderImageView {
             imageView.setImageBitmap(bitmap);
         } else {
             new AsyncTask<Void, Void, Bitmap>() {
+                @Override
+                protected void onPreExecute() {
+                    ImageInfo imageInfo = getImageInfo();
+                    if (imageInfo != null) {
+                        imageInfo.setProcessing(true);
+                        imageView.setVisibility(View.GONE);
+                        progressView.setVisibility(View.VISIBLE);
+                    }
+                }
+
                 @Override
                 protected Bitmap doInBackground(Void... params) {
                     int size = imageView.getWidth();
@@ -152,13 +169,14 @@ public class OrderImageView {
 
                 @Override
                 protected void onPostExecute(Bitmap bitmap) {
+                    ImageInfo imageInfo = getImageInfo();
+                    if (imageInfo != null) {
+                        getImageInfo().setProcessing(false);
+                    }
                     if (bitmap != null) {
-                        ImageInfo imageInfo = getImageInfo();
-                        if (imageInfo != null && imageInfo.getFile().getAbsolutePath().equals(path)) {
-                            imageView.setImageBitmap(bitmap);
-                        }
                         imageCache.put(path, bitmap);
                     }
+                    refresh();
                 }
             }.execute();
         }

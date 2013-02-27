@@ -30,6 +30,7 @@ message LoginResponseProtobufDTO {
     }
     required Result loginResult = 1;
     optional CourierProtobufDTO courierInfo = 2;
+    optional string keyHash = 3;
 }
 
 enum OrderStatus {
@@ -38,7 +39,7 @@ enum OrderStatus {
     STATUS_DOCUMENTS_NOT_SUBMITTED = 3;
 }
 
-message ImageType {
+message ImageTypeProtobufDTO {
     required int32 id = 1;
     required string description = 2;
 }
@@ -57,7 +58,7 @@ message OrderProtobufDTO {
     required string orderType = 13;
     optional string uploadImagesUrl = 14;
     optional Map attributes = 15;
-    repeated ImageType imageTypes = 16;
+    repeated ImageTypeProtobufDTO imageTypes = 16;
 }
 
 message GetOrdersRequestProtobufDTO {

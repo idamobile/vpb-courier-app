@@ -63,6 +63,7 @@ public class SecurityManager {
     private void closeAllAndOpenLoginActivity() {
         startingLoginActivity = true;
 
+        mediator.getLoginManager().logout();
         activity.overridePendingTransition(0, 0);
         navigationController.processSignOut();
     }

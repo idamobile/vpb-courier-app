@@ -6,7 +6,7 @@ import com.shaubert.protomapper.annotations.Mapper;
 import lombok.Data;
 
 @Data
-@Mapper(protoClass = Services.ImageType.class)
+@Mapper(protoClass = Services.ImageTypeProtobufDTO.class)
 public class ImageType {
     @Field private int id;
     @Field private String description;

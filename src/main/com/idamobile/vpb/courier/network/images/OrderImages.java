@@ -28,16 +28,18 @@ public class OrderImages {
     }
 
     public void merge(OrderImages newImages) {
+        List<ImageInfo> resultImages = new ArrayList<ImageInfo>(newImages.getImages().size());
         for (ImageInfo info : newImages.getImages()) {
             ImageInfo oldInfo = getInfoByImageType(info.getTypeId());
             if (oldInfo != null) {
-                info.setTotalBytes(oldInfo.getTotalBytes());
-                info.setUploadedBytes(oldInfo.getUploadedBytes());
+                resultImages.add(oldInfo);
+            } else {
+                resultImages.add(info);
             }
         }
 
         images.clear();
-        images.addAll(newImages.getImages());
+        images.addAll(resultImages);
     }
 
     public ImageInfo getInfoByImageType(int typeId) {

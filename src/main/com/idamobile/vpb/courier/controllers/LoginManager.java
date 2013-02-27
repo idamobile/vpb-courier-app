@@ -76,9 +76,12 @@ public class LoginManager {
         mediator.getNetworkManager().cleanUpSession();
     }
 
-    public void saveLastCredentials(String login, String passwordHash) {
+    public void saveLastLogin(String login) {
         loginPreference.setLogin(login);
-        String key = login + "-" + passwordHash;
+    }
+
+    public void generateSecretKey(String login, String keyFromResponse) {
+        String key = login + "-" + keyFromResponse;
         try {
             this.cryptoKey = CryptoUtil.getKey(key, cryptoPreferences.getSalt(),
                     cryptoPreferences.getIterationsCount(), cryptoPreferences.getKeyLength());

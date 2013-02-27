@@ -4,21 +4,33 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/image_placeholder"
+    <FrameLayout
+        android:id="@+id/image_box"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:scaleType="centerCrop"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_take_picture"/>
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:id="@+id/image_placeholder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_take_picture"/>
+
+        <ProgressBar
+            android:id="@+id/image_progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+    </FrameLayout>
 
     <ImageView
         android:id="@+id/remove_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_remove"
-        android:layout_alignBottom="@id/image_placeholder"
-        android:layout_alignRight="@id/image_placeholder"
+        android:layout_alignBottom="@id/image_box"
+        android:layout_alignRight="@id/image_box"
         android:visibility="gone"/>
 
     <TextView
@@ -26,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/image_placeholder"
+        android:layout_below="@id/image_box"
         android:paddingRight="@dimen/normal_padding"
         android:paddingLeft="@dimen/normal_padding"
         android:gravity="center"

@@ -3,6 +3,7 @@ package com.idamobile.vpb.courier.navigation;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import com.idamobile.vpb.courier.ApplicationMediator;
 import com.idamobile.vpb.courier.CoreApplication;
 import com.idamobile.vpb.courier.LoginActivity;
 import com.idamobile.vpb.courier.OrderListActivity;
@@ -23,12 +24,14 @@ public class AlwaysOpenNewNavigationController extends AbstractNavigationControl
     @Override
     public boolean onBackPressed() {
         Activity activity = (Activity) getContext();
-        boolean loggedIn = CoreApplication.getMediator(activity).getLoginManager().isLoggedIn();
+        ApplicationMediator mediator = CoreApplication.getMediator(activity);
+        boolean loggedIn = mediator.getLoginManager().isLoggedIn();
         boolean hasPrevious = AlwaysOpenNewNavigationUtils.hasPreviousActivity(activity);
         if (loggedIn && !hasPrevious && backButtonController.dispatchOnBackPressed()) {
             return true;
         } else {
             if (activity instanceof OrderListActivity) {
+                mediator.getLoginManager().logout();
                 activity.setResult(Activity.RESULT_OK);
             }
             return false;

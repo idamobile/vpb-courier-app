@@ -29,7 +29,6 @@ import com.idamobile.vpb.courier.security.crypto.CryptoCoder;
 import com.idamobile.vpb.courier.util.Intents;
 import com.idamobile.vpb.courier.util.Logger;
 import com.idamobile.vpb.courier.widget.dialogs.AlertDialogFactory;
-import com.idamobile.vpb.courier.widget.dialogs.ProgressDialogFactory;
 import com.idamobile.vpb.courier.widget.orders.images.ImagesGrid;
 import com.idamobile.vpb.courier.widget.orders.images.OrderImageView;
 
@@ -43,6 +42,7 @@ public class OrderDetailsFragment extends Fragment {
     private static final int TAKE_PICKTURE_REQUEST_CODE = 332;
 
     private static final String PICKTURE_FILENAME_EXTRA = "picture-filename";
+    private static final String IMAGE_TYPE_ID_EXTRA = "image-type-id";
     private static final String TMP_POSTFIX = ".tmp";
 
     @ViewById(R.id.client_name) TextView nameView;
@@ -73,8 +73,8 @@ public class OrderDetailsFragment extends Fragment {
     private ApplicationMediator mediator;
 
     private AlertDialogFactory confirmRemoveImageDialog;
-    private ProgressDialogFactory progressDialog;
 
+    private int processingImageTypeId;
     private File takePictureOutput;
 
     @Override
@@ -84,7 +84,7 @@ public class OrderDetailsFragment extends Fragment {
         orderActions = new OrderActions(getActivity());
         mediator = CoreApplication.getMediator(getActivity());
         restoreOrder(savedInstanceState);
-        restorePictureFilename(savedInstanceState);
+        restoreProcessingPictureParams(savedInstanceState);
 
         confirmRemoveImageDialog = new AlertDialogFactory(getActivity(), "confirm-remove-image-dialog");
         confirmRemoveImageDialog.setTitle(getText(R.string.confirm_remove_image_dialog_title));
@@ -103,6 +103,7 @@ public class OrderDetailsFragment extends Fragment {
             public void onTakeImageClicked(Order order, ImageType image) {
                 ImageInfo imageInfo = imageManager.getImageInfo(order, image);
                 takePictureOutput = new File(imageInfo.getFile().getAbsoluteFile() + TMP_POSTFIX);
+                processingImageTypeId = imageInfo.getTypeId();
                 Intent intent = Intents.takePictureIntent(takePictureOutput);
                 startActivityForResult(intent, TAKE_PICKTURE_REQUEST_CODE);
             }
@@ -113,6 +114,7 @@ public class OrderDetailsFragment extends Fragment {
                 confirmRemoveImageDialog.setPosButtonListener(new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        imageInfo.setProcessing(false);
                         imageInfo.getFile().delete();
                         refreshContent();
                     }
@@ -143,18 +145,20 @@ public class OrderDetailsFragment extends Fragment {
         }
     }
 
-    private void savePictureFilename(Bundle outState) {
+    private void saveProcessingPictureParams(Bundle outState) {
         if (takePictureOutput != null) {
             outState.putString(PICKTURE_FILENAME_EXTRA, takePictureOutput.getAbsolutePath());
+            outState.putInt(IMAGE_TYPE_ID_EXTRA, processingImageTypeId);
         }
     }
 
-    private void restorePictureFilename(Bundle savedInstanceState) {
+    private void restoreProcessingPictureParams(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             String path = savedInstanceState.getString(PICKTURE_FILENAME_EXTRA);
             if (!TextUtils.isEmpty(path)) {
                 takePictureOutput = new File(path);
             }
+            processingImageTypeId = savedInstanceState.getInt(IMAGE_TYPE_ID_EXTRA, -1);
         }
     }
 
@@ -263,6 +267,13 @@ public class OrderDetailsFragment extends Fragment {
         new AsyncTask<Void, Void, Boolean>() {
             private File from = takePictureOutput;
             private File output = new File(resultFilename);
+            private ImageInfo imageInfo =
+                    mediator.getImageManager().getImageInfo(order, order.getImageType(processingImageTypeId));
+
+            @Override
+            protected void onPreExecute() {
+                imageInfo.setProcessing(true);
+            }
 
             @Override
             protected Boolean doInBackground(Void... params) {
@@ -279,6 +290,7 @@ public class OrderDetailsFragment extends Fragment {
 
             @Override
             protected void onPostExecute(Boolean res) {
+                imageInfo.setProcessing(false);
                 if (getActivity() != null) {
                     if (res) {
                         refreshContent();
@@ -295,6 +307,6 @@ public class OrderDetailsFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         saveOrder(outState);
-        savePictureFilename(outState);
+        saveProcessingPictureParams(outState);
     }
 }

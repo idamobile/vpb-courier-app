@@ -10,6 +10,8 @@ public class ImageInfo {
     private int totalBytes;
     private int uploadedBytes;
     private File file;
+    private boolean processing;
+    private boolean uploading;
 
     public boolean isUploaded() {
         return uploadedBytes == totalBytes;
