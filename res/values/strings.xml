@@ -81,7 +81,7 @@
 
     <string name="order_status_submitted">Документы переданы</string>
     <string name="order_status_not_submitted">Передача документов не состоялась</string>
-    <string name="order_status_new_format">Клиент ожидает %s. Статус встречи:</string>
+    <string name="order_status_new_format">Ожидает %s. Статус встречи:</string>
     <string name="order_details_additional_section">Прочее</string>
     <string name="order_details_type_section">Тип заявки</string>
     <string name="order_not_found">Заказ не найден</string>
@@ -102,8 +102,10 @@
     <string name="reject_order_dialog_title">Выберите причину</string>
 
     <string name="confirm_dialog_title">Подтвердите изменение</string>
-    <string name="confirm_reject_dialog_message_format">Встреча не состоялась. Причина: %s.\nВнимание, после подтверждения изменения нельзя будет внести</string>
-    <string name="confirm_submit_dialog_message_format">Встреча состоялась. Клиент подтвердил желание выпустить карту.\nКлиент является резидентом: %1$s\nВносились правки: %1$s</string>
+    <string name="confirm_reject_dialog_message_format">%1$s. Причина: %2$s.\nВнимание, после подтверждения изменения нельзя будет внести</string>
+    <string name="met_with_client">Встреча состоялась, но договор не заключен</string>
+    <string name="not_met_with_client">Встреча не состоялась</string>
+    <string name="confirm_submit_dialog_message_format">Встреча состоялась. Клиент подтвердил желание выпустить карту.\nКлиент резидент: %1$s\nВносились правки: %2$s</string>
 
     <string name="met_result_documents_ok">Документы в порядке</string>
     <string name="met_result_cannot_bi_signed">Договор не может быть подписан</string>
@@ -112,5 +114,7 @@
     <string name="marks_option">Вносились правки</string>
 
     <string name="final_options_dialog_title">Отметьте нужное</string>
+
+    <string name="update_order_progess_dialog_message">Обновление заявки…</string>
 
 </resources>

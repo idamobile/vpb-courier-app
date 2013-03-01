@@ -1,6 +1,5 @@
 package com.idamobile.vpb.courier.network.core;
 
-import android.text.TextUtils;
 import com.idamobile.vpb.courier.ApplicationMediator;
 
 import java.io.Serializable;
@@ -11,47 +10,10 @@ import java.io.Serializable;
  * @author Sergey Royz
  * @since 05/23/2012
  */
-public class LoaderCallback<Q> implements Serializable {
+public interface LoaderCallback<Q> extends Serializable {
 
-    private String broadcastAction;
-    private Class<Q> qClass;
+    void onStartLoading(Request<Q> request, ApplicationMediator mediator);
 
-    public LoaderCallback(String broadcastAction) {
-        this.broadcastAction = broadcastAction;
-    }
+    void onDataReady(Request<Q> request, ResponseDTO<Q> response, ApplicationMediator mediator);
 
-    public LoaderCallback(Class<Q> qClass) {
-        this.qClass = qClass;
-    }
-
-    public void onStartLoading(Request<Q> request, ApplicationMediator mediator) {
-        getHolder(mediator).markLoading();
-    }
-
-    protected DataHolder<Q> getHolder(ApplicationMediator mediator) {
-        if (!TextUtils.isEmpty(broadcastAction)) {
-            return mediator.getCache().getHolder(broadcastAction);
-        } else {
-            return mediator.getCache().getHolder(qClass);
-        }
-    }
-
-    public void onDataReady(Request<Q> request, ResponseDTO<Q> response, ApplicationMediator mediator) {
-        DataHolder<Q> holder = getHolder(mediator);
-        holder.beginUpdate();
-        if (response.isSuccess()) {
-            holder.set(response.getData());
-            onSuccess(request, response.getData(), mediator);
-        } else {
-            onError(request, response, mediator);
-        }
-        holder.markLoaded(response.getResultCode());
-        holder.endUpdate();
-    }
-
-    protected void onError(Request<Q> request, ResponseDTO<Q> response, ApplicationMediator mediator) {
-    }
-
-    protected void onSuccess(Request<Q> request, Q data, ApplicationMediator mediator) {
-    }
 }

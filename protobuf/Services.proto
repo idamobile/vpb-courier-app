@@ -71,7 +71,7 @@ message GetOrdersResponseProtobufDTO {
 
 message SetOrderCompletedProtobufDTO {
     required int32 orderId = 1;
-    required bool resident = 2;
+    optional bool resident = 2;
     optional bool hasCorrections = 3;
 }
 
@@ -93,6 +93,6 @@ message CancelOrderRequestProtobufDTO {
 message UpdateOrderResponseProtobufDTO {
     required int32 orderId = 1;
     required OrderStatus newStatus = 2;
-    optional string uploadImagesUrl = 3;
+    repeated ImageTypeProtobufDTO imageTypes = 3;
 }
 

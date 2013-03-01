@@ -120,6 +120,9 @@ public class AdaptersCarousel extends BaseAdapter {
         for (BaseAdapter adapter : adaptersList) {
             count += adapter.getViewTypeCount();
         }
+        if (count == 0 && getCurrentAdapter() == EMPTY_ADAPTER) {
+            count = 1;
+        }
         return count;
     }
 

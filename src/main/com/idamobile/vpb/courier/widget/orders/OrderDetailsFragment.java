@@ -131,13 +131,13 @@ public class OrderDetailsFragment extends Fragment {
         metWithClientButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                orderStatusPresenter.showMetWithClientDialog();
+                orderStatusPresenter.showMetWithClientDialog(order);
             }
         });
         metWithClientCancelledButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                orderStatusPresenter.showRejectOrderDialog();
+                orderStatusPresenter.showRejectOrderDialog(order);
             }
         });
     }

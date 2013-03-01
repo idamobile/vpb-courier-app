@@ -6,7 +6,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.widget.ListAdapter;
+import android.widget.BaseAdapter;
 
 public class AlertDialogFactory extends AbstractDialogFactory {
 
@@ -25,7 +25,7 @@ public class AlertDialogFactory extends AbstractDialogFactory {
     private DialogInterface.OnClickListener neutButtonListener;
     private DialogInterface.OnClickListener negButtonListener;
 
-    private ListAdapter listAdapter;
+    private BaseAdapter listAdapter;
     private DialogInterface.OnClickListener itemClickListener;
 
     private boolean cancellable;
@@ -59,7 +59,7 @@ public class AlertDialogFactory extends AbstractDialogFactory {
         return this;
     }
 
-    public AlertDialogFactory setListAdapter(ListAdapter listAdapter) {
+    public AlertDialogFactory setListAdapter(BaseAdapter listAdapter) {
         this.listAdapter = listAdapter;
         return this;
     }
@@ -137,6 +137,9 @@ public class AlertDialogFactory extends AbstractDialogFactory {
     }
 
     protected void setup(AlertDialogFragment dialogFragment) {
+        if (listAdapter != null) {
+            dialogFragment.setListAdapter(listAdapter);
+        }
         setCancelListener(dialogFragment);
         setPosListener(dialogFragment);
         setNeutListener(dialogFragment);
@@ -174,5 +177,4 @@ public class AlertDialogFactory extends AbstractDialogFactory {
             dialogFragment.setNegClickListener(negButtonListener);
         }
     }
-
 }

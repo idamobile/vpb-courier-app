@@ -1,10 +1,10 @@
 package com.idamobile.vpb.courier.network.orders;
 
 import com.idamobile.vpb.courier.ApplicationMediator;
-import com.idamobile.vpb.courier.network.core.LoaderCallback;
+import com.idamobile.vpb.courier.network.core.DefaultLoaderCallback;
 import com.idamobile.vpb.courier.network.core.Request;
 
-public class GetOrdersResponseCallback extends LoaderCallback<GetOrdersResponse> {
+public class GetOrdersResponseCallback extends DefaultLoaderCallback<GetOrdersResponse> {
 
     public GetOrdersResponseCallback() {
         super(GetOrdersResponse.class);

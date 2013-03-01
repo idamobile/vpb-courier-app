@@ -1,10 +1,10 @@
 package com.idamobile.vpb.courier.network.login;
 
 import com.idamobile.vpb.courier.ApplicationMediator;
-import com.idamobile.vpb.courier.network.core.LoaderCallback;
+import com.idamobile.vpb.courier.network.core.DefaultLoaderCallback;
 import com.idamobile.vpb.courier.network.core.Request;
 
-public class LoginCallback extends LoaderCallback<LoginResponse> {
+public class LoginCallback extends DefaultLoaderCallback<LoginResponse> {
 
     public LoginCallback() {
         super(LoginResponse.class);

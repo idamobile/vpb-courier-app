@@ -2,6 +2,7 @@ package com.idamobile.vpb.courier.network.core;
 
 import com.google.protobuf.GeneratedMessage;
 import com.google.protobuf.GeneratedMessageLite;
+import com.idamobile.vpb.courier.config.Config;
 import com.idamobile.vpb.courier.util.HttpUtils;
 import com.idamobile.vpb.courier.util.Logger;
 import com.shaubert.protomapper.ProtoMappers;
@@ -42,7 +43,8 @@ public abstract class AbstractRequest<T> implements Request<T> {
     private final String uuid = UUID.randomUUID().toString();
     private @Getter boolean cancelled;
 
-    private @Getter @Setter LoaderCallback<T> updateModelCallback;
+    private @Getter @Setter
+    LoaderCallback<T> updateModelCallback;
 
     public AbstractRequest(String url) {
         this(url, HttpMethod.POST);
@@ -84,6 +86,11 @@ public abstract class AbstractRequest<T> implements Request<T> {
             Logger.network(TAG, "Accessing: " + httpRequest.getURI() + " with request: " + this);
             CookieStore cookieStore = (CookieStore) httpContext.getAttribute(ClientContext.COOKIE_STORE);
             Logger.network(TAG, "Cookies: " + (cookieStore != null ? cookieStore.toString() : "null"));
+
+            //TODO: remove this debug trash
+            if (Config.HOST.contains("89.221.54.169")) {
+                httpRequest.addHeader("Host", "api.peter.vpb.su:8668");
+            }
 
             httpResponse = httpClient.execute(httpRequest, httpContext);
             HttpStatusCodeProcessor codeProcessor = new HttpStatusCodeProcessor();

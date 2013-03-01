@@ -3,13 +3,24 @@ package com.idamobile.vpb.courier.widget.orders;
 import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;
 import android.widget.ArrayAdapter;
+import com.idamobile.vpb.courier.ApplicationMediator;
+import com.idamobile.vpb.courier.CoreApplication;
 import com.idamobile.vpb.courier.R;
 import com.idamobile.vpb.courier.model.CancellationReason;
+import com.idamobile.vpb.courier.model.Order;
+import com.idamobile.vpb.courier.network.core.Request;
+import com.idamobile.vpb.courier.network.core.RequestWatcherCallbacks;
+import com.idamobile.vpb.courier.network.core.ResponseDTO;
+import com.idamobile.vpb.courier.network.core.ResultCodeToMessageConverter;
+import com.idamobile.vpb.courier.network.orders.UpdateOrderResponse;
 import com.idamobile.vpb.courier.widget.dialogs.AlertDialogFactory;
+import com.idamobile.vpb.courier.widget.dialogs.DialogRequestListener;
+import com.idamobile.vpb.courier.widget.dialogs.ProgressDialogFactory;
 
 public class OrderStatusPresenter {
 
     private FragmentActivity fragmentActivity;
+    private ApplicationMediator mediator;
     private AlertDialogFactory rejectOrderDialog;
     private OrderCloseReasonsAdapter rejectReasonsAdapter;
     private AlertDialogFactory confirmRejectDialog;
@@ -24,10 +35,30 @@ public class OrderStatusPresenter {
     private boolean hasMarks;
     private boolean resident;
 
+    private ResultCodeToMessageConverter messageConverter;
+
+    private RequestWatcherCallbacks<UpdateOrderResponse> updateOrderCallbacks;
+    private ProgressDialogFactory progressDialog;
+    private Order order;
+
     public OrderStatusPresenter(FragmentActivity fragmentActivity) {
         this.fragmentActivity = fragmentActivity;
+        this.messageConverter = new ResultCodeToMessageConverter(fragmentActivity);
+        this.mediator = CoreApplication.getMediator(fragmentActivity);
 
         createDialogs();
+        createCallbacks();
+    }
+
+    private void createCallbacks() {
+        updateOrderCallbacks = new RequestWatcherCallbacks<UpdateOrderResponse>(fragmentActivity);
+        updateOrderCallbacks.registerListener(new RequestWatcherCallbacks.SimpleRequestListener<UpdateOrderResponse>(){
+            @Override
+            public void onError(Request<UpdateOrderResponse> request, ResponseDTO<UpdateOrderResponse> result) {
+                messageConverter.showToast(result.getResultCode());
+            }
+        });
+        updateOrderCallbacks.registerListener(new DialogRequestListener<UpdateOrderResponse>(progressDialog));
     }
 
     private void createDialogs() {
@@ -92,6 +123,7 @@ public class OrderStatusPresenter {
                     default:
                         throw new IllegalArgumentException("unknown item pos: " + which);
                 }
+                metResultChooserDialog.hideDialog();
             }
         });
 
@@ -99,6 +131,7 @@ public class OrderStatusPresenter {
         finalOptionsDialog = new AlertDialogFactory(fragmentActivity, "final-oprions-dialog");
         finalOptionsDialog.setTitle(fragmentActivity.getString(R.string.final_options_dialog_title));
         finalOptionsDialog.setCancellable(true);
+        finalOptionsDialog.setListAdapter(orderFinalOptionsAdapter);
         finalOptionsDialog.setNegButtonText(fragmentActivity.getText(android.R.string.cancel));
         finalOptionsDialog.setPosButton(fragmentActivity.getText(android.R.string.ok),
                 new DialogInterface.OnClickListener() {
@@ -106,7 +139,7 @@ public class OrderStatusPresenter {
                     public void onClick(DialogInterface dialog, int which) {
                         resident = orderFinalOptionsAdapter.getItem(OrderFinalOptionsAdapter.RESIDENT_OPTION_INDEX);
                         hasMarks = orderFinalOptionsAdapter.getItem(OrderFinalOptionsAdapter.MARKS_OPTION_INDEX);
-                        showConfingsubmitOrderDialog();
+                        showConfirmSubmitOrderDialog();
                     }
                 });
         finalOptionsDialog.setOnItemClickListener(new DialogInterface.OnClickListener() {
@@ -126,44 +159,56 @@ public class OrderStatusPresenter {
         });
         confirmSubmitDialog.setNegButtonText(fragmentActivity.getText(android.R.string.cancel));
         confirmSubmitDialog.setCancellable(true);
+
+        progressDialog = new ProgressDialogFactory(fragmentActivity, "update-order-progress-dialog");
+        progressDialog.setMessage(fragmentActivity.getString(R.string.update_order_progess_dialog_message));
+        progressDialog.setCancellable(false);
     }
 
     private void showConfingRejectOrderDialog() {
         confirmRejectDialog.setMessage(fragmentActivity.getString(
                 R.string.confirm_reject_dialog_message_format,
-                fragmentActivity.getString(cancellationReason.strResId)));
+                fragmentActivity.getString(metWithClient ? R.string.met_with_client : R.string.not_met_with_client),
+                fragmentActivity.getString(cancellationReason.strResId).toLowerCase()));
         confirmRejectDialog.showDialog();
     }
 
-    private void showConfingsubmitOrderDialog() {
+    private void showConfirmSubmitOrderDialog() {
         confirmSubmitDialog.setMessage(fragmentActivity.getString(
                 R.string.confirm_submit_dialog_message_format,
-                fragmentActivity.getString(resident ? R.string.yes : R.string.no),
-                fragmentActivity.getString(hasMarks ? R.string.yes : R.string.no)));
+                fragmentActivity.getString(resident ? R.string.yes : R.string.no).toLowerCase(),
+                fragmentActivity.getString(hasMarks ? R.string.yes : R.string.no).toLowerCase()));
         confirmSubmitDialog.showDialog();
     }
 
     private void rejectOrder(CancellationReason reason, boolean metWithClient) {
-
+        mediator.getOrdersManager().requestSetOrderRejected(
+                order.getId(), metWithClient, reason, updateOrderCallbacks);
     }
 
     private void confirmOrder(boolean resident, boolean hasMarks) {
-
+        mediator.getOrdersManager().requestSetOrderCompleted(
+                order.getId(), resident, hasMarks, updateOrderCallbacks);
     }
 
-    public void showRejectOrderDialog() {
+    public void showRejectOrderDialog(Order order) {
         reset();
+        this.order = order;
         rejectOrderDialog.showDialog();
     }
 
-    public void showMetWithClientDialog() {
+    public void showMetWithClientDialog(Order order) {
         reset();
+        this.order = order;
         metResultChooserDialog.showDialog();
     }
 
     private void reset() {
         metWithClient = false;
+        resident = true;
+        hasMarks = false;
         cancellationReason = null;
+        order = null;
         orderFinalOptionsAdapter.reset();
     }
 }

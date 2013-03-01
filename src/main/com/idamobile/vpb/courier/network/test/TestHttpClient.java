@@ -23,6 +23,8 @@ public class TestHttpClient implements HttpClient {
     public TestHttpClient() {
         processorMap.put(Hosts.LOGIN_URL, new TestLoginProcessor());
         processorMap.put(Hosts.ORDERS_URL, new TestGetOrdersProcessor());
+        processorMap.put(Hosts.COMPLETE_ORDER_URL, new TestSetOrderCompleteProcessor());
+        processorMap.put(Hosts.REJECT_ORDER_URL, new TestRejectOrderProcessor());
     }
 
     @Override

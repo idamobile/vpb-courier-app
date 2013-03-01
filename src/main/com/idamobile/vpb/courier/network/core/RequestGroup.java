@@ -87,7 +87,7 @@ public class RequestGroup implements Request<RequestGroup.ModelCollection> {
 
     @Override
     public LoaderCallback<ModelCollection> getUpdateModelCallback() {
-        return new LoaderCallback<ModelCollection>("") {
+        return new DefaultLoaderCallback<ModelCollection>("") {
             @SuppressWarnings({ "rawtypes", "unchecked" })
             @Override
             public void onStartLoading(Request<ModelCollection> request, ApplicationMediator mediator) {

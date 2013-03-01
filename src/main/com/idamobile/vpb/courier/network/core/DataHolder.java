@@ -58,7 +58,7 @@ public class DataHolder<T> {
         notifyChanged();
     }
 
-    private void notifyChanged() {
+    public void notifyChanged() {
         if (!notifyOnChange) {
             context.sendBroadcast(new Intent(broadcastAction));
         }
