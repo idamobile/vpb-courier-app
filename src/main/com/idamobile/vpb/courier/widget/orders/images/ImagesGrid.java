@@ -20,13 +20,6 @@ public class ImagesGrid {
 
     private Order order;
 
-    private LruCache<String, Bitmap> imageCache = new LruCache<String, Bitmap>(1024 * 1024 * 5) {
-        @Override
-        protected int sizeOf(String key, Bitmap value) {
-            return value != null ? value.getByteCount() : 0;
-        }
-    };
-
     private OrderImageView.OrderImageImageCallbacks imageCallbacks;
     private OrderImageView.OrderImageImageCallbacks callbacksJoiner = new OrderImageView.OrderImageImageCallbacks() {
         @Override
@@ -82,7 +75,7 @@ public class ImagesGrid {
             for (ImageType type : order.getImageTypes()) {
                 OrderImageView orderImageView = imageViewMap.get(type.getId());
                 if (orderImageView == null) {
-                    orderImageView = new OrderImageView(imagesGroup, mediator, imageCache);
+                    orderImageView = new OrderImageView(imagesGroup, mediator);
                     imageViewMap.put(type.getId(), orderImageView);
                     imagesGroup.addView(orderImageView.getView());
                     orderImageView.setImageCallbacks(callbacksJoiner);

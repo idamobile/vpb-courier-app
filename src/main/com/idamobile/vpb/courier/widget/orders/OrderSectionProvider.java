@@ -18,6 +18,8 @@ public class OrderSectionProvider {
                 return context.getString(R.string.active_orders_section);
             case STATUS_DOCUMENTS_SUBMITTED:
                 return context.getString(R.string.success_orders_section);
+            case STATUS_ACTIVATED:
+                return context.getString(R.string.activated_orders_section);
             case STATUS_DOCUMENTS_NOT_SUBMITTED:
                 return context.getString(R.string.failed_orders_section);
 

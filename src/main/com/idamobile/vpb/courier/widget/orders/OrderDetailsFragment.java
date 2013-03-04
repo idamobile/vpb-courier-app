@@ -25,6 +25,7 @@ import com.idamobile.vpb.courier.model.Order;
 import com.idamobile.vpb.courier.model.ProtoMapEntry;
 import com.idamobile.vpb.courier.navigation.ExtrasBuilder;
 import com.idamobile.vpb.courier.network.images.ImageInfo;
+import com.idamobile.vpb.courier.network.images.OrderImages;
 import com.idamobile.vpb.courier.security.crypto.CryptoCoder;
 import com.idamobile.vpb.courier.util.Intents;
 import com.idamobile.vpb.courier.util.Logger;
@@ -51,6 +52,7 @@ public class OrderDetailsFragment extends Fragment {
     @ViewById(R.id.met_with_client_button) View metWithClientButton;
     @ViewById(R.id.met_with_client_cancelled_button) View metWithClientCancelledButton;
     @ViewById(R.id.images_grid) ViewGroup imagesView;
+    @ViewById(R.id.activate_card_button) View activateCardButton;
     @ViewById(R.id.client_order_type) TextView orderTypeView;
     @ViewById(R.id.client_address) TextView addressView;
     @ViewById(R.id.client_metro) TextView metroView;
@@ -140,6 +142,12 @@ public class OrderDetailsFragment extends Fragment {
                 orderStatusPresenter.showRejectOrderDialog(order);
             }
         });
+        activateCardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                orderStatusPresenter.activateCard(order);
+            }
+        });
     }
 
     private void restoreOrder(Bundle savedInstanceState) {
@@ -203,14 +211,27 @@ public class OrderDetailsFragment extends Fragment {
             switch (order.getStatus()) {
                 case STATUS_NEW:
                     orderActionButtons.setVisibility(View.VISIBLE);
+                    activateCardButton.setVisibility(View.GONE);
                     statusView.setText(getActivity().getString(R.string.order_status_new_format, orderTime));
                     break;
                 case STATUS_DOCUMENTS_SUBMITTED:
                     orderActionButtons.setVisibility(View.GONE);
+                    activateCardButton.setVisibility(View.VISIBLE);
                     statusView.setText(R.string.order_status_submitted);
+                    if (orderHasAllPictures()) {
+                        activateCardButton.setEnabled(true);
+                    } else {
+                        activateCardButton.setEnabled(false);
+                    }
+                    break;
+                case STATUS_ACTIVATED:
+                    orderActionButtons.setVisibility(View.GONE);
+                    activateCardButton.setVisibility(View.GONE);
+                    statusView.setText(R.string.order_status_activated);
                     break;
                 case STATUS_DOCUMENTS_NOT_SUBMITTED:
                     orderActionButtons.setVisibility(View.GONE);
+                    activateCardButton.setVisibility(View.GONE);
                     statusView.setText(R.string.order_status_not_submitted);
                     break;
                 default:
@@ -252,6 +273,19 @@ public class OrderDetailsFragment extends Fragment {
             getActivity().setTitle(getActivity().getString(R.string.order_not_found));
             getView().setVisibility(View.GONE);
         }
+    }
+
+    private boolean orderHasAllPictures() {
+        OrderImages orderImages = mediator.getImageManager().getImages(order);
+        if (orderImages != null) {
+            for (ImageInfo imageInfo : orderImages.getImages()) {
+                if (!imageInfo.getFile().exists()) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     private void refreshImages() {

@@ -1,6 +1,5 @@
 package com.idamobile.vpb.courier.network.orders;
 
-import com.idamobile.vpb.courier.model.CancellationReason;
 import com.idamobile.vpb.courier.network.core.AbstractRequest;
 import com.idamobile.vpb.courier.network.core.Hosts;
 import com.idamobile.vpb.protobuf.Services;
@@ -10,16 +9,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Mapper(protoClass = Services.CancelOrderRequestProtobufDTO.class)
 @ToString
-public class CancelOrderRequest extends AbstractRequest<UpdateOrderResponse> {
-    @Field @Getter @Setter private int orderId;
-    @Field @Getter @Setter CancellationReason reason;
-    @Field(optional = true) @Getter @Setter Boolean metWithClient;
-    @Field(optional = true) @Getter @Setter String comment;
+@Mapper(protoClass = Services.ActivateCardRequestProtobufDTO.class)
+public class ActivateCardRequest extends AbstractRequest<UpdateOrderResponse> {
+    private @Field @Getter @Setter int orderId;
 
-    public CancelOrderRequest() {
-        super(Hosts.REJECT_ORDER_URL);
+    public ActivateCardRequest() {
+        super(Hosts.ACTiVATE_CARD_URL);
     }
 
     @Override
@@ -29,7 +25,7 @@ public class CancelOrderRequest extends AbstractRequest<UpdateOrderResponse> {
 
     @Override
     protected Class<?> getRequestProtoClass() {
-        return Services.CancelOrderRequestProtobufDTO.class;
+        return Services.ActivateCardRequestProtobufDTO.class;
     }
 
     @Override

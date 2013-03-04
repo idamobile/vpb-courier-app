@@ -66,6 +66,17 @@ public class OrdersManager {
         }
     }
 
+    public void requestActivateCard(int orderId, RequestWatcherCallbacks<UpdateOrderResponse> callbacks) {
+        ActivateCardRequest request = new ActivateCardRequest();
+        request.setOrderId(orderId);
+        request.setUpdateModelCallback(new UpdateOrderCallback());
+        if (callbacks != null) {
+            callbacks.execute(request);
+        } else {
+            RequestService.execute(mediator.getContext(), request);
+        }
+    }
+
     public void registerForOrders(Context context, BroadcastReceiver receiver) {
         context.registerReceiver(receiver, new IntentFilter(getOrdersHolder().getBroadcastAction()));
     }

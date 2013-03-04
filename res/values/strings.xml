@@ -66,6 +66,7 @@
 
     <string name="active_orders_section">Активные заказы</string>
     <string name="success_orders_section">Документы переданы</string>
+    <string name="activated_orders_section">Карты активированы</string>
     <string name="failed_orders_section">Не удалось доставить</string>
 
     <string name="call_item_title">Позвонить</string>
@@ -80,6 +81,7 @@
     <string name="order_details_phone_section">Телефон</string>
 
     <string name="order_status_submitted">Документы переданы</string>
+    <string name="order_status_activated">Карта активирована</string>
     <string name="order_status_not_submitted">Передача документов не состоялась</string>
     <string name="order_status_new_format">Ожидает %s. Статус встречи:</string>
     <string name="order_details_additional_section">Прочее</string>
@@ -116,5 +118,7 @@
     <string name="final_options_dialog_title">Отметьте нужное</string>
 
     <string name="update_order_progess_dialog_message">Обновление заявки…</string>
+
+    <string name="activate_card_button">Aктивировать карту</string>
 
 </resources>

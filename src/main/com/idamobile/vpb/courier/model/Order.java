@@ -24,7 +24,6 @@ public class Order implements Serializable {
     @Field private long meetTimeFrom;
     @Field private long meetTimeTo;
     @Field private String orderType;
-    @Field(optional = true) private String uploadImagesUrl;
     @Field(optional = true) private ProtoMap attributes = new ProtoMap();
     @Field private List<ImageType> imageTypes = new ArrayList<ImageType>();
 

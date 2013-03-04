@@ -37,6 +37,7 @@ enum OrderStatus {
     STATUS_NEW = 1;
     STATUS_DOCUMENTS_SUBMITTED = 2;
     STATUS_DOCUMENTS_NOT_SUBMITTED = 3;
+    STATUS_ACTIVATED = 4;
 }
 
 message ImageTypeProtobufDTO {
@@ -56,9 +57,8 @@ message OrderProtobufDTO {
     required int64 meetTimeFrom = 11;
     required int64 meetTimeTo = 12;
     required string orderType = 13;
-    optional string uploadImagesUrl = 14;
-    optional Map attributes = 15;
-    repeated ImageTypeProtobufDTO imageTypes = 16;
+    optional Map attributes = 14;
+    repeated ImageTypeProtobufDTO imageTypes = 15;
 }
 
 message GetOrdersRequestProtobufDTO {
@@ -86,8 +86,12 @@ message CancelOrderRequestProtobufDTO {
     }        
     required int32 orderId = 1;
     required CancellationReason reason = 2;
-    required bool metWithClient = 3;
+    optional bool metWithClient = 3;
     optional string comment = 4;
+}
+
+message ActivateCardRequestProtobufDTO {
+    required int32 orderId = 1;
 }
 
 message UpdateOrderResponseProtobufDTO {
@@ -95,4 +99,3 @@ message UpdateOrderResponseProtobufDTO {
     required OrderStatus newStatus = 2;
     repeated ImageTypeProtobufDTO imageTypes = 3;
 }
-

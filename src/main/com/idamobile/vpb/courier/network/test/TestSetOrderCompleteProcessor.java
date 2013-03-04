@@ -25,7 +25,7 @@ public class TestSetOrderCompleteProcessor extends AbstractHttpRequestProcessor 
         UpdateOrderResponse response = new UpdateOrderResponse();
         response.setOrderId(completedRequest.getOrderId());
         response.setNewStatus(OrderStatus.STATUS_DOCUMENTS_SUBMITTED);
-        int count = 1 + random.nextInt(10);
+        int count = 1 + random.nextInt(5);
         for (int i = 0; i < count; i++) {
             ImageType imageType = new ImageType();
             imageType.setId(i);

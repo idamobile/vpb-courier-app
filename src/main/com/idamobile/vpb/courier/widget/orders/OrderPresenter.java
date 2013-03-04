@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.idamobile.vpb.courier.ApplicationMediator;
 import com.idamobile.vpb.courier.R;
 import com.idamobile.vpb.courier.model.Order;
+import com.idamobile.vpb.courier.model.OrderStatus;
 import com.idamobile.vpb.courier.network.images.OrderImages;
 
 public class OrderPresenter {
@@ -80,13 +81,17 @@ public class OrderPresenter {
                     timeView.setText(timeFormatter.formatOrderTime(order));
                     break;
                 case STATUS_DOCUMENTS_SUBMITTED:
+                case STATUS_ACTIVATED:
                     uploadedImagesView.setVisibility(View.VISIBLE);
                     metroView.setVisibility(View.GONE);
                     timeView.setVisibility(View.GONE);
 
-                    Drawable okDrawable = context.getResources().getDrawable(R.drawable.status_ok);
-                    okDrawable.setBounds(0, 0, okDrawable.getIntrinsicWidth(), okDrawable.getMinimumHeight());
-                    addressView.setCompoundDrawables(okDrawable, null, null, null);
+                    Drawable statusDrawable = context.getResources().getDrawable(
+                            order.getStatus() == OrderStatus.STATUS_ACTIVATED
+                                    ? R.drawable.status_activated
+                                    : R.drawable.status_ok);
+                    statusDrawable.setBounds(0, 0, statusDrawable.getIntrinsicWidth(), statusDrawable.getMinimumHeight());
+                    addressView.setCompoundDrawables(statusDrawable, null, null, null);
 
                     OrderImages images = mediator.getImageManager().getImages(order);
                     if (images == null) {

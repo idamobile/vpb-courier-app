@@ -113,7 +113,7 @@ public class TestGetOrdersProcessor extends AbstractHttpRequestProcessor {
         }
 
         if (order.getStatus() == OrderStatus.STATUS_DOCUMENTS_SUBMITTED) {
-            int count = 1 + random.nextInt(10);
+            int count = 1 + random.nextInt(3);
             for (int i = 0; i < count; i++) {
                 ImageType imageType = new ImageType();
                 imageType.setId(i);

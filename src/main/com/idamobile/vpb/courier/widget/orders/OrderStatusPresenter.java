@@ -191,6 +191,12 @@ public class OrderStatusPresenter {
                 order.getId(), resident, hasMarks, updateOrderCallbacks);
     }
 
+    public void activateCard(Order order) {
+        reset();
+        this.order = order;
+        mediator.getOrdersManager().requestActivateCard(order.getId(), updateOrderCallbacks);
+    }
+
     public void showRejectOrderDialog(Order order) {
         reset();
         this.order = order;

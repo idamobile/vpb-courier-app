@@ -67,6 +67,12 @@
 
         </HorizontalScrollView>
 
+        <Button
+            android:id="@+id/activate_card_button"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/activate_card_button"/>
 
         <LinearLayout
             android:orientation="vertical"

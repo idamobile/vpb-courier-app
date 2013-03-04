@@ -12,6 +12,8 @@ public class Hosts {
 
     public static final String REJECT_ORDER_URL = addHost("courier/orders/reject");
 
+    public static final String ACTiVATE_CARD_URL = addHost("courier/orders/activate");
+
     private static String addHost(String subUrl) {
         return Config.HOST + "/" + subUrl;
     }

@@ -20,8 +20,10 @@ public class UpdateOrderCallback implements LoaderCallback<UpdateOrderResponse> 
             Order order = mediator.getOrdersManager().getOrder(responseData.getOrderId());
             if (order != null) {
                 order.setStatus(responseData.getNewStatus());
-                order.setImageTypes(responseData.getImageTypes());
-                mediator.getImageManager().refreshImages();
+                if (!responseData.getImageTypes().isEmpty()) {
+                    order.setImageTypes(responseData.getImageTypes());
+                    mediator.getImageManager().refreshImages();
+                }
                 getOrdersHolder(mediator).notifyChanged();
             }
         }

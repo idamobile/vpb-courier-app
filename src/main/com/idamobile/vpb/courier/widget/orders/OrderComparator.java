@@ -30,8 +30,10 @@ public class OrderComparator implements Comparator<Order> {
                 return 1;
             case STATUS_DOCUMENTS_SUBMITTED:
                 return 2;
-            case STATUS_DOCUMENTS_NOT_SUBMITTED:
+            case STATUS_ACTIVATED:
                 return 3;
+            case STATUS_DOCUMENTS_NOT_SUBMITTED:
+                return 4;
             default:
                 throw new IllegalArgumentException("Unknown status: " + status);
         }

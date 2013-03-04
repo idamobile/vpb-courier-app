@@ -2,7 +2,6 @@ package com.idamobile.vpb.courier.widget.orders.images;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.support.v4.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import com.idamobile.vpb.courier.ApplicationMediator;
 import com.idamobile.vpb.courier.R;
 import com.idamobile.vpb.courier.model.ImageType;
 import com.idamobile.vpb.courier.model.Order;
+import com.idamobile.vpb.courier.model.OrderStatus;
 import com.idamobile.vpb.courier.network.images.ImageInfo;
 import com.idamobile.vpb.courier.util.Bitmaps;
 import com.idamobile.vpb.courier.util.CryptoUtil;
@@ -39,14 +39,10 @@ public class OrderImageView {
     private TextView descriptionView;
 
     private OrderImageImageCallbacks imageCallbacks;
-
     private ApplicationMediator mediator;
 
-    private LruCache<String, Bitmap> imageCache;
-
-    public OrderImageView(ViewGroup parent, ApplicationMediator mediator, LruCache<String, Bitmap> imageCache) {
+    public OrderImageView(ViewGroup parent, ApplicationMediator mediator) {
         this.mediator = mediator;
-        this.imageCache = imageCache;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         view = inflater.inflate(R.layout.order_image_item, parent, false);
@@ -72,7 +68,9 @@ public class OrderImageView {
             ImageInfo info = getImageInfo();
             if (info != null) {
                 if (info.getFile().exists()) {
-                    removePictureClicked();
+                    if (order.getStatus() != OrderStatus.STATUS_ACTIVATED) {
+                        removePictureClicked();
+                    }
                 } else {
                     takePictureClicked();
                 }
@@ -108,14 +106,14 @@ public class OrderImageView {
             progressView.setVisibility(imageInfo.isProcessing() ? View.VISIBLE : View.GONE);
             imageView.setVisibility(imageInfo.isProcessing() ? View.GONE : View.VISIBLE);
             if (imageInfo.getFile().exists()) {
-                removeView.setVisibility(View.VISIBLE);
+                removeView.setVisibility(order.getStatus() == OrderStatus.STATUS_ACTIVATED ? View.GONE : View.VISIBLE);
                 if (!imageInfo.isProcessing()) {
                     loadImage(imageInfo.getFile());
                 }
             } else {
                 removeView.setVisibility(View.GONE);
                 imageView.setImageResource(R.drawable.ic_take_picture);
-                imageCache.remove(imageInfo.getFile().getAbsolutePath());
+                mediator.getImageManager().removeFromCache(imageInfo.getFile().getAbsolutePath());
             }
             descriptionView.setText(image.getDescription());
         } else {
@@ -127,7 +125,7 @@ public class OrderImageView {
 
     private void loadImage(File file) {
         final String path = file.getAbsolutePath();
-        Bitmap bitmap = imageCache.get(path);
+        Bitmap bitmap = mediator.getImageManager().getCachedBitmap(path);
         if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
         } else {
@@ -174,7 +172,7 @@ public class OrderImageView {
                         getImageInfo().setProcessing(false);
                     }
                     if (bitmap != null) {
-                        imageCache.put(path, bitmap);
+                        mediator.getImageManager().cacheBitmap(path, bitmap);
                     }
                     refresh();
                 }
