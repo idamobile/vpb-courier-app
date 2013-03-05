@@ -9,8 +9,8 @@ import org.apache.http.message.BasicStatusLine;
 
 public abstract class AbstractHttpRequestProcessor implements HttpRequestProcessor {
 
-    protected HttpResponse makeResponse(int negCode) {
-        StatusLine statusLine = new BasicStatusLine(new ProtocolVersion("HTTP", 1, 1), negCode, "blah");
+    protected HttpResponse makeResponse(int code) {
+        StatusLine statusLine = new BasicStatusLine(new ProtocolVersion("HTTP", 1, 1), code, "blah");
         return new BasicHttpResponse(statusLine);
     }
 

@@ -115,7 +115,7 @@ public class NetworkManager {
 
         @Override
         protected ResponseDTO<T> doInBackground(Void... params) {
-            return request.execute(httpClient, httpContext);
+            return request.execute(mediator, httpClient, httpContext);
         }
 
         @Override

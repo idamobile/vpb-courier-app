@@ -19,13 +19,16 @@ import java.util.Map;
 public class TestHttpClient implements HttpClient {
 
     private Map<String, HttpRequestProcessor> processorMap = new HashMap<String, HttpRequestProcessor>();
+    private TestUploadImageProcessor testUploadImageProcessor;
 
     public TestHttpClient() {
         processorMap.put(Hosts.LOGIN_URL, new TestLoginProcessor());
         processorMap.put(Hosts.ORDERS_URL, new TestGetOrdersProcessor());
         processorMap.put(Hosts.COMPLETE_ORDER_URL, new TestSetOrderCompleteProcessor());
         processorMap.put(Hosts.REJECT_ORDER_URL, new TestRejectOrderProcessor());
-        processorMap.put(Hosts.ACTiVATE_CARD_URL, new TestActivateCardProcessor());
+        processorMap.put(Hosts.ACTIVATE_CARD_URL, new TestActivateCardProcessor());
+
+        testUploadImageProcessor = new TestUploadImageProcessor();
     }
 
     @Override
@@ -48,7 +51,12 @@ public class TestHttpClient implements HttpClient {
         try {
             Thread.sleep(3000);
 
-            HttpRequestProcessor processor = processorMap.get(httpUriRequest.getURI().toString());
+            String url = httpUriRequest.getURI().toString();
+            HttpRequestProcessor processor = processorMap.get(url);
+            if (processor == null && isUploadImageUrl(url)) {
+                processor = testUploadImageProcessor;
+            }
+
             if (processor != null) {
                 return processor.process(httpUriRequest);
             } else {
@@ -57,6 +65,11 @@ public class TestHttpClient implements HttpClient {
         } catch (InterruptedException e) {
         }
         return null;
+    }
+
+    private boolean isUploadImageUrl(String url) {
+        String uploadUrl = Hosts.UPLOAD_IMAGE_URL_FORMAT.substring(0, Hosts.UPLOAD_IMAGE_URL_FORMAT.indexOf("?"));
+        return url.startsWith(uploadUrl);
     }
 
     @Override

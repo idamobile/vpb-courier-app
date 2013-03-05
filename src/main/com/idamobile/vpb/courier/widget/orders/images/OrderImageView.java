@@ -67,12 +67,14 @@ public class OrderImageView {
         if (order != null && imageView != null) {
             ImageInfo info = getImageInfo();
             if (info != null) {
-                if (info.getFile().exists()) {
-                    if (order.getStatus() != OrderStatus.STATUS_ACTIVATED) {
-                        removePictureClicked();
+                if (!mediator.getImageManager().isUploaded(order.getId(), info.getTypeId())) {
+                    if (info.getFile().exists()) {
+                        if (order.getStatus() != OrderStatus.STATUS_ACTIVATED) {
+                            removePictureClicked();
+                        }
+                    } else {
+                        takePictureClicked();
                     }
-                } else {
-                    takePictureClicked();
                 }
             }
         }
@@ -105,14 +107,23 @@ public class OrderImageView {
         if (imageInfo != null) {
             progressView.setVisibility(imageInfo.isProcessing() ? View.VISIBLE : View.GONE);
             imageView.setVisibility(imageInfo.isProcessing() ? View.GONE : View.VISIBLE);
+            boolean uploaded = mediator.getImageManager().isUploaded(order.getId(), imageInfo.getTypeId());
             if (imageInfo.getFile().exists()) {
                 removeView.setVisibility(order.getStatus() == OrderStatus.STATUS_ACTIVATED ? View.GONE : View.VISIBLE);
-                if (!imageInfo.isProcessing()) {
-                    loadImage(imageInfo.getFile());
+                if (!uploaded) {
+                    if (!imageInfo.isProcessing()) {
+                        loadImage(imageInfo.getFile());
+                    }
+                } else {
+                    imageView.setImageResource(R.drawable.ic_uploaded);
                 }
             } else {
                 removeView.setVisibility(View.GONE);
-                imageView.setImageResource(R.drawable.ic_take_picture);
+                if (!uploaded) {
+                    imageView.setImageResource(R.drawable.ic_take_picture);
+                } else {
+                    imageView.setImageResource(R.drawable.ic_uploaded);
+                }
                 mediator.getImageManager().removeFromCache(imageInfo.getFile().getAbsolutePath());
             }
             descriptionView.setText(image.getDescription());

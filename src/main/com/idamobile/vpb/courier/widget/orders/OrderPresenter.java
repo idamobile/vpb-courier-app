@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.idamobile.vpb.courier.ApplicationMediator;
 import com.idamobile.vpb.courier.R;
 import com.idamobile.vpb.courier.model.Order;
-import com.idamobile.vpb.courier.model.OrderStatus;
 import com.idamobile.vpb.courier.network.images.OrderImages;
 
 public class OrderPresenter {
@@ -75,23 +74,24 @@ public class OrderPresenter {
                     metroView.setVisibility(View.VISIBLE);
                     timeView.setVisibility(View.VISIBLE);
 
-                    addressView.setCompoundDrawables(null, null, null, null);
+                    setLeftCompoundDrawable(-1, addressView);
 
                     metroView.setText(order.getSubway());
                     timeView.setText(timeFormatter.formatOrderTime(order));
                     break;
                 case STATUS_DOCUMENTS_SUBMITTED:
+                    uploadedImagesView.setVisibility(View.GONE);
+                    metroView.setVisibility(View.GONE);
+                    timeView.setVisibility(View.GONE);
+
+                    setLeftCompoundDrawable(R.drawable.status_ok, addressView);
+                    break;
                 case STATUS_ACTIVATED:
                     uploadedImagesView.setVisibility(View.VISIBLE);
                     metroView.setVisibility(View.GONE);
                     timeView.setVisibility(View.GONE);
 
-                    Drawable statusDrawable = context.getResources().getDrawable(
-                            order.getStatus() == OrderStatus.STATUS_ACTIVATED
-                                    ? R.drawable.status_activated
-                                    : R.drawable.status_ok);
-                    statusDrawable.setBounds(0, 0, statusDrawable.getIntrinsicWidth(), statusDrawable.getMinimumHeight());
-                    addressView.setCompoundDrawables(statusDrawable, null, null, null);
+                    setLeftCompoundDrawable(R.drawable.status_activated, addressView);
 
                     OrderImages images = mediator.getImageManager().getImages(order);
                     if (images == null) {
@@ -106,9 +106,7 @@ public class OrderPresenter {
                     metroView.setVisibility(View.GONE);
                     timeView.setVisibility(View.GONE);
 
-                    Drawable errDrawable = context.getResources().getDrawable(R.drawable.status_fail);
-                    errDrawable.setBounds(0, 0, errDrawable.getIntrinsicWidth(), errDrawable.getMinimumHeight());
-                    addressView.setCompoundDrawables(errDrawable, null, null, null);
+                    setLeftCompoundDrawable(R.drawable.status_fail, addressView);
                     break;
                 default:
                     throw new IllegalArgumentException("Unknown order status: " + order.getStatus());
@@ -119,6 +117,16 @@ public class OrderPresenter {
             nameView.setText(null);
             timeView.setText(null);
             uploadedImagesView.setText(null);
+        }
+    }
+
+    private void setLeftCompoundDrawable(int resId, TextView view) {
+        if (resId > 0) {
+            Drawable statusDrawable = context.getResources().getDrawable(resId);
+            statusDrawable.setBounds(0, 0, statusDrawable.getIntrinsicWidth(), statusDrawable.getMinimumHeight());
+            view.setCompoundDrawables(statusDrawable, null, null, null);
+        } else {
+            view.setCompoundDrawables(null, null, null, null);
         }
     }
 

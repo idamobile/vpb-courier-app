@@ -1,11 +1,9 @@
 package com.idamobile.vpb.courier.network.core;
 
-import com.google.protobuf.GeneratedMessage;
-import com.google.protobuf.GeneratedMessageLite;
+import com.idamobile.vpb.courier.ApplicationMediator;
 import com.idamobile.vpb.courier.config.Config;
 import com.idamobile.vpb.courier.util.HttpUtils;
 import com.idamobile.vpb.courier.util.Logger;
-import com.shaubert.protomapper.ProtoMappers;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.http.HttpEntity;
@@ -16,7 +14,6 @@ import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.protocol.ClientContext;
-import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.protocol.HttpContext;
 
 import java.io.IOException;
@@ -25,8 +22,6 @@ import java.util.UUID;
 
 @SuppressWarnings("serial")
 public abstract class AbstractRequest<T> implements Request<T> {
-
-    private static final ProtoMappers protoMappers = new ProtoMappers();
 
     public static enum HttpMethod {
         GET,
@@ -64,25 +59,33 @@ public abstract class AbstractRequest<T> implements Request<T> {
         return uuid;
     }
 
-    public HttpUriRequest createHttpRequest() {
+    public HttpUriRequest createHttpRequest() throws Exception {
         String finalUrl = formatFinalUrl(url);
         HttpRequestBase request = createRequest(finalUrl);
         if (request instanceof HttpEntityEnclosingRequestBase) {
             HttpEntityEnclosingRequestBase enclosingRequest = (HttpEntityEnclosingRequestBase) request;
-            byte[] postEntity = createHttpPostOrPutEntity();
+            HttpEntity postEntity = createHttpPostOrPutEntity();
             if (postEntity != null) {
-                enclosingRequest.setEntity(new ByteArrayEntity(postEntity));
+                enclosingRequest.setEntity(postEntity);
             }
         }
         return request;
     }
 
     @Override
-    public ResponseDTO<T> execute(HttpClient httpClient, HttpContext httpContext) {
+    public ResponseDTO<T> execute(ApplicationMediator mediator, HttpClient httpClient, HttpContext httpContext) {
         ResponseDTO<T> responseDTO;
         HttpResponse httpResponse;
         try {
-            HttpUriRequest httpRequest = createHttpRequest();
+            HttpUriRequest httpRequest;
+            try {
+                httpRequest = createHttpRequest();
+            } catch (Exception ex) {
+                Logger.error(TAG, "createHttpRequest() error", ex);
+                return ResponseDTO.newFailureResponse(ResponseDTO.ResultCode.UNKNOWN_ERROR,
+                        "Unable to create request");
+            }
+
             Logger.network(TAG, "Accessing: " + httpRequest.getURI() + " with request: " + this);
             CookieStore cookieStore = (CookieStore) httpContext.getAttribute(ClientContext.COOKIE_STORE);
             Logger.network(TAG, "Cookies: " + (cookieStore != null ? cookieStore.toString() : "null"));
@@ -114,7 +117,7 @@ public abstract class AbstractRequest<T> implements Request<T> {
         return responseDTO;
     }
 
-    private HttpRequestBase createRequest(String finalUrl) {
+    protected HttpRequestBase createRequest(String finalUrl) {
         switch (method) {
         case GET:
             return NetworkUtils.createGetRequest(finalUrl);
@@ -128,29 +131,9 @@ public abstract class AbstractRequest<T> implements Request<T> {
         throw new IllegalStateException("Unknown http method: " + method);
     }
 
-    @SuppressWarnings("unchecked")
-    protected byte[] createHttpPostOrPutEntity() {
-        Class thisClass = getClass();
-        Object protoClass = protoMappers.getMapper(thisClass,
-                getRequestProtoClass()).mapToProto(this);
-        if (protoClass instanceof GeneratedMessageLite) {
-            return  ((GeneratedMessageLite) protoClass).toByteArray();
-        } else if (protoClass instanceof GeneratedMessage) {
-            return  ((GeneratedMessage) protoClass).toByteArray();
-        } else {
-            throw new IllegalStateException("Unknown protobuf class: " + protoClass);
-        }
-    }
+    protected abstract HttpEntity createHttpPostOrPutEntity() throws Exception;
 
-    protected abstract Class<T> getResultClass();
-
-    protected abstract Class<?> getRequestProtoClass();
-
-    protected abstract Class<?> getResultProtoClass();
-
-    protected T parseResponseEntity(InputStream inputStream) throws IOException {
-        return protoMappers.getMapper(getResultClass(), getResultProtoClass()).mapFromProto(inputStream);
-    }
+    protected abstract T parseResponseEntity(InputStream inputStream) throws IOException;
 
     public ResponseDTO<T> parseResponse(HttpResponse httpResponse) {
         ResponseDTO<T> responseDTO;

@@ -73,6 +73,8 @@
     <string name="navigate_item_title">На карте</string>
     <string name="order_list_empty_message">Заявок нет</string>
 
+    <string name="all_images_uploaded">Все фотографии отправлены</string>
+
     <!-- OrderDetails Activity -->
     <string name="order_details_activity_label_format">Детали заказа №%d</string>
 
@@ -120,5 +122,10 @@
     <string name="update_order_progess_dialog_message">Обновление заявки…</string>
 
     <string name="activate_card_button">Aктивировать карту</string>
+    <string name="upload_progress_dialog_title_format">Отправка (осталось %d)</string>
+    <string name="upload_progress_dialog_message_format">Отправляется изображение \"%1$s\" из заявки по адресу %2$s.</string>
+    <string name="upload_progress_dialog_message_connecting">Подключение к серверу…</string>
+
+    <string name="uploaded_result_format">Отправлено %1$d из %2$d</string>
 
 </resources>

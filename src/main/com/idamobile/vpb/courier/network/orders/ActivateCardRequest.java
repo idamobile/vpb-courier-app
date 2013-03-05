@@ -1,6 +1,6 @@
 package com.idamobile.vpb.courier.network.orders;
 
-import com.idamobile.vpb.courier.network.core.AbstractRequest;
+import com.idamobile.vpb.courier.network.core.AbstractProtoRequest;
 import com.idamobile.vpb.courier.network.core.Hosts;
 import com.idamobile.vpb.protobuf.Services;
 import com.shaubert.protomapper.annotations.Field;
@@ -11,11 +11,11 @@ import lombok.ToString;
 
 @ToString
 @Mapper(protoClass = Services.ActivateCardRequestProtobufDTO.class)
-public class ActivateCardRequest extends AbstractRequest<UpdateOrderResponse> {
+public class ActivateCardRequest extends AbstractProtoRequest<UpdateOrderResponse> {
     private @Field @Getter @Setter int orderId;
 
     public ActivateCardRequest() {
-        super(Hosts.ACTiVATE_CARD_URL);
+        super(Hosts.ACTIVATE_CARD_URL);
     }
 
     @Override

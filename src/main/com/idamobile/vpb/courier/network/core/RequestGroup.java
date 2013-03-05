@@ -12,30 +12,9 @@ public class RequestGroup implements Request<RequestGroup.ModelCollection> {
 
     private static final String TAG = RequestGroup.class.getSimpleName();
 
-    public static class ModelCollection implements Serializable {
-        private Map<String, ResponseDTO<?>> responseMap = new HashMap<String, ResponseDTO<?>>();
-
-        public boolean hasResponseForRequest(Request<?> request) {
-            return hasResponseForUuid(request.getRequestUuid());
-        }
-
-        public boolean hasResponseForUuid(String uuid) {
-            return responseMap.containsKey(uuid);
-        }
-
-        public <T> ResponseDTO<T> getResponseForRequest(Request<T> request) {
-            return getResponseForUuid(request.getRequestUuid());
-        }
-
-        @SuppressWarnings("unchecked")
-        public <T> ResponseDTO<T> getResponseForUuid(String uuid) {
-            return (ResponseDTO<T>) responseMap.get(uuid);
-        }
-    }
-
     protected Set<Request<?>> requests;
     private final String uuid = UUID.randomUUID().toString();
-    private boolean shouldStopOnFirstError = true;
+    private ExecutionPolicy executionPolicy = new AbortOnFirstFailExecutionPolicy();
 
     public RequestGroup() {
         requests = new HashSet<Request<?>>();
@@ -46,43 +25,41 @@ public class RequestGroup implements Request<RequestGroup.ModelCollection> {
         return this;
     }
 
-    public void setShouldStopOnFirstError(boolean shouldStopOnFirstError) {
-        this.shouldStopOnFirstError = shouldStopOnFirstError;
+    public void setExecutionPolicy(ExecutionPolicy executionPolicy) {
+        this.executionPolicy = executionPolicy;
     }
 
     @Override
-    public ResponseDTO<ModelCollection> execute(HttpClient httpClient, HttpContext httpContext) {
+    public ResponseDTO<ModelCollection> execute(ApplicationMediator mediator, HttpClient httpClient, HttpContext httpContext) {
         ResponseDTO<ModelCollection> result;
         ModelCollection modelCollection = new ModelCollection();
 
         Logger.debug(TAG, "executing " + toString());
-        ResponseDTO<?> failedResp = null;
+        ResponseDTO<?> lastResponse = null;
+        boolean aborted = false;
         for (Request<?> request : requests) {
-            failedResp = executeRequest(request, httpClient, httpContext, modelCollection);
-            if (failedResp != null && shouldStopOnFirstError) {
+            lastResponse = executeRequest(mediator, request, httpClient, httpContext, modelCollection);
+            aborted = !executionPolicy.shouldContinue(lastResponse);
+            if (aborted) {
                 break;
             }
         }
 
-        if (failedResp == null || !shouldStopOnFirstError) {
-            result = ResponseDTO.newSuccessfulResponse(modelCollection);
+        if (aborted) {
+            result = ResponseDTO.newFailureResponse(lastResponse.getResultCode(), lastResponse.getErrorMessage());
         } else {
-            result = ResponseDTO.newFailureResponse(failedResp.getResultCode(), failedResp.getErrorMessage());
+            result = ResponseDTO.newSuccessfulResponse(modelCollection);
         }
 
         return result;
     }
 
-    protected ResponseDTO<?> executeRequest(Request<?> request, HttpClient httpClient,
+    protected ResponseDTO<?> executeRequest(ApplicationMediator mediator, Request<?> request, HttpClient httpClient,
             HttpContext httpContext, ModelCollection modelCollection) {
-        ResponseDTO<?> resp = request.execute(httpClient, httpContext);
+        ResponseDTO<?> resp = request.execute(mediator, httpClient, httpContext);
         modelCollection.responseMap.put(request.getRequestUuid(), resp);
 
-        if (!resp.isSuccess()) {
-            return resp;
-        } else {
-            return null;
-        }
+        return resp;
     }
 
     @Override
@@ -104,7 +81,8 @@ public class RequestGroup implements Request<RequestGroup.ModelCollection> {
             public void onDataReady(Request<ModelCollection> request, ResponseDTO<ModelCollection> response, ApplicationMediator mediator) {
                 for (Request r : requests) {
                     LoaderCallback<?> callback = r.getUpdateModelCallback();
-                    ResponseDTO responseForRequest = response.getData().getResponseForRequest(r);
+                    ResponseDTO responseForRequest = response.getData() != null
+                            ? response.getData().getResponseForRequest(r) : response;
                     if (callback != null && responseForRequest != null) {
                         callback.onDataReady(r, responseForRequest, mediator);
                     }
@@ -130,4 +108,39 @@ public class RequestGroup implements Request<RequestGroup.ModelCollection> {
         return "RequestGroup [requests=" + requests + ", uuid=" + uuid + "]";
     }
 
+    public static interface ExecutionPolicy extends Serializable {
+        boolean shouldContinue(ResponseDTO responseDTO);
+    }
+
+    public static class AbortOnFirstFailExecutionPolicy implements ExecutionPolicy {
+        @Override
+        public boolean shouldContinue(ResponseDTO responseDTO) {
+            return responseDTO.isSuccess();
+        }
+    }
+
+    public static class ModelCollection implements Serializable {
+        private Map<String, ResponseDTO<?>> responseMap = new HashMap<String, ResponseDTO<?>>();
+
+        public boolean hasResponseForRequest(Request<?> request) {
+            return hasResponseForUuid(request.getRequestUuid());
+        }
+
+        public boolean hasResponseForUuid(String uuid) {
+            return responseMap.containsKey(uuid);
+        }
+
+        public <T> ResponseDTO<T> getResponseForRequest(Request<T> request) {
+            return getResponseForUuid(request.getRequestUuid());
+        }
+
+        @SuppressWarnings("unchecked")
+        public <T> ResponseDTO<T> getResponseForUuid(String uuid) {
+            return (ResponseDTO<T>) responseMap.get(uuid);
+        }
+
+        public Map<String, ResponseDTO<?>> getResponseMap() {
+            return responseMap;
+        }
+    }
 }

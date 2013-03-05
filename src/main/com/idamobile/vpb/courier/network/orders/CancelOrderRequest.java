@@ -1,7 +1,7 @@
 package com.idamobile.vpb.courier.network.orders;
 
 import com.idamobile.vpb.courier.model.CancellationReason;
-import com.idamobile.vpb.courier.network.core.AbstractRequest;
+import com.idamobile.vpb.courier.network.core.AbstractProtoRequest;
 import com.idamobile.vpb.courier.network.core.Hosts;
 import com.idamobile.vpb.protobuf.Services;
 import com.shaubert.protomapper.annotations.Field;
@@ -12,7 +12,7 @@ import lombok.ToString;
 
 @Mapper(protoClass = Services.CancelOrderRequestProtobufDTO.class)
 @ToString
-public class CancelOrderRequest extends AbstractRequest<UpdateOrderResponse> {
+public class CancelOrderRequest extends AbstractProtoRequest<UpdateOrderResponse> {
     @Field @Getter @Setter private int orderId;
     @Field @Getter @Setter CancellationReason reason;
     @Field(optional = true) @Getter @Setter Boolean metWithClient;

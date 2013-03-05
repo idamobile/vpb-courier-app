@@ -1,6 +1,6 @@
 package com.idamobile.vpb.courier.network.orders;
 
-import com.idamobile.vpb.courier.network.core.AbstractRequest;
+import com.idamobile.vpb.courier.network.core.AbstractProtoRequest;
 import com.idamobile.vpb.courier.network.core.Hosts;
 import com.idamobile.vpb.protobuf.Services;
 import com.shaubert.protomapper.annotations.Field;
@@ -11,7 +11,7 @@ import lombok.ToString;
 
 @Mapper(protoClass = Services.GetOrdersRequestProtobufDTO.class)
 @ToString
-public class GetOrdersRequest extends AbstractRequest<GetOrdersResponse> {
+public class GetOrdersRequest extends AbstractProtoRequest<GetOrdersResponse> {
     @Field private @Getter @Setter int courierId;
 
     public GetOrdersRequest() {

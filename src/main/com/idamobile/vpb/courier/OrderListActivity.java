@@ -22,6 +22,7 @@ import com.idamobile.vpb.courier.util.Versions;
 import com.idamobile.vpb.courier.widget.adapters.SectionListAdapter;
 import com.idamobile.vpb.courier.widget.adapters.SimpleIndexer;
 import com.idamobile.vpb.courier.widget.orders.*;
+import com.idamobile.vpb.courier.widget.orders.images.OrdersImageUploader;
 
 @EActivity(value = R.layout.order_list_activity)
 public class OrderListActivity extends SecuredActivity {
@@ -31,6 +32,8 @@ public class OrderListActivity extends SecuredActivity {
     @ViewById(android.R.id.empty) View emptyView;
 
     private SectionListAdapter<Order> ordersAdapter;
+
+    private OrdersImageUploader imageUploader;
 
     private ActionMode orderActionMode;
     private OrderActionModeCallback orderActionModeCallback;
@@ -51,6 +54,13 @@ public class OrderListActivity extends SecuredActivity {
     void setup() {
         CourierNamePresenter.attach(this);
         orderActions = new OrderActions(this);
+        imageUploader = new OrdersImageUploader(this);
+        imageUploader.setImageStatusChangedListener(new OrdersImageUploader.OnImageStatusChangedListener() {
+            @Override
+            public void onImagesChanged() {
+                refreshOrders();
+            }
+        });
 
         ordersAdapter = new SectionListAdapter<Order>() {
             @Override
@@ -134,12 +144,14 @@ public class OrderListActivity extends SecuredActivity {
         super.onResume();
         getMediator().getOrdersManager().registerForOrders(this, ordersWatcher);
         refreshOrders();
+        imageUploader.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         unregisterReceiver(ordersWatcher);
+        imageUploader.onPause();
     }
 
     private void refreshOrders() {
@@ -225,7 +237,7 @@ public class OrderListActivity extends SecuredActivity {
     }
 
     private void uploadImages() {
-
+        imageUploader.upload();
     }
 
     private void logout() {
