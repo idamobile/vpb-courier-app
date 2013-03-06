@@ -9,14 +9,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Mapper(protoClass = Services.SetOrderCompletedProtobufDTO.class)
+@Mapper(protoClass = Services.CompleteOrderProtobufDTO.class)
 @ToString
-public class SetOrderCompletedRequest extends AbstractProtoRequest<UpdateOrderResponse> {
+public class CompleteOrderRequest extends AbstractProtoRequest<UpdateOrderResponse> {
     @Field @Getter @Setter private int orderId;
     @Field(optional = true) @Getter @Setter private Boolean resident;
     @Field(optional = true) @Getter @Setter private Boolean hasCorrections;
 
-    public SetOrderCompletedRequest() {
+    public CompleteOrderRequest() {
         super(Hosts.COMPLETE_ORDER_URL);
     }
 
@@ -27,7 +27,7 @@ public class SetOrderCompletedRequest extends AbstractProtoRequest<UpdateOrderRe
 
     @Override
     protected Class<?> getRequestProtoClass() {
-        return Services.SetOrderCompletedProtobufDTO.class;
+        return Services.CompleteOrderProtobufDTO.class;
     }
 
     @Override

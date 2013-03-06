@@ -40,7 +40,7 @@ public class OrdersManager {
 
     public void requestSetOrderCompleted(int orderId, boolean resident, boolean hasMarks,
                                          RequestWatcherCallbacks<UpdateOrderResponse> callbacks) {
-        SetOrderCompletedRequest request = new SetOrderCompletedRequest();
+        CompleteOrderRequest request = new CompleteOrderRequest();
         request.setUpdateModelCallback(new UpdateOrderCallback());
         request.setHasCorrections(hasMarks);
         request.setResident(resident);

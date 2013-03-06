@@ -69,7 +69,7 @@ message GetOrdersResponseProtobufDTO {
     repeated OrderProtobufDTO orders = 1;
 }
 
-message SetOrderCompletedProtobufDTO {
+message CompleteOrderProtobufDTO {
     required int32 orderId = 1;
     optional bool resident = 2;
     optional bool hasCorrections = 3;

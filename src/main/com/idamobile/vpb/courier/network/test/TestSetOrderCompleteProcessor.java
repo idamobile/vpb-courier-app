@@ -2,8 +2,8 @@ package com.idamobile.vpb.courier.network.test;
 
 import com.idamobile.vpb.courier.model.ImageType;
 import com.idamobile.vpb.courier.model.OrderStatus;
-import com.idamobile.vpb.courier.network.orders.SetOrderCompletedRequest;
-import com.idamobile.vpb.courier.network.orders.SetOrderCompletedRequestMapper;
+import com.idamobile.vpb.courier.network.orders.CompleteOrderRequestMapper;
+import com.idamobile.vpb.courier.network.orders.CompleteOrderRequest;
 import com.idamobile.vpb.courier.network.orders.UpdateOrderResponse;
 import com.idamobile.vpb.courier.network.orders.UpdateOrderResponseMapper;
 import org.apache.http.HttpResponse;
@@ -20,8 +20,8 @@ public class TestSetOrderCompleteProcessor extends AbstractHttpRequestProcessor 
     @Override
     public HttpResponse process(HttpUriRequest request) throws IOException {
         HttpPost post = (HttpPost) request;
-        SetOrderCompletedRequestMapper mapper = new SetOrderCompletedRequestMapper();
-        SetOrderCompletedRequest completedRequest = mapper.mapFromProto(post.getEntity().getContent());
+        CompleteOrderRequestMapper mapper = new CompleteOrderRequestMapper();
+        CompleteOrderRequest completedRequest = mapper.mapFromProto(post.getEntity().getContent());
         UpdateOrderResponse response = new UpdateOrderResponse();
         response.setOrderId(completedRequest.getOrderId());
         response.setNewStatus(OrderStatus.STATUS_DOCUMENTS_SUBMITTED);
