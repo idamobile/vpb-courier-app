@@ -10,6 +10,7 @@ import com.idamobile.vpb.courier.model.cache.DefaultFullNameMapper;
 import com.idamobile.vpb.courier.network.core.NetworkManager;
 import com.idamobile.vpb.courier.network.login.NotAuthorizedResponseProcessor;
 import com.idamobile.vpb.courier.network.test.TestHttpClientFactory;
+import com.idamobile.vpb.courier.widget.orders.images.ImagesUploadProgressNotifier;
 
 public class ApplicationMediator {
 
@@ -20,6 +21,7 @@ public class ApplicationMediator {
     private LoginManager loginManager;
     private OrdersManager ordersManager;
     private ImageManager imageManager;
+    private ImagesUploadProgressNotifier progressNotifier;
 
     public ApplicationMediator(Context ctx) {
         context = ctx;
@@ -27,6 +29,7 @@ public class ApplicationMediator {
         loginManager = new LoginManager(this);
         ordersManager = new OrdersManager(this);
         imageManager = new ImageManager(this);
+        progressNotifier = new ImagesUploadProgressNotifier(this);
 
         cache = new DefaultCache(context, new DefaultFullNameMapper());
     }
@@ -59,5 +62,9 @@ public class ApplicationMediator {
 
     public ImageManager getImageManager() {
         return imageManager;
+    }
+
+    public ImagesUploadProgressNotifier getProgressNotifier() {
+        return progressNotifier;
     }
 }

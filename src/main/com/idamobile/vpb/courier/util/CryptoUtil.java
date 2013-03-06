@@ -28,7 +28,7 @@ public class CryptoUtil {
 
     public static SecretKeySpec getKey(String key, byte[] salt, int iterationCount, int keyLength) throws Exception {
         KeySpec keySpec = new PBEKeySpec(key.toCharArray(), salt, iterationCount, keyLength);
-        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBEWITHSHAAND128BITAES-CBC-BC");
         byte[] keyBytes = keyFactory.generateSecret(keySpec).getEncoded();
         return new SecretKeySpec(keyBytes, "AES");
     }

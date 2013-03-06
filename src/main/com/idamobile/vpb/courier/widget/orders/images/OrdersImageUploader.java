@@ -144,50 +144,48 @@ public class OrdersImageUploader {
         }
     }
 
-
     private void refreshProgressDialog() {
-        if (progressDialog.findDialog() != null) {
-            ImageManager imageManager = mediator.getImageManager();
+        ImageManager imageManager = mediator.getImageManager();
 
-            boolean uploadingFound = false;
-            int totalImages = 0;
-            for (Order order : mediator.getOrdersManager().getOrders()) {
-                if (order.getStatus() != OrderStatus.STATUS_ACTIVATED) {
-                    continue;
-                }
+        boolean uploadingFound = false;
+        int totalImages = 0;
+        for (Order order : mediator.getOrdersManager().getOrders()) {
+            if (order.getStatus() != OrderStatus.STATUS_ACTIVATED) {
+                continue;
+            }
 
-                OrderImages orderImages = imageManager.getImages(order);
-                if (orderImages != null) {
-                    for (ImageInfo imageInfo : orderImages.getImages()) {
-                        if (!uploadingFound && imageInfo.isUploading()) {
-                            String message = fragmentActivity.getString(R.string.upload_progress_dialog_message_format,
-                                    order.getImageType(imageInfo.getTypeId()).getDescription(),
-                                    order.getClientAddress());
-                            progressDialog.setMessage(message);
-                            progressDialog.setProgress((int) imageInfo.getUploadedBytes() / 1024);
-                            progressDialog.setMax((int) (imageInfo.getTotalBytes() / 1024));
-                            uploadingFound = true;
-                        }
+            OrderImages orderImages = imageManager.getImages(order);
+            if (orderImages != null) {
+                for (ImageInfo imageInfo : orderImages.getImages()) {
+                    if (!uploadingFound && imageInfo.isUploading()) {
+                        String message = fragmentActivity.getString(R.string.upload_progress_dialog_message_format,
+                                order.getImageType(imageInfo.getTypeId()).getDescription(),
+                                order.getClientAddress());
+                        progressDialog.setMessage(message);
+                        progressDialog.setProgress((int) imageInfo.getUploadedBytes() / 1024);
+                        progressDialog.setMax((int) (imageInfo.getTotalBytes() / 1024));
+                        uploadingFound = true;
+                    }
 
-                        if (!imageManager.isUploaded(order.getId(), imageInfo.getTypeId())) {
-                            totalImages++;
-                        }
+                    if (!imageManager.isUploaded(order.getId(), imageInfo.getTypeId())) {
+                        totalImages++;
                     }
                 }
             }
+        }
 
-            String title = fragmentActivity.getString(R.string.upload_progress_dialog_title_format, totalImages);
-            progressDialog.setTitle(title);
-            if (!uploadingFound) {
-                progressDialog.setProgress(0);
-                progressDialog.setMax(100);
-                progressDialog.setMessage(fragmentActivity.getString(R.string.upload_progress_dialog_message_connecting));
-            }
+        String title = fragmentActivity.getString(R.string.upload_progress_dialog_title_format, totalImages);
+        progressDialog.setTitle(title);
+        if (!uploadingFound) {
+            progressDialog.setProgress(0);
+            progressDialog.setMax(100);
+            progressDialog.setMessage(fragmentActivity.getString(R.string.upload_progress_dialog_message_connecting));
         }
     }
 
     public void upload() {
         if (mediator.getImageManager().hasImagesToUpload()) {
+            refreshProgressDialog();
             mediator.getImageManager().startUploadImages(watcherCallbacks);
         } else {
             Toast.makeText(fragmentActivity, fragmentActivity.getString(R.string.all_images_uploaded), Toast.LENGTH_SHORT).show();

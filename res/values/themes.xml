@@ -5,6 +5,7 @@
     </style>
 
     <style name="VPBTheme" parent="@android:style/Theme.Light">
+        <item name="selectableItemBackground">@android:drawable/list_selector_background</item>
     </style>
 
 </resources>

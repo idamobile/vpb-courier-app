@@ -13,9 +13,8 @@ import com.idamobile.vpb.courier.model.ImageType;
 import com.idamobile.vpb.courier.model.Order;
 import com.idamobile.vpb.courier.model.OrderStatus;
 import com.idamobile.vpb.courier.network.images.ImageInfo;
-import com.idamobile.vpb.courier.util.Bitmaps;
-import com.idamobile.vpb.courier.util.CryptoUtil;
-import com.idamobile.vpb.courier.util.Sizes;
+import com.idamobile.vpb.courier.util.*;
+import lombok.Cleanup;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,6 +22,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class OrderImageView {
+
+    public static final String TAG = OrderImageView.class.getSimpleName();
 
     private Order order;
     private ImageType image;
@@ -40,6 +41,8 @@ public class OrderImageView {
 
     private OrderImageImageCallbacks imageCallbacks;
     private ApplicationMediator mediator;
+
+    private boolean lastLoadingOfImageFailed;
 
     public OrderImageView(ViewGroup parent, ApplicationMediator mediator) {
         this.mediator = mediator;
@@ -83,12 +86,14 @@ public class OrderImageView {
     private void removePictureClicked() {
         if (imageCallbacks != null) {
             imageCallbacks.onRemoveImageClicked(order, image);
+            lastLoadingOfImageFailed = false;
         }
     }
 
     private void takePictureClicked() {
         if (imageCallbacks != null) {
             imageCallbacks.onTakeImageClicked(order, image);
+            lastLoadingOfImageFailed = false;
         }
     }
 
@@ -99,6 +104,7 @@ public class OrderImageView {
     public void setImage(Order order, ImageType image) {
         this.order = order;
         this.image = image;
+        lastLoadingOfImageFailed = false;
         refresh();
     }
 
@@ -111,7 +117,7 @@ public class OrderImageView {
             if (imageInfo.getFile().exists()) {
                 removeView.setVisibility(order.getStatus() == OrderStatus.STATUS_ACTIVATED ? View.GONE : View.VISIBLE);
                 if (!uploaded) {
-                    if (!imageInfo.isProcessing()) {
+                    if (!imageInfo.isProcessing() && !lastLoadingOfImageFailed) {
                         loadImage(imageInfo.getFile());
                     }
                 } else {
@@ -162,7 +168,7 @@ public class OrderImageView {
                     }
                     size *= 2;
 
-                    return Bitmaps.loadScaledImage(new Bitmaps.StreamProvider() {
+                    Bitmaps.StreamProvider streamProvider = new Bitmaps.StreamProvider() {
                         @Override
                         public InputStream openStrem() throws IOException {
                             InputStream inputStream = new FileInputStream(path);
@@ -173,7 +179,16 @@ public class OrderImageView {
                                 throw new IOException(e.getMessage());
                             }
                         }
-                    }, size, size);
+                    };
+
+                    int orientation = 0;
+                    try {
+                        @Cleanup InputStream inputStream = streamProvider.openStrem();
+                        orientation = Exif.getOrientation(inputStream);
+                    } catch (IOException e) {
+                        Logger.debug(TAG, "failed to get orientation", e);
+                    }
+                    return Bitmaps.loadScaledImage(streamProvider, size, size, orientation);
                 }
 
                 @Override
@@ -184,6 +199,8 @@ public class OrderImageView {
                     }
                     if (bitmap != null) {
                         mediator.getImageManager().cacheBitmap(path, bitmap);
+                    } else {
+                        lastLoadingOfImageFailed = true;
                     }
                     refresh();
                 }

@@ -1,5 +1,6 @@
 package com.idamobile.vpb.courier.widget.dialogs;
 
+import android.R;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -11,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import com.idamobile.vpb.courier.util.Versions;
 import com.idamobile.vpb.courier.widget.adapters.AdaptersCarousel;
 
 public class AlertDialogFragment extends DialogFragment {
@@ -197,7 +199,11 @@ public class AlertDialogFragment extends DialogFragment {
                     onItemClick.onClick(getDialog(), position);
                 }
             });
+            list.setCacheColorHint(getActivity().getResources().getColor(R.color.transparent));
             list.setAdapter(adapterWrapper);
+            if (!Versions.hasHoneycombApi()) {
+                list.setBackgroundResource(R.color.white);
+            }
             builder.setView(list);
         }
         return builder;

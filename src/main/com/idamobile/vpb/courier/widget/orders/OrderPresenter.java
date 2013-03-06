@@ -20,6 +20,7 @@ public class OrderPresenter {
     private TextView metroView;
     private TextView nameView;
     private TextView uploadedImagesView;
+    private View divider;
 
     private Order order;
     private OrderTimeFormatter timeFormatter;
@@ -51,6 +52,7 @@ public class OrderPresenter {
         metroView = (TextView) view.findViewById(R.id.client_metro);
         nameView = (TextView) view.findViewById(R.id.client_name);
         uploadedImagesView = (TextView) view.findViewById(R.id.photos_uploaded);
+        divider = view.findViewById(R.id.divider);
 
         view.setTag(this);
     }
@@ -62,6 +64,10 @@ public class OrderPresenter {
     public void setOrder(Order order) {
         this.order = order;
         refreshContent();
+    }
+
+    public void setDividerVisible(boolean visible) {
+        divider.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
     }
 
     public void refreshContent() {

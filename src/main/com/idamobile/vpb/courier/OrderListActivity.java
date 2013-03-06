@@ -73,6 +73,7 @@ public class OrderListActivity extends SecuredActivity {
             protected void bindNormalView(View view, Order item) {
                 OrderPresenter presenter = (OrderPresenter) view.getTag();
                 presenter.setOrder(item);
+                presenter.setDividerVisible(!ordersAdapter.isLastInSection(ordersAdapter.getIndexOf(item)));
             }
         };
         ordersAdapter.setItemsComparator(new OrderComparator());

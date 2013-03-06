@@ -6,4 +6,8 @@
         <item name="android:textColor">@color/order_details_sections</item>
     </style>
 
+    <declare-styleable name="VPBThemeExtension">
+        <attr name="selectableItemBackground" format="reference" />
+    </declare-styleable>
+
 </resources>

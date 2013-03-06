@@ -13,10 +13,7 @@ import com.idamobile.vpb.courier.network.core.DataHolder;
 import com.idamobile.vpb.courier.network.core.RequestGroup;
 import com.idamobile.vpb.courier.network.core.RequestService;
 import com.idamobile.vpb.courier.network.core.RequestWatcherCallbacks;
-import com.idamobile.vpb.courier.network.images.ImageInfo;
-import com.idamobile.vpb.courier.network.images.OrderImages;
-import com.idamobile.vpb.courier.network.images.UploadImageExecutionPolicy;
-import com.idamobile.vpb.courier.network.images.UploadImageRequest;
+import com.idamobile.vpb.courier.network.images.*;
 import com.idamobile.vpb.courier.security.crypto.OrderImagesFilenameMapper;
 
 import java.io.File;
@@ -34,7 +31,7 @@ public class ImageManager {
     private LruCache<String, Bitmap> imageCache = new LruCache<String, Bitmap>(1024 * 1024 * 5) {
         @Override
         protected int sizeOf(String key, Bitmap value) {
-            return value != null ? value.getByteCount() : 0;
+            return value != null ? (value.getRowBytes() * value.getHeight()) : 0;
         }
     };
 
@@ -109,8 +106,7 @@ public class ImageManager {
         LoginManager loginManager = mediator.getLoginManager();
         int courierId = loginManager.getCourier().getId();
 
-        RequestGroup requestGroup = new RequestGroup();
-        requestGroup.setExecutionPolicy(new UploadImageExecutionPolicy());
+        UploadImagesRequstGroup requestGroup = new UploadImagesRequstGroup();
         for (Order order : mediator.getOrdersManager().getOrders()) {
             if (order.getStatus() == OrderStatus.STATUS_ACTIVATED) {
                 for (ImageType imageType : order.getImageTypes()) {

@@ -120,6 +120,33 @@ public abstract class SectionListAdapter<T> extends BaseAdapter {
         }
     }
 
+    public boolean isLastInSection(int position) {
+        if (position >= getCount() - 1) {
+            return true;
+        } else {
+            if (sectionPositions != null) {
+                for (int sectionPosition : sectionPositions) {
+                    if (sectionPosition == position + 1) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+    }
+
+    public int getIndexOf(T item) {
+        int count = getCount();
+        for (int i = 0; i < count; i++) {
+            if (!isSectionPosition(i)) {
+                if (getItem(i) == item) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
     public List<T> getReadOnlyItems() {
         return readOnlyItems;
     }

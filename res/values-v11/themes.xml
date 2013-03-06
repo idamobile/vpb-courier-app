@@ -5,6 +5,7 @@
     </style>
 
     <style name="VPBTheme" parent="@android:style/Theme.Holo.Light">
+        <item name="selectableItemBackground">?android:attr/selectableItemBackground</item>
     </style>
 
 </resources>
