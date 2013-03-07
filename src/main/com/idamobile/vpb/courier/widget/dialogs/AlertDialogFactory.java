@@ -61,6 +61,7 @@ public class AlertDialogFactory extends AbstractDialogFactory {
 
     public AlertDialogFactory setListAdapter(BaseAdapter listAdapter) {
         this.listAdapter = listAdapter;
+        setListAdapter(this.<AlertDialogFragment>findDialog());
         return this;
     }
 
@@ -177,4 +178,11 @@ public class AlertDialogFactory extends AbstractDialogFactory {
             dialogFragment.setNegClickListener(negButtonListener);
         }
     }
+
+    private void setListAdapter(AlertDialogFragment dialogFragment) {
+        if (dialogFragment != null && !dialogFragment.isListAdapterSet()) {
+            dialogFragment.setListAdapter(listAdapter);
+        }
+    }
+
 }

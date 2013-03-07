@@ -50,17 +50,31 @@ public class OrderListActivity extends SecuredActivity {
         setShouldAttachNotAuthorizedListener();
     }
 
-    @AfterViews
-    void setup() {
-        CourierNamePresenter.attach(this);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         orderActions = new OrderActions(this);
-        imageUploader = new OrdersImageUploader(this);
+
+        imageUploader = new OrdersImageUploader(this, savedInstanceState);
         imageUploader.setImageStatusChangedListener(new OrdersImageUploader.OnImageStatusChangedListener() {
             @Override
             public void onImagesChanged() {
                 refreshOrders();
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        imageUploader.saveState(outState);
+    }
+
+    @AfterViews
+    void setup() {
+        CourierNamePresenter.attach(this);
 
         ordersAdapter = new SectionListAdapter<Order>() {
             @Override

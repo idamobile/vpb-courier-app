@@ -6,12 +6,13 @@ import com.shaubert.protomapper.annotations.Field;
 import com.shaubert.protomapper.annotations.Mapper;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Mapper(protoClass = Services.Map.class)
 @Data
-public class ProtoMap {
+public class ProtoMap implements Serializable {
     @Field
     private List<ProtoMapEntry> entries = new ArrayList<ProtoMapEntry>();
 

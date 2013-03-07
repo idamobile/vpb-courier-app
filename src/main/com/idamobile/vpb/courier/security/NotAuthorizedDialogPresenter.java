@@ -71,7 +71,7 @@ public class NotAuthorizedDialogPresenter extends Fragment {
         final ApplicationMediator mediator = ((CoreApplication) getActivity().getApplication()).getMediator();
         loginManager = mediator.getLoginManager();
 
-        loginPresenter = new LoginPresenter(getActivity());
+        loginPresenter = new LoginPresenter(getActivity(), savedInstanceState);
         loginPresenter.setLoginListener(new LoginPresenter.LoginListener() {
             @Override
             public void onSuccessfulLogin(LoginPresenter loginPresenter) {
@@ -134,4 +134,10 @@ public class NotAuthorizedDialogPresenter extends Fragment {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        loginPresenter.saveState(outState);
+    }
 }

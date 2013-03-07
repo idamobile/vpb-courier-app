@@ -1,43 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-
-    <ImageView
-        android:id="@+id/banner_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/large_padding"
-        android:scaleType="centerInside"
-        android:src="@drawable/vpb_big_logo"/>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
     <LinearLayout
-        android:layout_width="210dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/login_field"
+        <ImageView
+            android:id="@+id/banner_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/login_hint"
-            android:nextFocusForward="@+id/first_field"
-            android:nextFocusDown="@id/first_field"
-            android:nextFocusRight="@id/first_field"
-            android:inputType="text|textNoSuggestions"
-            android:maxLines="1" />
+            android:layout_marginTop="@dimen/large_padding"
+            android:scaleType="centerInside"
+            android:src="@drawable/vpb_big_logo"/>
 
-        <com.idamobile.vpb.courier.widget.login.PinWidget
-            android:id="@+id/widget_set_pin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/normal_padding"/>
+        <LinearLayout
+            android:layout_width="210dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/login_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/login_hint"
+                android:nextFocusForward="@+id/first_field"
+                android:nextFocusDown="@id/first_field"
+                android:nextFocusRight="@id/first_field"
+                android:inputType="text|textNoSuggestions"
+                android:selectAllOnFocus="true"
+                android:maxLines="1"/>
+
+            <com.idamobile.vpb.courier.widget.login.PinWidget
+                android:id="@+id/widget_set_pin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/normal_padding"/>
+        </LinearLayout>
+
     </LinearLayout>
-
-
-</LinearLayout>
+</ScrollView>
 

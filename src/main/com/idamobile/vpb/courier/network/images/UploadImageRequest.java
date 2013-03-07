@@ -6,7 +6,7 @@ import com.idamobile.vpb.courier.controllers.LoginManager;
 import com.idamobile.vpb.courier.network.core.AbstractRequest;
 import com.idamobile.vpb.courier.network.core.Hosts;
 import com.idamobile.vpb.courier.network.core.ResponseDTO;
-import com.idamobile.vpb.courier.util.CryptoUtil;
+import com.idamobile.vpb.courier.security.crypto.CryptoUtil;
 import com.idamobile.vpb.courier.util.Logger;
 import com.idamobile.vpb.courier.util.Streams;
 import org.apache.http.HttpEntity;

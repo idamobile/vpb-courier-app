@@ -1,5 +1,7 @@
-package com.idamobile.vpb.courier.util;
+package com.idamobile.vpb.courier.network.core;
 
+import com.idamobile.vpb.courier.util.Logger;
+import com.idamobile.vpb.courier.util.Streams;
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.entity.HttpEntityWrapper;

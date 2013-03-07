@@ -88,7 +88,7 @@ public class OrderDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         orderTimeFormatter = new OrderTimeFormatter(getActivity());
         orderActions = new OrderActions(getActivity());
-        orderStatusPresenter = new OrderStatusPresenter(getActivity());
+        orderStatusPresenter = new OrderStatusPresenter(getActivity(), savedInstanceState);
         mediator = CoreApplication.getMediator(getActivity());
         restoreOrder(savedInstanceState);
         restoreProcessingPictureParams(savedInstanceState);
@@ -363,5 +363,7 @@ public class OrderDetailsFragment extends Fragment {
         super.onSaveInstanceState(outState);
         saveOrder(outState);
         saveProcessingPictureParams(outState);
+
+        orderStatusPresenter.saveState(outState);
     }
 }

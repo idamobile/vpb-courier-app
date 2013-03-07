@@ -2,7 +2,6 @@ package com.idamobile.vpb.courier.network.core;
 
 import android.os.AsyncTask;
 import com.idamobile.vpb.courier.ApplicationMediator;
-import com.idamobile.vpb.courier.util.HttpUtils;
 import com.idamobile.vpb.courier.util.Logger;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;

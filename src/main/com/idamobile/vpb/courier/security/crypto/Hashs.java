@@ -1,4 +1,4 @@
-package com.idamobile.vpb.courier.util;
+package com.idamobile.vpb.courier.security.crypto;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

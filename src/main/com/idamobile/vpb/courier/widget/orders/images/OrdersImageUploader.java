@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 import com.idamobile.vpb.courier.ApplicationMediator;
@@ -54,13 +55,13 @@ public class OrdersImageUploader {
 
     private OnImageStatusChangedListener imageStatusChangedListener;
 
-    public OrdersImageUploader(FragmentActivity fragmentActivity) {
+    public OrdersImageUploader(FragmentActivity fragmentActivity, Bundle savedInstanceState) {
         this.mediator = CoreApplication.getMediator(fragmentActivity);
         this.fragmentActivity = fragmentActivity;
         this.converter = new ResultCodeToMessageConverter(fragmentActivity);
 
         createDialogs();
-        createCallbacks();
+        createCallbacks(savedInstanceState);
     }
 
     public void setImageStatusChangedListener(OnImageStatusChangedListener imageStatusChangedListener) {
@@ -81,8 +82,9 @@ public class OrdersImageUploader {
         progressDialog.setSpinner(false);
     }
 
-    private void createCallbacks() {
-        watcherCallbacks = new RequestWatcherCallbacks<RequestGroup.ModelCollection>(fragmentActivity);
+    private void createCallbacks(Bundle savedInstanceState) {
+        watcherCallbacks = new RequestWatcherCallbacks<RequestGroup.ModelCollection>(
+                fragmentActivity, "image-uploader", savedInstanceState);
         watcherCallbacks.registerListener(new DialogRequestListener<RequestGroup.ModelCollection>(progressDialog));
         watcherCallbacks.registerListener(new RequestWatcherCallbacks.SimpleRequestListener<RequestGroup.ModelCollection>() {
             @Override
@@ -190,5 +192,9 @@ public class OrdersImageUploader {
         } else {
             Toast.makeText(fragmentActivity, fragmentActivity.getString(R.string.all_images_uploaded), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void saveState(Bundle outState) {
+        watcherCallbacks.saveInstanceState(outState);
     }
 }

@@ -1,4 +1,4 @@
-package com.idamobile.vpb.courier.util;
+package com.idamobile.vpb.courier.network.core;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

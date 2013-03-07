@@ -1,4 +1,7 @@
-package com.idamobile.vpb.courier.util;
+package com.idamobile.vpb.courier.security.crypto;
+
+import com.idamobile.vpb.courier.util.Logger;
+import com.idamobile.vpb.courier.util.Versions;
 
 import javax.crypto.*;
 import javax.crypto.spec.PBEKeySpec;

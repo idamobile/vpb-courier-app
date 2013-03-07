@@ -48,7 +48,7 @@
     <string name="few_minutes">минуты</string>
     <string name="many_minutes">минут</string>
 
-    <string name="time_diff_more_then_1h">час с лишним</string>
+    <string name="time_diff_more_then_1h">более часа</string>
     <string name="time_diff_more_then_1_5h">более 1,5 часов</string>
     <string name="time_diff_more_then_2h">более 2 часов</string>
 
@@ -117,6 +117,7 @@
     <string name="client_resident_option">Клиент является резидентом</string>
     <string name="marks_option">Вносились правки</string>
 
+    <string name="met_result_chooser_dialog_title">Результат встречи</string>
     <string name="final_options_dialog_title">Отметьте нужное</string>
 
     <string name="update_order_progess_dialog_message">Обновление заявки…</string>

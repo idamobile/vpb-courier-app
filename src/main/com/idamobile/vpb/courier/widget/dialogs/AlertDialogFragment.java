@@ -138,6 +138,10 @@ public class AlertDialogFragment extends DialogFragment {
         this.adapterWrapper.addAdapter(adapter);
     }
 
+    public boolean isListAdapterSet() {
+        return this.adapterWrapper.getAdaptersCount() > 0;
+    }
+
     @Override
     public AlertDialog getDialog() {
         return (AlertDialog) super.getDialog();

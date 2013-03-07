@@ -1,5 +1,7 @@
 package com.idamobile.vpb.courier.presenters;
 
+import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.widget.Toast;
@@ -34,13 +36,13 @@ public class LoginPresenter {
 
     private LoginListener loginListener;
 
-    public LoginPresenter(FragmentActivity activity) {
+    public LoginPresenter(FragmentActivity activity, Bundle savedInstanceState) {
         this.activity = activity;
         this.converter = new ResultCodeToMessageConverter(activity);
         this.loginManager = CoreApplication.getMediator(activity).getLoginManager();
 
         createDialogs();
-        createCallbacks();
+        createCallbacks(savedInstanceState);
     }
 
     public void setLoginListener(LoginListener loginListener) {
@@ -50,6 +52,12 @@ public class LoginPresenter {
     private void createDialogs() {
         loginProgressDialog = new ProgressDialogFactory(activity, "login-progress");
         loginProgressDialog.setMessage(activity.getString(R.string.logiin_progress_dialog_message));
+        loginProgressDialog.setCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                watcherCallbacks.cancel(true);
+            }
+        });
 
         loginFailedDialog = new AlertDialogFactory(activity, "login-failed-dialog");
         loginFailedDialog.setTitle(activity.getText(R.string.login_error_dialog_title));
@@ -57,8 +65,9 @@ public class LoginPresenter {
         loginFailedDialog.setPosButtonText(activity.getText(android.R.string.ok));
     }
 
-    private void createCallbacks() {
-        watcherCallbacks = new RequestWatcherCallbacks<LoginResponse>(activity);
+    private void createCallbacks(Bundle savedInstanceState) {
+        watcherCallbacks = new RequestWatcherCallbacks<LoginResponse>(
+                activity, "login-callbacks", savedInstanceState);
         watcherCallbacks.registerListener(new DialogRequestListener<LoginResponse>(loginProgressDialog));
         watcherCallbacks.registerListener(new RequestWatcherCallbacks.SimpleRequestListener<LoginResponse>() {
             @Override
@@ -132,4 +141,7 @@ public class LoginPresenter {
         converter.showToast(code);
     }
 
+    public void saveState(Bundle outState) {
+        watcherCallbacks.saveInstanceState(outState);
+    }
 }

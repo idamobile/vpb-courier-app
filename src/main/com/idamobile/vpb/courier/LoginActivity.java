@@ -1,5 +1,7 @@
 package com.idamobile.vpb.courier;
 
+import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.EditText;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EActivity;
@@ -17,9 +19,11 @@ public class LoginActivity extends BaseActivity {
 
     private LoginPresenter loginPresenter;
 
-    @AfterViews
-    void setup() {
-        loginPresenter = new LoginPresenter(this);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        loginPresenter = new LoginPresenter(this, savedInstanceState);
         loginPresenter.setLoginListener(new LoginPresenter.LoginListener() {
             @Override
             public void onSuccessfulLogin(LoginPresenter loginPresenter) {
@@ -35,6 +39,10 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
+    }
+
+    @AfterViews
+    void setup() {
         pinWidget.setOnSubmitListener(new PinWidget.OnSubmitListener() {
             @Override
             public boolean submit(int pin) {
@@ -42,9 +50,21 @@ public class LoginActivity extends BaseActivity {
                 return true;
             }
         });
+
+        String login = getMediator().getLoginManager().getLastLogin();
+        loginField.setText(login);
+        if (!TextUtils.isEmpty(login)) {
+            pinWidget.requestFocus();
+        }
     }
 
     public LoginPresenter getLoginPresenter() {
         return loginPresenter;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        loginPresenter.saveState(outState);
     }
 }

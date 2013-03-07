@@ -27,7 +27,11 @@ public class RequestWatcher<T> extends AsyncTaskLoader<ResponseDTO<T>> {
 
     @Override
     public ResponseDTO<T> loadInBackground() {
-        return blockingListener.execute(request);
+        if (request != null) {
+            return blockingListener.execute(request);
+        } else {
+            return ResponseDTO.newFailureResponse(ResponseDTO.ResultCode.CANCELLED, "canceled");
+        }
     }
 
     @Override

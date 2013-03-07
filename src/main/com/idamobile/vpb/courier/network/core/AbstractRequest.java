@@ -2,7 +2,6 @@ package com.idamobile.vpb.courier.network.core;
 
 import com.idamobile.vpb.courier.ApplicationMediator;
 import com.idamobile.vpb.courier.config.Config;
-import com.idamobile.vpb.courier.util.HttpUtils;
 import com.idamobile.vpb.courier.util.Logger;
 import lombok.Getter;
 import lombok.Setter;

@@ -15,6 +15,7 @@ import java.util.Set;
 
 public class RequestWatcherCallbacks<T> implements LoaderCallbacks<ResponseDTO<T>> {
 
+
     public interface RequestListener<T> {
         public abstract void onStarted(Request<T> request);
 
@@ -47,37 +48,70 @@ public class RequestWatcherCallbacks<T> implements LoaderCallbacks<ResponseDTO<T
         }
     }
 
+    private final String requestKey;
     private LoaderManager loaderManager;
     private Request<T> request;
     private Context context;
     private Set<RequestListener<T>> listeners;
     private Handler handler;
 
-    public RequestWatcherCallbacks(FragmentActivity fragmentActivity) {
-        this(fragmentActivity, fragmentActivity.getSupportLoaderManager());
+    private boolean firstInit;
+    private Runnable firstInitTask = new Runnable() {
+        @Override
+        public void run() {
+            if (request != null) {
+                firstInit = true;
+                getResultOrExecute(request);
+            }
+        }
+    };
+
+    public RequestWatcherCallbacks(FragmentActivity fragmentActivity, String tag) {
+        this(fragmentActivity, tag, null);
     }
 
-    public RequestWatcherCallbacks(Context context, LoaderManager loaderManager) {
+    public RequestWatcherCallbacks(FragmentActivity fragmentActivity, String tag, Bundle savedInstanceState) {
+        this(fragmentActivity, fragmentActivity.getSupportLoaderManager(), tag, savedInstanceState);
+    }
+
+    public RequestWatcherCallbacks(Context context, LoaderManager loaderManager, String tag, Bundle savedInstanceState) {
         this.context = context;
         this.loaderManager = loaderManager;
+        this.requestKey = "watcher-callbacks-for-" + tag;
         this.listeners = new HashSet<RequestListener<T>>();
         this.handler = new Handler();
+
+        restoreState(savedInstanceState);
     }
 
-    public RequestWatcherCallbacks<T> registerListener(
-            RequestListener<T> listener) {
+    @SuppressWarnings("unchecked")
+    private void restoreState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            request = (Request<T>) savedInstanceState.getSerializable(requestKey);
+            if (request != null) {
+                firstInit = true;
+                handler.post(firstInitTask);
+            }
+        }
+    }
+
+    public RequestWatcherCallbacks<T> registerListener(RequestListener<T> listener) {
         listeners.add(listener);
         return this;
     }
 
-    public void unregisterListener(
-            RequestListener<T> listener) {
+    public void unregisterListener(RequestListener<T> listener) {
         listeners.remove(listener);
     }
 
     public void execute(Request<T> request) {
         int loaderId = getLoaderId(request);
         execute(request, loaderId);
+
+        if (firstInit) {
+            handler.removeCallbacks(firstInitTask);
+            firstInit = false;
+        }
     }
 
     public int getLoaderId(Request<T> request) {
@@ -111,12 +145,17 @@ public class RequestWatcherCallbacks<T> implements LoaderCallbacks<ResponseDTO<T
 
     @Override
     public Loader<ResponseDTO<T>> onCreateLoader(int id, Bundle args) {
-        onStarted();
-        return new RequestWatcher<T>(context, request);
+        if (!firstInit) {
+            onStarted();
+        }
+        Request<T> req = firstInit ? null : request;
+        firstInit = false;
+        return new RequestWatcher<T>(context, req);
     }
 
     @Override
     public void onLoadFinished(Loader<ResponseDTO<T>> loader, ResponseDTO<T> result) {
+        firstInit = false;
         if (result == null || result.getResultCode() != ResponseDTO.ResultCode.SUCCESS) {
             onError(result);
         } else {
@@ -180,5 +219,11 @@ public class RequestWatcherCallbacks<T> implements LoaderCallbacks<ResponseDTO<T
                 }
             }
         });
+    }
+
+    public void saveInstanceState(Bundle outState) {
+        if (request != null) {
+            outState.putSerializable(requestKey, request);
+        }
     }
 }

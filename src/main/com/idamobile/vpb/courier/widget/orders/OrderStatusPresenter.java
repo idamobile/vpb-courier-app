@@ -1,6 +1,7 @@
 package com.idamobile.vpb.courier.widget.orders;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.widget.ArrayAdapter;
 import com.idamobile.vpb.courier.ApplicationMediator;
@@ -18,6 +19,9 @@ import com.idamobile.vpb.courier.widget.dialogs.DialogRequestListener;
 import com.idamobile.vpb.courier.widget.dialogs.ProgressDialogFactory;
 
 public class OrderStatusPresenter {
+
+    public static final String STATUS_PRESENTER_BUNDLE_EXTRA = "status-presenter";
+    public static final String ORDER_EXTRA = "order";
 
     private FragmentActivity fragmentActivity;
     private ApplicationMediator mediator;
@@ -41,17 +45,26 @@ public class OrderStatusPresenter {
     private ProgressDialogFactory progressDialog;
     private Order order;
 
-    public OrderStatusPresenter(FragmentActivity fragmentActivity) {
+    public OrderStatusPresenter(FragmentActivity fragmentActivity, Bundle savedInstanceState) {
         this.fragmentActivity = fragmentActivity;
         this.messageConverter = new ResultCodeToMessageConverter(fragmentActivity);
         this.mediator = CoreApplication.getMediator(fragmentActivity);
 
+        Bundle bundle = null;
+        if (savedInstanceState != null) {
+            bundle = savedInstanceState.getBundle(STATUS_PRESENTER_BUNDLE_EXTRA);
+            if (bundle != null) {
+                order = (Order) bundle.get(ORDER_EXTRA);
+            }
+
+        }
         createDialogs();
-        createCallbacks();
+        createCallbacks(bundle);
     }
 
-    private void createCallbacks() {
-        updateOrderCallbacks = new RequestWatcherCallbacks<UpdateOrderResponse>(fragmentActivity);
+    private void createCallbacks(Bundle savedInstanceState) {
+        updateOrderCallbacks = new RequestWatcherCallbacks<UpdateOrderResponse>(
+                fragmentActivity, "order-status-update", savedInstanceState);
         updateOrderCallbacks.registerListener(new RequestWatcherCallbacks.SimpleRequestListener<UpdateOrderResponse>(){
             @Override
             public void onError(Request<UpdateOrderResponse> request, ResponseDTO<UpdateOrderResponse> result) {
@@ -101,6 +114,7 @@ public class OrderStatusPresenter {
         ArrayAdapter<String> metResultAdapter = new ArrayAdapter<String>(fragmentActivity,
                 android.R.layout.select_dialog_item, metResultVariants);
         metResultChooserDialog = new AlertDialogFactory(fragmentActivity, "met-result-chooser-dialog");
+        metResultChooserDialog.setTitle(fragmentActivity.getString(R.string.met_result_chooser_dialog_title));
         metResultChooserDialog.setCancellable(true);
         metResultChooserDialog.setNegButtonText(fragmentActivity.getText(android.R.string.cancel));
         metResultChooserDialog.setListAdapter(metResultAdapter);
@@ -216,5 +230,14 @@ public class OrderStatusPresenter {
         cancellationReason = null;
         order = null;
         orderFinalOptionsAdapter.reset();
+    }
+
+    public void saveState(Bundle outState) {
+        Bundle bundle = new Bundle();
+        updateOrderCallbacks.saveInstanceState(bundle);
+        if (order != null) {
+            bundle.putSerializable(ORDER_EXTRA, order);
+        }
+        outState.putBundle(STATUS_PRESENTER_BUNDLE_EXTRA, bundle);
     }
 }

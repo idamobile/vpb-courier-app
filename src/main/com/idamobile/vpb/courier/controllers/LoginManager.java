@@ -15,8 +15,8 @@ import com.idamobile.vpb.courier.network.login.LoginResponse;
 import com.idamobile.vpb.courier.network.login.LoginResult;
 import com.idamobile.vpb.courier.preferences.LoginPreference;
 import com.idamobile.vpb.courier.security.crypto.CryptoPreferences;
-import com.idamobile.vpb.courier.util.CryptoUtil;
-import com.idamobile.vpb.courier.util.Hashs;
+import com.idamobile.vpb.courier.security.crypto.CryptoUtil;
+import com.idamobile.vpb.courier.security.crypto.Hashs;
 import com.idamobile.vpb.courier.util.Logger;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -70,7 +70,6 @@ public class LoginManager {
 
     public void logout() {
         cryptoKey = null;
-        loginPreference.clear();
 
         mediator.getCache().clear();
         mediator.getNetworkManager().cleanUpSession();

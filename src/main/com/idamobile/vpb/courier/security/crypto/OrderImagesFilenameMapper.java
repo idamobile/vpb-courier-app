@@ -2,7 +2,6 @@ package com.idamobile.vpb.courier.security.crypto;
 
 import android.content.Context;
 import com.idamobile.vpb.courier.util.Files;
-import com.idamobile.vpb.courier.util.Hashs;
 
 import java.io.File;
 

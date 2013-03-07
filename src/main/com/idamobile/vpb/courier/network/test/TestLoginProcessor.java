@@ -2,7 +2,7 @@ package com.idamobile.vpb.courier.network.test;
 
 import com.idamobile.vpb.courier.model.Courier;
 import com.idamobile.vpb.courier.network.login.*;
-import com.idamobile.vpb.courier.util.Hashs;
+import com.idamobile.vpb.courier.security.crypto.Hashs;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
