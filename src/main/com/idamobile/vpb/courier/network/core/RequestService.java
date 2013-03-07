@@ -148,8 +148,9 @@ public class RequestService extends Service {
     protected void cancel(Request<?> request, boolean interrupt) {
         Logger.debug(TAG, "cancelling request " + request.getRequestUuid());
         request.cancel();
-        executingRequests.remove(request.getRequestUuid());
-        networkManager.cancel(request, interrupt);
+        if (!networkManager.cancel(request, interrupt)) {
+            executingRequests.remove(request.getRequestUuid());
+        }
     }
 
     public static void execute(Context context, Request<?> request) {

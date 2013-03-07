@@ -86,11 +86,14 @@ public class NetworkManager {
         return true;
     }
 
-    public <Q> void cancel(Request<Q> request, boolean mayInterruptIfRunning) {
+    public <Q> boolean cancel(Request<Q> request, boolean mayInterruptIfRunning) {
         @SuppressWarnings("unchecked")
         LoaderTask<Q> task = (LoaderTask<Q>) tasks.get(request.getRequestUuid());
         if (task != null) {
             task.cancel(mayInterruptIfRunning);
+            return true;
+        } else {
+            return false;
         }
     }
 

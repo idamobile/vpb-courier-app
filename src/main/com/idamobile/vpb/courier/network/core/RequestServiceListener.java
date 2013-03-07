@@ -49,5 +49,4 @@ public abstract class RequestServiceListener<T> {
     public void executeWithListener(Request<T> request) {
         RequestService.execute(context, request, resultReceiver);
     }
-
 }

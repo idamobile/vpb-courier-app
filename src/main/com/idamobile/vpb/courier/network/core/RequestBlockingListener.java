@@ -76,8 +76,8 @@ public class RequestBlockingListener<T> {
 	public boolean isInterrupted() {
 		return interrupted;
 	}
-	
+
 	public void cancel(Request<T> request, boolean interrupt) {
-		RequestService.cancel(context, request, interrupt);
+        RequestService.cancel(context, request, interrupt);
 	}
 }

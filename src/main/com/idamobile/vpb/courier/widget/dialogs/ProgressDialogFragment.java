@@ -39,19 +39,31 @@ public class ProgressDialogFragment extends DialogFragment {
     }
 
     public void setMax(int max) {
-        getDialog().setMax(max);
+        ProgressDialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.setMax(max);
+        }
     }
 
     public void setProgress(int progress) {
-        getDialog().setProgress(progress);
+        ProgressDialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.setProgress(progress);
+        }
     }
 
     public void setMessage(CharSequence message) {
-        getDialog().setMessage(message);
+        ProgressDialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.setMessage(message);
+        }
     }
 
     public void setTitle(CharSequence title) {
-        getDialog().setTitle(title);
+        ProgressDialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.setTitle(title);
+        }
     }
 
     @Override

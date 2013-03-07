@@ -32,14 +32,14 @@ public abstract class AbstractRequest<T> implements Request<T> {
 
     private final String TAG = this.getClass().getSimpleName();
 
+    private HttpUriRequest httpRequest;
     private @Getter String url;
     private HttpMethod method;
 
     private final String uuid = UUID.randomUUID().toString();
     private @Getter boolean cancelled;
 
-    private @Getter @Setter
-    LoaderCallback<T> updateModelCallback;
+    private @Getter @Setter LoaderCallback<T> updateModelCallback;
 
     public AbstractRequest(String url) {
         this(url, HttpMethod.POST);
@@ -74,10 +74,13 @@ public abstract class AbstractRequest<T> implements Request<T> {
 
     @Override
     public ResponseDTO<T> execute(ApplicationMediator mediator, HttpClient httpClient, HttpContext httpContext) {
+        if (cancelled) {
+            return ResponseDTO.newFailureResponse(ResponseDTO.ResultCode.CANCELLED, "Request is cancelled");
+        }
+
         ResponseDTO<T> responseDTO;
         HttpResponse httpResponse;
         try {
-            HttpUriRequest httpRequest;
             try {
                 httpRequest = createHttpRequest();
             } catch (Exception ex) {
@@ -157,6 +160,9 @@ public abstract class AbstractRequest<T> implements Request<T> {
 
     @Override
     public void cancel() {
+        if (httpRequest != null) {
+            httpRequest.abort();
+        }
         cancelled = true;
     }
 }

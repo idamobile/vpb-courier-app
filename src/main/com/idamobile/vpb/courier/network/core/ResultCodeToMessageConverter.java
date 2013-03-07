@@ -14,7 +14,7 @@ public class ResultCodeToMessageConverter {
     }
 
     public CharSequence convert(ResponseDTO.ResultCode resultCode) {
-        if (resultCode == null) {
+        if (resultCode == null || resultCode == ResponseDTO.ResultCode.CANCELLED) {
             return null;
         } else if (resultCode == ResponseDTO.ResultCode.SUCCESS) {
             return null;
