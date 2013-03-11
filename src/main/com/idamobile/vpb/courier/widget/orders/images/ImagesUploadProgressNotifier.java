@@ -112,16 +112,14 @@ public class ImagesUploadProgressNotifier {
             if (orderImages != null) {
                 for (ImageInfo imageInfo : orderImages.getImages()) {
                     if (!uploadingFound && imageInfo.isUploading()) {
-                        String message = context.getString(R.string.upload_progress_dialog_message_format,
-                                order.getImageType(imageInfo.getTypeId()).getDescription(),
-                                order.getClientAddress());
+                        int progress = (int) (imageInfo.getUploadedBytes() * 100 / imageInfo.getTotalBytes());
+                        String message = context.getString(
+                                R.string.upload_progress_notification_message_format, progress);
                         builder.setContentText(message);
                         if (imageInfo.getTotalBytes() == 0) {
                             builder.setProgress(0, 0, true);
                         } else {
-                            builder.setProgress(100,
-                                    (int) (imageInfo.getUploadedBytes() * 100 / imageInfo.getTotalBytes()),
-                                    false);
+                            builder.setProgress(100, progress, false);
                         }
                         uploadingFound = true;
                     }
@@ -133,7 +131,7 @@ public class ImagesUploadProgressNotifier {
             }
         }
 
-        String title = context.getString(R.string.upload_progress_dialog_title_format, totalImages);
+        String title = context.getString(R.string.upload_progress_notification_title_format, totalImages);
         builder.setContentTitle(title);
         if (!uploadingFound) {
             builder.setProgress(0, 0, true);

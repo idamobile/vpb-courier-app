@@ -129,4 +129,7 @@
 
     <string name="uploaded_result_format">Отправлено %1$d из %2$d</string>
 
+    <string name="upload_progress_notification_title_format">Осталось отправить %d</string>
+    <string name="upload_progress_notification_message_format">Отправка %d%%</string>
+
 </resources>
