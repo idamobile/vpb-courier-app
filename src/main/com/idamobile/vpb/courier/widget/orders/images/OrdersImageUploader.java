@@ -16,6 +16,7 @@ import com.idamobile.vpb.courier.model.OrderStatus;
 import com.idamobile.vpb.courier.network.core.*;
 import com.idamobile.vpb.courier.network.images.ImageInfo;
 import com.idamobile.vpb.courier.network.images.OrderImages;
+import com.idamobile.vpb.courier.security.SecuredActivity;
 import com.idamobile.vpb.courier.widget.dialogs.DialogRequestListener;
 import com.idamobile.vpb.courier.widget.dialogs.ProgressDialogFactory;
 
@@ -88,6 +89,13 @@ public class OrdersImageUploader {
         watcherCallbacks.registerListener(new DialogRequestListener<RequestGroup.ModelCollection>(progressDialog));
         watcherCallbacks.registerListener(new RequestWatcherCallbacks.SimpleRequestListener<RequestGroup.ModelCollection>() {
             @Override
+            public void onStarted(Request<RequestGroup.ModelCollection> request) {
+                if (fragmentActivity instanceof SecuredActivity) {
+                    ((SecuredActivity) fragmentActivity).pauseSecurity();
+                }
+            }
+
+            @Override
             public void onSuccess(Request<RequestGroup.ModelCollection> request, ResponseDTO<RequestGroup.ModelCollection> result) {
                 RequestGroup.ModelCollection data = result.getData();
                 Map<String,ResponseDTO<?>> responseMap = data.getResponseMap();
@@ -108,6 +116,13 @@ public class OrdersImageUploader {
             @Override
             public void onError(Request<RequestGroup.ModelCollection> request, ResponseDTO<RequestGroup.ModelCollection> result) {
                 converter.showToast(result.getResultCode());
+            }
+
+            @Override
+            public void onFinished(Request<RequestGroup.ModelCollection> request) {
+                if (fragmentActivity instanceof SecuredActivity) {
+                    ((SecuredActivity) fragmentActivity).resumeSecurity();
+                }
             }
         });
     }

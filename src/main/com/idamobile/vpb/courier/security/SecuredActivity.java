@@ -58,4 +58,12 @@ public class SecuredActivity extends BaseActivity {
         super.onPause();
         securityManager.dispatchOnPause();
     }
+
+    public void pauseSecurity() {
+        securityManager.pauseSecurity();
+    }
+
+    public void resumeSecurity() {
+        securityManager.resumeSecurity();
+    }
 }

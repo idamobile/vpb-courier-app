@@ -8,6 +8,6 @@ public class Config {
 
     public static final String HOST = "http://89.221.54.169:8668";
 
-    public static final long LOCK_SCREEN_TIMEOUT = 30000;
+    public static final long LOCK_SCREEN_TIMEOUT = 0;
 
 }

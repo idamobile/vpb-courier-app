@@ -28,6 +28,9 @@ public class SecurityManager {
     private ApplicationMediator mediator;
     private NavigationController navigationController;
 
+    private boolean paused;
+    private boolean confidenceIntervalFinished;
+
     public SecurityManager(FragmentActivity activity) {
         this.activity = activity;
         this.mediator = CoreApplication.getMediator(activity);
@@ -78,7 +81,11 @@ public class SecurityManager {
     private void openLoginDialogIfNeeded() {
         if (securityPreferences.isConfidenceIntervalWasStarted()
                 && securityPreferences.isConfidenceIntervalFinished()) {
-            openLoginDialog();
+            if (!paused) {
+                openLoginDialog();
+            } else {
+                confidenceIntervalFinished = true;
+            }
         }
         securityPreferences.stopConfidenceInterval();
     }
@@ -94,9 +101,7 @@ public class SecurityManager {
     private void openLoginDialog() {
         NotAuthorizedDialogPresenter presenter = NotAuthorizedDialogPresenter.find(activity);
         if (presenter != null && !TextUtils.isEmpty(mediator.getLoginManager().getLastLogin())) {
-            if (presenter.showNotAuthorizedDialogIfNeeded()) {
-                mediator.getNetworkManager().cleanUpSession();
-            }
+            presenter.showNotAuthorizedDialogIfNeeded();
         } else {
             closeAllAndOpenLoginActivity();
         }
@@ -109,6 +114,20 @@ public class SecurityManager {
     private void tryToSetLock() {
         if (!movementDetected && isLoggedIn()) {
             securityPreferences.startConfidenceInterval();
+        }
+    }
+
+    public void pauseSecurity() {
+        paused = true;
+    }
+
+    public void resumeSecurity() {
+        if (paused) {
+            paused = false;
+            if (confidenceIntervalFinished) {
+                openLoginDialog();
+            }
+            confidenceIntervalFinished = false;
         }
     }
 }
