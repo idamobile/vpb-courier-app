@@ -25,6 +25,7 @@ public class OrderActions {
 
     public void callClient(Order order) {
         Intent intent = Intents.createCallIntent(order.getClientPhone());
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (!Intents.startActivityIfExists(intent, context)) {
             showActivityNotFoundError(R.string.call_activity_failed);
         }
