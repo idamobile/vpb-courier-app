@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -150,8 +151,7 @@ public class AlertDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = buildDialog(savedInstanceState);
-        AlertDialog alertDialog = builder.create();
-        return alertDialog;
+        return builder.create();
     }
 
     @Override
@@ -179,6 +179,12 @@ public class AlertDialogFragment extends DialogFragment {
         boolean hasListView = getArguments().getBoolean(ATTR_HAS_LIST_VIEW, false);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                return keyCode == KeyEvent.KEYCODE_SEARCH;
+            }
+        });
         if (title != null) {
             builder.setTitle(title);
         }
@@ -220,4 +226,5 @@ public class AlertDialogFragment extends DialogFragment {
             cancelListener.onCancel(dialog);
         }
     }
+
 }

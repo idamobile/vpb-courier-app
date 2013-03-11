@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.view.KeyEvent;
 
 import java.text.NumberFormat;
 
@@ -22,6 +23,12 @@ public class ProgressDialogFragment extends DialogFragment {
         boolean spinner = getArguments().getBoolean("spinner", true);
 
         ProgressDialog dialog = new ProgressDialog(getActivity());
+        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                return keyCode == KeyEvent.KEYCODE_SEARCH;
+            }
+        });
         dialog.setProgressStyle(spinner ? ProgressDialog.STYLE_SPINNER : ProgressDialog.STYLE_HORIZONTAL);
         if (progressNumberFormat != null) {
             dialog.setProgressNumberFormat(progressNumberFormat);
