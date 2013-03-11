@@ -18,10 +18,10 @@ public class ResultCodeToMessageConverter {
             return null;
         } else if (resultCode == ResponseDTO.ResultCode.SUCCESS) {
             return null;
-        } else if (!NetworkUtils.hasInternet(context)) {
-            return context.getText(R.string.response_internet_error_msg);
         } else if (resultCode == ResponseDTO.ResultCode.UNKNOWN_ERROR) {
             return context.getString(R.string.response_unknown_error);
+        } else if (!NetworkUtils.hasInternet(context)) {
+            return context.getText(R.string.response_internet_error_msg);
         } else {
             return context.getString(R.string.response_error_msg_format, resultCode.name());
         }
