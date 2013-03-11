@@ -17,6 +17,7 @@ public class OrderActions {
 
     public void navigateToClient(Order order) {
         Intent intent = Intents.createRouteIntent(order.getClientAddress());
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (!Intents.startActivityIfExists(intent, context)) {
             showActivityNotFoundError(R.string.map_activity_failed);
         }
