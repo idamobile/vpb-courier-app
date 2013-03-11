@@ -13,6 +13,7 @@ public class RequestBlockingListener<T> {
 	private boolean interrupted;
 	private Context context;
 
+    private boolean executing;
     private volatile boolean finished = false;
 	private final Object locker = new Object();
 	
@@ -40,29 +41,45 @@ public class RequestBlockingListener<T> {
 	private void reportFinish() {
 		synchronized (locker) {
             finished = true;
+            executing = false;
 			locker.notifyAll();
 		}
 	}
-	
-	public ResponseDTO<T> execute(Request<T> request) {
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public boolean isExecuting() {
+        return executing;
+    }
+
+    public ResponseDTO<T> attach() {
+        synchronized (locker) {
+            try {
+                Logger.debug(TAG, "waiting for response...");
+                while (!finished) {
+                    locker.wait();
+                }
+                Logger.debug(TAG, "response received");
+            } catch (InterruptedException e) {
+                interrupted = true;
+                Logger.warn(TAG, "execution is interrupted", e);
+            }
+        }
+        if (cancelled) {
+            result = ResponseDTO.newFailureResponse(ResponseDTO.ResultCode.CANCELLED, "Request is cancelled");
+        }
+        return result;
+    }
+
+    public ResponseDTO<T> execute(Request<T> request) {
 		serviceListener.executeWithListener(request);
 		synchronized (locker) {
-			try {
-				Logger.debug(TAG, "waiting for response...");
-                finished = false;
-                while (!finished) {
-				    locker.wait();
-                }
-				Logger.debug(TAG, "response received");
-			} catch (InterruptedException e) {
-				interrupted = true;
-				Logger.warn(TAG, "execution is interrupted", e);
-			}
+            finished = false;
+            executing = true;
 		}
-		if (cancelled) {
-			result = ResponseDTO.newFailureResponse(ResponseDTO.ResultCode.CANCELLED, "Request is cancelled");
-		}
-		return result;
+        return attach();
 	}
 
 	public ResponseDTO<T> getResult() {
