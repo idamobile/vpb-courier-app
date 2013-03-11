@@ -2,11 +2,8 @@ package com.idamobile.vpb.courier.widget.login;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.text.Editable;
-import android.text.InputFilter;
+import android.text.*;
 import android.text.InputFilter.LengthFilter;
-import android.text.InputType;
-import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -45,10 +42,17 @@ public class PinDigitEditText extends EditText {
     }
 
     private void init() {
+        InputFilter[] oldFilters = getFilters();
+        InputFilter[] filters = new InputFilter[(oldFilters != null ? oldFilters.length : 0) + 1];
+        if (oldFilters != null) {
+            System.arraycopy(oldFilters, 0, filters, 0, filters.length - 1);
+        }
+        filters[filters.length - 1] = createNumericFilter();
+        setFilters(filters);
         setMaxLines(1);
         setCursorVisible(false);
         setGravity(Gravity.CENTER);
-        setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+        setInputType(InputType.TYPE_CLASS_PHONE);
         setTransformationMethod(new PasswordTransformationMethod());
         setMaxLength(1);
 
@@ -97,6 +101,34 @@ public class PinDigitEditText extends EditText {
                 }
             }
         });
+    }
+
+    private InputFilter createNumericFilter() {
+        return new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end,
+                                       Spanned dest, int dstart, int dend) {
+                if (source instanceof SpannableStringBuilder) {
+                    SpannableStringBuilder sourceAsSpannableBuilder = (SpannableStringBuilder)source;
+                    for (int i = end - 1; i >= start; i--) {
+                        char currentChar = source.charAt(i);
+                        if (!Character.isDigit(currentChar)) {
+                            sourceAsSpannableBuilder.delete(i, i+1);
+                        }
+                    }
+                    return source;
+                } else {
+                    StringBuilder filteredStringBuilder = new StringBuilder();
+                    for (int i = 0; i < end; i++) {
+                        char currentChar = source.charAt(i);
+                        if (Character.isDigit(currentChar)) {
+                            filteredStringBuilder.append(currentChar);
+                        }
+                    }
+                    return filteredStringBuilder.toString();
+                }
+            }
+        };
     }
 
     @Override
