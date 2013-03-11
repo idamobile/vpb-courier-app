@@ -158,8 +158,8 @@ public abstract class AbstractRequest<T> implements Request<T> {
     }
 
     @Override
-    public void cancel() {
-        if (httpRequest != null) {
+    public void cancel(boolean interrupt) {
+        if (httpRequest != null && interrupt) {
             httpRequest.abort();
         }
         cancelled = true;

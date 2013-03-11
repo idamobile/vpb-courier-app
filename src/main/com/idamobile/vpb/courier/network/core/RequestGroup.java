@@ -45,7 +45,7 @@ public class RequestGroup implements Request<RequestGroup.ModelCollection> {
             }
         }
 
-        if (aborted) {
+        if (aborted && !lastResponse.isSuccess()) {
             result = ResponseDTO.newFailureResponse(lastResponse.getResultCode(), lastResponse.getErrorMessage());
         } else {
             result = ResponseDTO.newSuccessfulResponse(modelCollection);
@@ -58,7 +58,6 @@ public class RequestGroup implements Request<RequestGroup.ModelCollection> {
             HttpContext httpContext, ModelCollection modelCollection) {
         ResponseDTO<?> resp = request.execute(mediator, httpClient, httpContext);
         modelCollection.responseMap.put(request.getRequestUuid(), resp);
-
         return resp;
     }
 
@@ -97,9 +96,9 @@ public class RequestGroup implements Request<RequestGroup.ModelCollection> {
     }
 
     @Override
-    public void cancel() {
+    public void cancel(boolean interrupt) {
         for (Request<?> request : requests) {
-            request.cancel();
+            request.cancel(interrupt);
         }
     }
 

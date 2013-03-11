@@ -27,10 +27,10 @@ public class UploadImagesRequstGroup extends RequestGroup {
     }
 
     @Override
-    public void cancel() {
+    public void cancel(boolean interrupt) {
         if (progressNotifier != null) {
             progressNotifier.cancel();
         }
-        super.cancel();
+        super.cancel(interrupt);
     }
 }

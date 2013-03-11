@@ -14,6 +14,6 @@ public interface Request<T> extends Serializable {
 	
 	String getRequestUuid();
 	
-	void cancel();
+	void cancel(boolean interrupt);
 	
 }

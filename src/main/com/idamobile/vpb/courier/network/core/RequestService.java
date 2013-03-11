@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.ResultReceiver;
+import android.util.Pair;
 import com.idamobile.vpb.courier.ApplicationMediator;
 import com.idamobile.vpb.courier.CoreApplication;
 import com.idamobile.vpb.courier.util.Logger;
@@ -30,7 +31,7 @@ public class RequestService extends Service {
 
     private NetworkManager networkManager;
 
-    private Map<String, ResultReceiver> executingRequests = new HashMap<String, ResultReceiver>();
+    private Map<String, Pair<Request<?>, ResultReceiver>> executingRequests = new HashMap<String, Pair<Request<?>, ResultReceiver>>();
 
     @SuppressWarnings("rawtypes")
     private NetworkManager.RequestListener requestListener = new NetworkManager.RequestListener() {
@@ -47,9 +48,9 @@ public class RequestService extends Service {
         }
 
         private void finishRequest(Request request, int code, Bundle result) {
-            ResultReceiver receiver = executingRequests.remove(request.getRequestUuid());
-            if (receiver != null) {
-                receiver.send(code, result);
+            Pair<Request<?>, ResultReceiver> pair = executingRequests.remove(request.getRequestUuid());
+            if (pair != null && pair.second != null) {
+                pair.second.send(code, result);
             }
             tryToStop();
         }
@@ -139,7 +140,7 @@ public class RequestService extends Service {
     protected void execute(Request<?> request, ResultReceiver receiver) {
         if (networkManager.execute(request, requestListener)) {
             Logger.debug(TAG, "executing new request " + request.getRequestUuid());
-            executingRequests.put(request.getRequestUuid(), receiver);
+            executingRequests.put(request.getRequestUuid(), new Pair<Request<?>, ResultReceiver>(request, receiver));
         } else {
             Logger.warn(TAG, "already executing request " + request.getRequestUuid());
         }
@@ -147,7 +148,10 @@ public class RequestService extends Service {
 
     protected void cancel(Request<?> request, boolean interrupt) {
         Logger.debug(TAG, "cancelling request " + request.getRequestUuid());
-        request.cancel();
+        Pair<Request<?>, ResultReceiver> pair = executingRequests.get(request.getRequestUuid());
+        if (pair != null) {
+            pair.first.cancel(interrupt);
+        }
         if (!networkManager.cancel(request, interrupt)) {
             executingRequests.remove(request.getRequestUuid());
         }

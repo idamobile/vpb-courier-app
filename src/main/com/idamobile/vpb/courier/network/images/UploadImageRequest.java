@@ -140,9 +140,11 @@ public class UploadImageRequest extends AbstractRequest<Void> {
     }
 
     @Override
-    public void cancel() {
-        super.cancel();
-        closeInputStream();
+    public void cancel(boolean interrupt) {
+        super.cancel(interrupt);
+        if (interrupt) {
+            closeInputStream();
+        }
     }
 
     @Override
