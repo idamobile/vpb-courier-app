@@ -7,12 +7,13 @@ import com.shaubert.protomapper.annotations.Field;
 import com.shaubert.protomapper.annotations.Mapper;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Mapper(protoClass = Services.UpdateOrderResponseProtobufDTO.class)
 @Data
-public class UpdateOrderResponse {
+public class UpdateOrderResponse implements Serializable {
     @Field private int orderId;
     @Field private OrderStatus newStatus;
     @Field private List<ImageType> imageTypes = new ArrayList<ImageType>();
