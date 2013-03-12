@@ -32,7 +32,7 @@
                 android:nextFocusForward="@+id/first_field"
                 android:nextFocusDown="@id/first_field"
                 android:nextFocusRight="@id/first_field"
-                android:inputType="text|textNoSuggestions"
+                android:inputType="textNoSuggestions|textVisiblePassword"
                 android:selectAllOnFocus="true"
                 android:maxLines="1"/>
 
