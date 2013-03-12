@@ -5,21 +5,34 @@ import android.content.Context;
 import android.content.IntentFilter;
 import com.idamobile.vpb.courier.ApplicationMediator;
 import com.idamobile.vpb.courier.model.CancellationReason;
+import com.idamobile.vpb.courier.model.Courier;
 import com.idamobile.vpb.courier.model.Order;
+import com.idamobile.vpb.courier.model.OrderNote;
 import com.idamobile.vpb.courier.network.core.DataHolder;
 import com.idamobile.vpb.courier.network.core.RequestService;
 import com.idamobile.vpb.courier.network.core.RequestWatcherCallbacks;
+import com.idamobile.vpb.courier.network.core.ResponseDTO;
 import com.idamobile.vpb.courier.network.orders.*;
+import com.idamobile.vpb.courier.security.crypto.CryptoStreamProvider;
+import com.idamobile.vpb.courier.security.crypto.OrderNoteFilenameMapper;
+import com.idamobile.vpb.courier.util.Files;
+import com.idamobile.vpb.courier.util.Logger;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrdersManager {
 
+    public static final String TAG = OrdersManager.class.getSimpleName();
+
     private ApplicationMediator mediator;
+    private OrderNoteFilenameMapper orderNoteFilenameMapper;
 
     public OrdersManager(ApplicationMediator mediator) {
         this.mediator = mediator;
+        this.orderNoteFilenameMapper = new OrderNoteFilenameMapper(mediator.getContext());
     }
 
     public void requestOrders(int courierId) {
@@ -104,4 +117,46 @@ public class OrdersManager {
         return mediator.getCache().getHolder(GetOrdersResponse.class);
     }
 
+    public OrderNote loadNoteFor(int orderId) {
+        DataHolder<OrderNote> noteDataHolder = getNoteDataHolder(orderId);
+        ResponseDTO.ResultCode resultCode = ResponseDTO.ResultCode.SUCCESS;
+        File noteFile = getOrderNoteFile(orderId);
+        OrderNote orderNote = new OrderNote(orderId);
+        if (noteFile.exists()) {
+            try {
+                Files.InputStreamProvider provider = new CryptoStreamProvider(mediator.getLoginManager(), noteFile);
+                orderNote.setNote(Files.readAllLines(provider));
+            } catch (IOException e) {
+                Logger.debug(TAG, "unable to load note", e);
+                resultCode = ResponseDTO.ResultCode.UNKNOWN_ERROR;
+            }
+        }
+        noteDataHolder.set(orderNote);
+        noteDataHolder.markLoaded(resultCode);
+        return orderNote;
+    }
+
+    public boolean saveNote(OrderNote note) {
+        DataHolder<OrderNote> noteDataHolder = getNoteDataHolder(note.getOrderId());
+        noteDataHolder.set(note);
+
+        File noteFile = getOrderNoteFile(note.getOrderId());
+        Files.OutputStreamProvider provider = new CryptoStreamProvider(mediator.getLoginManager(), noteFile);
+        try {
+            Files.saveAllLines(provider, note.getNote());
+            return true;
+        } catch (IOException e) {
+            Logger.debug(TAG, "unable to save note", e);
+            return false;
+        }
+    }
+
+    public DataHolder<OrderNote> getNoteDataHolder(int orderId) {
+        return mediator.getCache().getHolder(OrderNote.class, "order-id-" + orderId);
+    }
+
+    private File getOrderNoteFile(int orderId) {
+        Courier courier = mediator.getLoginManager().getCourier();
+        return orderNoteFilenameMapper.mapToFileName(courier.getId(), orderId);
+    }
 }

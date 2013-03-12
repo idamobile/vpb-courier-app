@@ -13,12 +13,11 @@ import com.idamobile.vpb.courier.model.ImageType;
 import com.idamobile.vpb.courier.model.Order;
 import com.idamobile.vpb.courier.model.OrderStatus;
 import com.idamobile.vpb.courier.network.images.ImageInfo;
-import com.idamobile.vpb.courier.security.crypto.CryptoUtil;
+import com.idamobile.vpb.courier.security.crypto.CryptoStreamProvider;
 import com.idamobile.vpb.courier.util.*;
 import lombok.Cleanup;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -169,22 +168,11 @@ public class OrderImageView {
                     }
                     size *= 2;
 
-                    Bitmaps.StreamProvider streamProvider = new Bitmaps.StreamProvider() {
-                        @Override
-                        public InputStream openStrem() throws IOException {
-                            InputStream inputStream = new FileInputStream(path);
-                            try {
-                                return CryptoUtil.getUncryptInputStream(inputStream,
-                                        mediator.getLoginManager().getSecretKey());
-                            } catch (Exception e) {
-                                throw new IOException(e.getMessage());
-                            }
-                        }
-                    };
-
+                    Files.InputStreamProvider streamProvider =
+                            new CryptoStreamProvider(mediator.getLoginManager(), new File(path));
                     int orientation = 0;
                     try {
-                        @Cleanup InputStream inputStream = streamProvider.openStrem();
+                        @Cleanup InputStream inputStream = streamProvider.openInputStream();
                         orientation = Exif.getOrientation(inputStream);
                     } catch (IOException e) {
                         Logger.debug(TAG, "failed to get orientation", e);

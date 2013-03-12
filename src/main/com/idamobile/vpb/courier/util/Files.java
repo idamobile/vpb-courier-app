@@ -2,6 +2,7 @@ package com.idamobile.vpb.courier.util;
 
 import android.content.Context;
 import android.os.Environment;
+import lombok.Cleanup;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -10,6 +11,14 @@ import java.util.List;
 public class Files {
 
     public static final String TAG = Files.class.getSimpleName();
+
+    public interface InputStreamProvider {
+        InputStream openInputStream() throws IOException;
+    }
+
+    public interface OutputStreamProvider {
+        OutputStream openOutputStream() throws IOException;
+    }
 
     public static abstract class OutputTask<T extends Closeable> {
         public void performWrite() throws IOException {
@@ -42,6 +51,14 @@ public class Files {
 
     public static File getImagesDir(Context context) {
         File dir = new File(getHomeDir(context), ".images");
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        return dir;
+    }
+
+    public static File getNotesDir(Context context) {
+        File dir = new File(getHomeDir(context), ".notes");
         if (!dir.exists()) {
             dir.mkdirs();
         }
@@ -104,5 +121,37 @@ public class Files {
                 output.write(buffer, 0, len);
             }
         }
+    }
+
+    public interface LineHanler {
+        void onLineRead(String line);
+    }
+
+    public static String readAllLines(InputStreamProvider streamProvider) throws IOException {
+        final StringBuilder builder = new StringBuilder();
+        readAllLines(streamProvider, new LineHanler() {
+            @Override
+            public void onLineRead(String line) {
+                builder.append(line).append("\n");
+            }
+        });
+        return builder.toString();
+    }
+
+    public static void readAllLines(InputStreamProvider stream, LineHanler hanler) throws IOException {
+        @Cleanup InputStream inputStream = stream.openInputStream();
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(bufferedInputStream));
+        String line = null;
+        while ((line = reader.readLine()) != null) {
+            hanler.onLineRead(line);
+        }
+    }
+
+    public static void saveAllLines(OutputStreamProvider outputStreamProvider, String text) throws IOException {
+        OutputStream outputStream = outputStreamProvider.openOutputStream();
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
+        @Cleanup BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(bufferedOutputStream));
+        writer.write(text);
     }
 }

@@ -12,10 +12,6 @@ public class Bitmaps {
 
     public static final String TAG = Bitmaps.class.getSimpleName();
 
-    public interface StreamProvider {
-        InputStream openStrem() throws IOException;
-    }
-
     public static class Size {
         public final int width;
         public final int height;
@@ -26,13 +22,13 @@ public class Bitmaps {
         }
     }
 
-    public static Bitmap loadScaledImage(StreamProvider streamProvider, int maxWidht, int maxHeight, int orientation) {
+    public static Bitmap loadScaledImage(Files.InputStreamProvider streamProvider, int maxWidht, int maxHeight, int orientation) {
         InputStream in = null;
         try {
             int inWidth = 0;
             int inHeight = 0;
 
-            in = streamProvider.openStrem();
+            in = streamProvider.openInputStream();
 
             // decode image size (decode metadata only, not the whole image)
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -52,7 +48,7 @@ public class Bitmaps {
                 int pow = log2((int) Math.ceil(scale));
                 options.inSampleSize = (int)Math.pow(2, pow);
             }
-            in = streamProvider.openStrem();
+            in = streamProvider.openInputStream();
             Bitmap tmp = BitmapFactory.decodeStream(in, null, options);
             Bitmap result = rotateBitmap(tmp, orientation);
             if (tmp != result) {

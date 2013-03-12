@@ -1,12 +1,11 @@
 package com.idamobile.vpb.courier.widget.orders;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.*;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.View;
@@ -53,6 +52,8 @@ public class OrderDetailsFragment extends Fragment {
     @ViewById(R.id.met_with_client_cancelled_button) View metWithClientCancelledButton;
     @ViewById(R.id.images_grid) ViewGroup imagesView;
     @ViewById(R.id.activate_card_button) View activateCardButton;
+    @ViewById(R.id.order_note) TextView orderNote;
+    @ViewById(R.id.edit_note_button) View editNoteButton;
     @ViewById(R.id.client_order_type) TextView orderTypeView;
     @ViewById(R.id.client_address) TextView addressView;
     @ViewById(R.id.client_metro) TextView metroView;
@@ -74,6 +75,7 @@ public class OrderDetailsFragment extends Fragment {
     private Order order;
     private OrderTimeFormatter orderTimeFormatter;
     private OrderStatusPresenter orderStatusPresenter;
+    private OrderNotePresenter orderNotePresenter;
     private OrderActions orderActions;
     private ImagesGrid imagesGrid;
     private ApplicationMediator mediator;
@@ -102,6 +104,8 @@ public class OrderDetailsFragment extends Fragment {
 
     @AfterViews
     void setup() {
+        orderNotePresenter = new OrderNotePresenter(getActivity(), orderNote, editNoteButton);
+
         imagesGrid = new ImagesGrid(imagesView, mediator);
         imagesGrid.setImageCallbacks(new OrderImageView.OrderImageImageCallbacks() {
             ImageManager imageManager = mediator.getImageManager();
@@ -202,6 +206,7 @@ public class OrderDetailsFragment extends Fragment {
     private void refreshContent() {
         refreshImages();
         if (order != null) {
+            orderNotePresenter.setOrder(order);
             getView().setVisibility(View.VISIBLE);
 
             getActivity().setTitle(
@@ -332,6 +337,7 @@ public class OrderDetailsFragment extends Fragment {
 
             @Override
             protected Boolean doInBackground(Void... params) {
+                removeFileFromDCIM();
                 try {
                     CryptoCoder.cryptFile(from, output, mediator.getLoginManager().getSecretKey());
                     return true;
@@ -340,6 +346,32 @@ public class OrderDetailsFragment extends Fragment {
                     return false;
                 } finally {
                     from.delete();
+                }
+            }
+
+            private void removeFileFromDCIM() {
+                String[] projection = new String[] { MediaStore.Images.ImageColumns.DATA,
+                        MediaStore.Images.ImageColumns.DATE_TAKEN};
+                ContentResolver contentResolver = getActivity().getContentResolver();
+                final Cursor cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        projection, null, null, MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC");
+                if (cursor != null){
+                    try {
+                        long curTime = System.currentTimeMillis();
+                        if (cursor.moveToFirst()) {
+                            do {
+                                long date = cursor.getLong(1);
+                                if (curTime - date < 30 * 1000) {
+                                    File file = new File(cursor.getString(0));
+                                    file.delete();
+                                } else {
+                                    break;
+                                }
+                            } while (cursor.moveToNext());
+                        }
+                    } finally {
+                        cursor.close();
+                    }
                 }
             }
 

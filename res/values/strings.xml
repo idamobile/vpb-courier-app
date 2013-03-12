@@ -81,6 +81,7 @@
     <string name="order_details_address_section">Адрес</string>
     <string name="order_details_time_section">Время</string>
     <string name="order_details_phone_section">Телефон</string>
+    <string name="order_details_note_section_title">Заметка</string>
 
     <string name="order_status_submitted">Документы переданы</string>
     <string name="order_status_activated">Карта активирована</string>
@@ -131,5 +132,10 @@
 
     <string name="upload_progress_notification_title_format">Осталось отправить %d</string>
     <string name="upload_progress_notification_message_format">Отправка %d%%</string>
+
+    <string name="order_note_empty"><i>Пусто</i></string>
+    <string name="order_note_dialog_edittext_hint">Текст заметки</string>
+    <string name="order_note_dialog_title">Заметка</string>
+    <string name="order_note_save_failed">Не получилось сохранить. Проверьте, что SD-карта доступна.</string>
 
 </resources>

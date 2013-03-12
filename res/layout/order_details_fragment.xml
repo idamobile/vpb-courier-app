@@ -85,6 +85,47 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/normal_padding"
                 android:paddingBottom="@dimen/small_padding"
+                android:text="@string/order_details_note_section_title"
+                android:textAppearance="@style/OrderDetailsSection"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="@dimen/normal_padding"
+                android:background="@color/order_details_sections"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/order_note"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="@dimen/normal_padding"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/order_note_empty"/>
+
+                <ImageButton
+                    android:id="@+id/edit_note_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_edit"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_padding">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/normal_padding"
+                android:paddingBottom="@dimen/small_padding"
                 android:text="@string/order_details_type_section"
                 android:textAppearance="@style/OrderDetailsSection"/>
 
