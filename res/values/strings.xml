@@ -203,5 +203,6 @@
     </string>
     <string name="about_dialog_title">О программе</string>
     <string name="about_dialog_version">Версия приложения: %s</string>
+    <string name="about_dialog_developed_by">Разработка компании iDa Mobile</string>
 
 </resources>

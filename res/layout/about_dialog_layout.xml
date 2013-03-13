@@ -6,6 +6,23 @@
     android:gravity="center_horizontal"
     android:padding="@dimen/normal_padding">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    <TextView
+        android:id="@+id/app_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/about_dialog_version"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/about_dialog_developed_by"/>
+
     <ImageView
         android:id="@+id/idalogo"
         android:layout_width="210dp"
@@ -13,11 +30,6 @@
         android:scaleType="centerInside"
         android:src="@drawable/idamobile"/>
 
-    <TextView
-        android:id="@+id/app_version"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/about_dialog_version"/>
 
     <TextView
         android:id="@+id/noun_project_reference"
