@@ -84,6 +84,17 @@ public class OrderPresenter {
 
                     metroView.setText(order.getSubway());
                     timeView.setText(timeFormatter.formatOrderTime(order));
+
+                    long curTime = System.currentTimeMillis();
+                    long orderEndTime = order.getMeetTimeTo();
+                    long timeToEnd = orderEndTime - curTime;
+                    if (timeToEnd < 30 * 60 * 1000) {
+                        Drawable hurryIcon = context.getResources().getDrawable(R.drawable.ic_hurry_2486);
+                        hurryIcon.setBounds(0, 0, hurryIcon.getIntrinsicWidth(), hurryIcon.getIntrinsicHeight());
+                        timeView.setCompoundDrawables(null, null, hurryIcon, null);
+                    } else {
+                        timeView.setCompoundDrawables(null, null, null, null);
+                    }
                     break;
                 case STATUS_DOCUMENTS_SUBMITTED:
                     uploadedImagesView.setVisibility(View.GONE);
