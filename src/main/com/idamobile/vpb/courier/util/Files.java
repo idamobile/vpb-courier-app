@@ -132,7 +132,10 @@ public class Files {
         readAllLines(streamProvider, new LineHanler() {
             @Override
             public void onLineRead(String line) {
-                builder.append(line).append("\n");
+                if (builder.length() > 0) {
+                    builder.append("\n");
+                }
+                builder.append(line);
             }
         });
         return builder.toString();

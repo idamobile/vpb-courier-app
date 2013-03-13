@@ -34,8 +34,8 @@
     <string name="order_list_activity_label">Заказы</string>
 
     <string name="refresh_menu_item">Обновить</string>
-
     <string name="upload_images_menu_title">Отправить снимки</string>
+    <string name="about_menu_item">О программе</string>
     <string name="logout_menu_title">Выйти</string>
 
     <string name="order_time_missed_format">%1$s−%2$s\n(пропущена)</string>
@@ -195,5 +195,13 @@
     <string name="text_4_final_order_completed">Молодец! С заказами на сегодня все.</string>
     <string name="text_5_final_order_completed">После такого дня пора и отдохнуть.</string>
     <string name="text_6_final_order_completed">С заказами все. Ты как всегда на высоте!</string>
+
+
+    <string name="about_dialog_icons_reference">Использованы иконки следующих авторов c Noun Project: John Caserta, Shreya
+        Chakravarty, Simon Child, Andrey Gerasimov, Matthew R. Miller, Rob Schill, Michael Rowe, Pedro Ramalho, Henry
+        Ryder, Luis Prado, Stephen JB Thomas, iconoci, Scott Lewis, James Stone, Marwa Boukarim, Sergey Shmidt.
+    </string>
+    <string name="about_dialog_title">О программе</string>
+    <string name="about_dialog_version">Версия приложения: %s</string>
 
 </resources>

@@ -19,6 +19,7 @@ import com.idamobile.vpb.courier.network.orders.GetOrdersResponse;
 import com.idamobile.vpb.courier.presenters.CourierNamePresenter;
 import com.idamobile.vpb.courier.security.SecuredActivity;
 import com.idamobile.vpb.courier.util.Versions;
+import com.idamobile.vpb.courier.widget.about.AboutFragmentDialogFactory;
 import com.idamobile.vpb.courier.widget.adapters.SectionListAdapter;
 import com.idamobile.vpb.courier.widget.adapters.SimpleIndexer;
 import com.idamobile.vpb.courier.widget.orders.*;
@@ -45,6 +46,8 @@ public class OrderListActivity extends SecuredActivity {
         }
     };
 
+    private AboutFragmentDialogFactory aboutDialog;
+
     public OrderListActivity() {
         setShouldFinishIfNotLoggedIn();
         setShouldAttachNotAuthorizedListener();
@@ -63,6 +66,8 @@ public class OrderListActivity extends SecuredActivity {
                 refreshOrders();
             }
         });
+
+        aboutDialog = new AboutFragmentDialogFactory(this, "about-dialog");
     }
 
     @Override
@@ -228,9 +233,17 @@ public class OrderListActivity extends SecuredActivity {
                 logout();
                 return true;
 
+            case R.id.about:
+                showAboutDialog();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void showAboutDialog() {
+        aboutDialog.showDialog();
     }
 
     @Override

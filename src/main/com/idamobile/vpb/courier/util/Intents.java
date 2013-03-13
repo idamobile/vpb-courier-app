@@ -42,6 +42,16 @@ public class Intents {
         return takePictureIntent;
     }
 
+    public static Intent browserIntent(String url) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        if (!url.startsWith("http")) {
+            url = "http://" + url;
+        }
+        intent.setData(Uri.parse(url));
+        return intent;
+    }
+
     public static boolean startActivityIfExists(Intent intent, Context context) {
         try {
             context.startActivity(intent);

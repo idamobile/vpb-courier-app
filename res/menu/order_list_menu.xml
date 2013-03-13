@@ -11,8 +11,13 @@
         android:icon="@drawable/ic_menu_upload"
         android:showAsAction="ifRoom"/>
     <item
+        android:id="@+id/about"
+        android:title="@string/about_menu_item"
+        android:icon="@drawable/ic_menu_about"
+        android:showAsAction="never"/>
+    <item
         android:id="@+id/logout"
         android:title="@string/logout_menu_title"
         android:icon="@drawable/ic_menu_logout"
-        android:showAsAction="ifRoom"/>
+        android:showAsAction="never"/>
 </menu>
