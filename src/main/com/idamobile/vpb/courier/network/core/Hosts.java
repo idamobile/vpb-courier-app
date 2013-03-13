@@ -8,13 +8,13 @@ public class Hosts {
 
     public static final String ORDERS_URL = addHost("courier/api/getorders");
 
-    public static final String COMPLETE_ORDER_URL = addHost("courier/api/setordercompleted");
+    public static final String COMPLETE_ORDER_URL = addHost("courier/api/completeorder");
 
     public static final String REJECT_ORDER_URL = addHost("courier/api/cancelorder");
 
     public static final String ACTIVATE_CARD_URL = addHost("courier/api/activatecard");
 
-    public static final String UPLOAD_IMAGE_URL_FORMAT = addHost("courier/api/upload?courier=%d&order=%d&image=%d");
+    public static final String UPLOAD_IMAGE_URL_FORMAT = addHost("courier/api/uploadimage/%d/%d/%d");
 
     public static String getUploadImageUrl(int courierId, int orderId, int imageTypeId) {
         return String.format(UPLOAD_IMAGE_URL_FORMAT, courierId, orderId, imageTypeId);
