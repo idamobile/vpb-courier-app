@@ -1,6 +1,7 @@
 package com.idamobile.vpb.courier;
 
 import android.content.Context;
+import com.idamobile.vpb.courier.controllers.AwardManager;
 import com.idamobile.vpb.courier.controllers.ImageManager;
 import com.idamobile.vpb.courier.controllers.LoginManager;
 import com.idamobile.vpb.courier.controllers.OrdersManager;
@@ -22,6 +23,7 @@ public class ApplicationMediator {
     private OrdersManager ordersManager;
     private ImageManager imageManager;
     private ImagesUploadProgressNotifier progressNotifier;
+    private AwardManager awardManager;
 
     public ApplicationMediator(Context ctx) {
         context = ctx;
@@ -30,6 +32,7 @@ public class ApplicationMediator {
         ordersManager = new OrdersManager(this);
         imageManager = new ImageManager(this);
         progressNotifier = new ImagesUploadProgressNotifier(this);
+        awardManager = new AwardManager(this);
 
         cache = new DefaultCache(context, new DefaultFullNameMapper());
     }
@@ -66,5 +69,9 @@ public class ApplicationMediator {
 
     public ImagesUploadProgressNotifier getProgressNotifier() {
         return progressNotifier;
+    }
+
+    public AwardManager getAwardManager() {
+        return awardManager;
     }
 }

@@ -113,7 +113,7 @@
     <string name="confirm_submit_dialog_message_format">Встреча состоялась. Клиент подтвердил желание выпустить карту.\nКлиент резидент: %1$s\nВносились правки: %2$s</string>
 
     <string name="met_result_documents_ok">Документы в порядке</string>
-    <string name="met_result_cannot_bi_signed">Договор не может быть подписан</string>
+    <string name="met_result_cannot_be_signed">Договор не может быть подписан</string>
 
     <string name="client_resident_option">Клиент является резидентом</string>
     <string name="marks_option">Вносились правки</string>
@@ -137,5 +137,63 @@
     <string name="order_note_dialog_edittext_hint">Текст заметки</string>
     <string name="order_note_dialog_title">Заметка</string>
     <string name="order_note_save_failed">Не получилось сохранить. Проверьте, что SD-карта доступна.</string>
+
+
+    <string name="text_1_client_did_not_answer_the_phone">«Катя, возьми телефон. Это он, это он…»</string>
+    <string name="text_2_client_did_not_answer_the_phone">Доставим тому, кто отвечает на звонки.</string>
+    <string name="text_3_client_did_not_answer_the_phone">Что же он трубку не берет.</string>
+
+    <string name="text_client_fault">Ну хорошо, одним заказом меньше.</string>
+    <string name="text_client_would_cry">Клиент же будет плакать без карты.</string>
+
+    <string name="text_1_client_missed_meeting">Клиент, ты где? Ау-у!</string>
+    <string name="text_2_client_missed_meeting">Ох уж эти пунктуальные клиенты.</string>
+
+    <string name="text_1_courier_missed_meeting">Ну ничего, всякое бывает.</string>
+    <string name="text_2_courier_missed_meeting">Другие заказы не пропустим.</string>
+    <string name="text_3_courier_missed_meeting">Ладно, займемся другими заказами.</string>
+    <string name="text_4_courier_missed_meeting">С кем не бывает.</string>
+
+    <string name="text_1_client_forgot_passport">В школе бы ему сказали: «а голову ты не забыл?».</string>
+    <string name="text_2_client_forgot_passport">Человек рассеянный с улицы бассейной.</string>
+
+    <string name="text_1_client_rejected_order">Не понимают от чего отказываются.</string>
+    <string name="text_2_client_rejected_order">Назакажут, а потом отказываются.</string>
+
+    <string name="text_1_agreement_can_not_be_signed">ОК. Поехали дальше.</string>
+
+    <string-array name="award_positive">
+        <item>Отлично сработано!</item>
+        <item>Здорово у тебя выходит!</item>
+        <item>Ты сегодня в ударе!</item>
+        <item>Отлично сработано!</item>
+        <item>За такую работу должны премии давать.</item>
+        <item>Еще одна успешная доставка!</item>
+        <item>Как у тебя ловко получается.</item>
+        <item>С тобой приятно работать.</item>
+        <item>Клиент должен прыгать от счастья.</item>
+        <item>Супер! Так держать.</item>
+        <item>Не работник, а золото.</item>
+        <item>Космическая доставка!</item>
+        <item>Великолепно!</item>
+        <item>Я тобой горжусь.</item>
+        <item>Ты лучший курьер, с кем я работал.</item>
+        <item>Хорошая работа!</item>
+        <item>Круто наблюдать твою работу.</item>
+        <item>То, что надо!</item>
+        <item>Это была классная работа.</item>
+        <item>Круто, дай пять!</item>
+        <item>Это называется прекрасной доставкой.</item>
+        <item>Ты, наверное, долго практиковался.</item>
+        <item>Большое тебе спасибо.</item>
+        <item>Настоящий мастер доставки.</item>
+    </string-array>
+
+    <string name="text_1_final_order_completed">Это была последняя доставка на сегодня!</string>
+    <string name="text_2_final_order_completed">Расправился с последним заказом!</string>
+    <string name="text_3_final_order_completed">Шикарно! Это была последняя доставка.</string>
+    <string name="text_4_final_order_completed">Молодец! С заказами на сегодня все.</string>
+    <string name="text_5_final_order_completed">После такого дня пора и отдохнуть.</string>
+    <string name="text_6_final_order_completed">С заказами все. Ты как всегда на высоте!</string>
 
 </resources>

@@ -3,8 +3,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/large_padding"
-    android:paddingRight="@dimen/large_padding">
+    android:paddingLeft="@dimen/normal_padding"
+    android:paddingRight="@dimen/normal_padding">
 
     <EditText
         android:id="@+id/order_note"

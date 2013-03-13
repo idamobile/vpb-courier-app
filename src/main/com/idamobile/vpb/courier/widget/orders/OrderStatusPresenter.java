@@ -7,8 +7,10 @@ import android.widget.ArrayAdapter;
 import com.idamobile.vpb.courier.ApplicationMediator;
 import com.idamobile.vpb.courier.CoreApplication;
 import com.idamobile.vpb.courier.R;
+import com.idamobile.vpb.courier.controllers.AwardManager;
 import com.idamobile.vpb.courier.model.CancellationReason;
 import com.idamobile.vpb.courier.model.Order;
+import com.idamobile.vpb.courier.model.OrderStatus;
 import com.idamobile.vpb.courier.network.core.Request;
 import com.idamobile.vpb.courier.network.core.RequestWatcherCallbacks;
 import com.idamobile.vpb.courier.network.core.ResponseDTO;
@@ -67,6 +69,17 @@ public class OrderStatusPresenter {
                 fragmentActivity, "order-status-update", savedInstanceState);
         updateOrderCallbacks.registerListener(new RequestWatcherCallbacks.SimpleRequestListener<UpdateOrderResponse>(){
             @Override
+            public void onSuccess(Request<UpdateOrderResponse> request, ResponseDTO<UpdateOrderResponse> result) {
+                AwardManager awardManager = mediator.getAwardManager();
+                OrderStatus newStatus = result.getData().getNewStatus();
+                if (newStatus == OrderStatus.STATUS_DOCUMENTS_SUBMITTED) {
+                    awardManager.onOrderCompleted();
+                } else if (newStatus == OrderStatus.STATUS_DOCUMENTS_NOT_SUBMITTED) {
+                    awardManager.onOrderCancelled(cancellationReason, metWithClient);
+                }
+            }
+
+            @Override
             public void onError(Request<UpdateOrderResponse> request, ResponseDTO<UpdateOrderResponse> result) {
                 messageConverter.showToast(result.getResultCode());
             }
@@ -108,7 +121,7 @@ public class OrderStatusPresenter {
 
         String[] metResultVariants = {
                 fragmentActivity.getString(R.string.met_result_documents_ok),
-                fragmentActivity.getString(R.string.met_result_cannot_bi_signed),
+                fragmentActivity.getString(R.string.met_result_cannot_be_signed),
                 fragmentActivity.getString(R.string.client_rejected_order)
         };
         ArrayAdapter<String> metResultAdapter = new ArrayAdapter<String>(fragmentActivity,
