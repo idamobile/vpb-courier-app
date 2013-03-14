@@ -68,7 +68,7 @@ public class TestHttpClient implements HttpClient {
     }
 
     private boolean isUploadImageUrl(String url) {
-        String uploadUrl = Hosts.UPLOAD_IMAGE_URL_FORMAT.substring(0, Hosts.UPLOAD_IMAGE_URL_FORMAT.indexOf("?"));
+        String uploadUrl = Hosts.UPLOAD_IMAGE_URL_FORMAT.substring(0, Hosts.UPLOAD_IMAGE_URL_FORMAT.indexOf("/%"));
         return url.startsWith(uploadUrl);
     }
 
