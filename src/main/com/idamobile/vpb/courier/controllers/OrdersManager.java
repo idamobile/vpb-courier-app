@@ -4,14 +4,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
 import com.idamobile.vpb.courier.ApplicationMediator;
-import com.idamobile.vpb.courier.model.CancellationReason;
-import com.idamobile.vpb.courier.model.Courier;
-import com.idamobile.vpb.courier.model.Order;
-import com.idamobile.vpb.courier.model.OrderNote;
+import com.idamobile.vpb.courier.model.*;
 import com.idamobile.vpb.courier.network.core.DataHolder;
 import com.idamobile.vpb.courier.network.core.RequestService;
 import com.idamobile.vpb.courier.network.core.RequestWatcherCallbacks;
 import com.idamobile.vpb.courier.network.core.ResponseDTO;
+import com.idamobile.vpb.courier.network.login.LoginResponse;
 import com.idamobile.vpb.courier.network.orders.*;
 import com.idamobile.vpb.courier.security.crypto.CryptoStreamProvider;
 import com.idamobile.vpb.courier.security.crypto.OrderNoteFilenameMapper;
@@ -158,5 +156,32 @@ public class OrdersManager {
     private File getOrderNoteFile(int orderId) {
         Courier courier = mediator.getLoginManager().getCourier();
         return orderNoteFilenameMapper.mapToFileName(courier.getId(), orderId);
+    }
+
+    public int getTotalCompletedOrders() {
+        LoginResponse loginResponse = mediator.getCache().getHolder(LoginResponse.class).get();
+        Courier courier = loginResponse != null ? loginResponse.getCourierInfo() : null;
+        int totalCount = courier != null ? courier.getCompletedOrders() : 0;
+        long lastCourierInfoUpdateTime = mediator.getLoginManager().getLastLoginTime();
+        for (Order order : getOrders()) {
+            if (order.getStatus() == OrderStatus.STATUS_ACTIVATED
+                    || order.getStatus() == OrderStatus.STATUS_DOCUMENTS_SUBMITTED) {
+                if (order.getStatusUpdateTime() > lastCourierInfoUpdateTime) {
+                    totalCount++;
+                }
+            }
+        }
+        return totalCount;
+    }
+
+    public int getCompletedTodayOrfersCount() {
+        int todayCount = 0;
+        for (Order order : getOrders()) {
+            if (order.getStatus() == OrderStatus.STATUS_ACTIVATED
+                    || order.getStatus() == OrderStatus.STATUS_DOCUMENTS_SUBMITTED) {
+                todayCount++;
+            }
+        }
+        return todayCount;
     }
 }

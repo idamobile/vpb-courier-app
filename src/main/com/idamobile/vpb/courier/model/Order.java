@@ -27,6 +27,8 @@ public class Order implements Serializable {
     @Field(optional = true) private ProtoMap attributes = new ProtoMap();
     @Field private List<ImageType> imageTypes = new ArrayList<ImageType>();
 
+    private long statusUpdateTime;
+
     public String getFullName() {
         StringBuffer buffer = new StringBuffer();
         buffer.append(clientSecondName)

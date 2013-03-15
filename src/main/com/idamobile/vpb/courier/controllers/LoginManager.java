@@ -30,6 +30,8 @@ public class LoginManager {
     private SecretKeySpec cryptoKey;
     private CryptoPreferences cryptoPreferences;
 
+    private long lastLoginTime;
+
     public LoginManager(ApplicationMediator mediator) {
         this.mediator = mediator;
         this.loginPreference = new LoginPreference(PreferenceManager.getDefaultSharedPreferences(mediator.getContext()));
@@ -52,6 +54,14 @@ public class LoginManager {
         } else {
             RequestService.execute(mediator.getContext(), loginRequest);
         }
+    }
+
+    public long getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public void setLastLoginTime(long lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
     }
 
     public boolean isLoggedIn() {

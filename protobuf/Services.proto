@@ -20,6 +20,7 @@ message CourierProtobufDTO {
     required string firstName = 1;
     required string lastName = 2;
     required int32 id = 3;
+    required int32 completedOrders = 4;
 }
 
 message LoginResponseProtobufDTO {

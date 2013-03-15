@@ -38,13 +38,18 @@ public class DefaultLoaderCallback<Q> implements LoaderCallback<Q> {
         DataHolder<Q> holder = getHolder(mediator);
         holder.beginUpdate();
         if (response.isSuccess()) {
-            holder.set(response.getData());
-            onSuccess(request, response.getData(), mediator);
+            Q result = mergeResult(holder.get(), response.getData());
+            holder.set(result);
+            onSuccess(request, result, mediator);
         } else {
             onError(request, response, mediator);
         }
         holder.markLoaded(response.getResultCode());
         holder.endUpdate();
+    }
+
+    protected Q mergeResult(Q oldData, Q newData) {
+        return newData;
     }
 
     protected void onError(Request<Q> request, ResponseDTO<Q> response, ApplicationMediator mediator) {

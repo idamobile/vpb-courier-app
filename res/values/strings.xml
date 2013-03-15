@@ -31,7 +31,7 @@
     <string name="login_dialog_logout_button">Завершить сеанс</string>
 
     <!-- OrderList Activity -->
-    <string name="order_list_activity_label">Заказы</string>
+    <string name="order_list_activity_label">Встречи на сегодня</string>
 
     <string name="refresh_menu_item">Обновить</string>
     <string name="upload_images_menu_title">Отправить снимки</string>
@@ -138,6 +138,7 @@
     <string name="order_note_dialog_title">Заметка</string>
     <string name="order_note_save_failed">Не получилось сохранить. Проверьте, что SD-карта доступна.</string>
 
+    <!-- Awards -->
 
     <string name="text_1_client_did_not_answer_the_phone">«Катя, возьми телефон. Это он, это он…»</string>
     <string name="text_2_client_did_not_answer_the_phone">Доставим тому, кто отвечает на звонки.</string>
@@ -145,6 +146,8 @@
 
     <string name="text_client_fault">Ну хорошо, одним заказом меньше.</string>
     <string name="text_client_would_cry">Клиент же будет плакать без карты.</string>
+    <string name="text_first_completed_order">Поздравляю с первой успешной доставкой!</string>
+    <string name="text_award_unlocked">Поздравляю с новым достижением! %d успешных доставок!</string>
 
     <string name="text_1_client_missed_meeting">Клиент, ты где? Ау-у!</string>
     <string name="text_2_client_missed_meeting">Ох уж эти пунктуальные клиенты.</string>
@@ -196,6 +199,10 @@
     <string name="text_5_final_order_completed">После такого дня пора и отдохнуть.</string>
     <string name="text_6_final_order_completed">С заказами все. Ты как всегда на высоте!</string>
 
+    <string name="courier_completed_orders_label">Успешных доставок</string>
+    <string name="courier_completed_orders_today_label">За сегодня</string>
+
+    <!-- About Dialog -->
 
     <string name="about_dialog_icons_reference">Использованы иконки следующих авторов c Noun Project: John Caserta, Shreya
         Chakravarty, Simon Child, Andrey Gerasimov, Matthew R. Miller, Rob Schill, Michael Rowe, Pedro Ramalho, Henry

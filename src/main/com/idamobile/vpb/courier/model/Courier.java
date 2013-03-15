@@ -12,4 +12,5 @@ public @Data class Courier implements Serializable {
     private @Field String firstName;
     private @Field String lastName;
     private @Field int id;
+    private @Field int completedOrders;
 }

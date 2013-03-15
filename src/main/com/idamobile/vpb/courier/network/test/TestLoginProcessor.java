@@ -8,8 +8,11 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 
 import java.io.IOException;
+import java.util.Random;
 
 public class TestLoginProcessor extends AbstractHttpRequestProcessor {
+
+    private Random random = new Random();
 
     @Override
     public HttpResponse process(HttpUriRequest request) throws IOException {
@@ -37,6 +40,7 @@ public class TestLoginProcessor extends AbstractHttpRequestProcessor {
         courier.setFirstName("Яков");
         courier.setLastName("Подшабашник");
         courier.setId(1);
+        courier.setCompletedOrders(0);//random.nextInt(1000));
         return courier;
     }
 

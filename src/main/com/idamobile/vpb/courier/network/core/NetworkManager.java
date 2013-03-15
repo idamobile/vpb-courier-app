@@ -23,8 +23,6 @@ public class NetworkManager {
         void onCancelled(Request<T> request);
     }
 
-    private String bankId;
-
     private HttpContext httpContext;
     private HttpClient httpClient;
     private CookieStore cookieStore;

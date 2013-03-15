@@ -13,24 +13,24 @@ import com.idamobile.vpb.courier.R;
 import com.idamobile.vpb.courier.model.Courier;
 import com.idamobile.vpb.courier.network.login.LoginResponse;
 
-public class CourierNamePresenter extends Fragment {
+public class CourierNamePresenterFragment extends Fragment {
 
-    public static final String TAG = CourierNamePresenter.class.getSimpleName();
+    public static final String TAG = CourierNamePresenterFragment.class.getSimpleName();
 
     private ApplicationMediator mediator;
     private boolean registered;
     private BroadcastReceiver loginListener = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            refreshName();
+            refresh();
         }
     };
 
-    public static CourierNamePresenter attach(FragmentActivity fragmentActivity) {
+    public static CourierNamePresenterFragment attach(FragmentActivity fragmentActivity) {
         FragmentManager manager = fragmentActivity.getSupportFragmentManager();
-        CourierNamePresenter presenter = find(fragmentActivity);
+        CourierNamePresenterFragment presenter = find(fragmentActivity);
         if (presenter == null) {
-            presenter = new CourierNamePresenter();
+            presenter = new CourierNamePresenterFragment();
             manager.beginTransaction()
                     .add(presenter, TAG)
                     .commit();
@@ -38,9 +38,9 @@ public class CourierNamePresenter extends Fragment {
         return presenter;
     }
 
-    public static CourierNamePresenter find(FragmentActivity fragmentActivity) {
+    public static CourierNamePresenterFragment find(FragmentActivity fragmentActivity) {
         FragmentManager manager = fragmentActivity.getSupportFragmentManager();
-        return (CourierNamePresenter) manager.findFragmentByTag(TAG);
+        return (CourierNamePresenterFragment) manager.findFragmentByTag(TAG);
     }
 
     @Override
@@ -49,14 +49,19 @@ public class CourierNamePresenter extends Fragment {
         mediator = CoreApplication.getMediator(getActivity());
     }
 
-    private void refreshName() {
+    private void refresh() {
         LoginResponse loginResponse = mediator.getCache().getHolder(LoginResponse.class).get();
         if (loginResponse == null || loginResponse.getCourierInfo() == null) {
             getActivity().setTitle(R.string.order_list_activity_label);
         } else {
             Courier courierInfo = loginResponse.getCourierInfo();
-            getActivity().setTitle(getString(R.string.order_list_activity_label)
-                    + " (" + courierInfo.getFirstName() + " " + courierInfo.getLastName() + ")");
+            StringBuilder builder = new StringBuilder(getString(R.string.order_list_activity_label));
+            builder.append(" (")
+                    .append(courierInfo.getFirstName())
+                    .append(" ")
+                    .append(courierInfo.getLastName())
+                    .append(")");
+            getActivity().setTitle(builder);
         }
     }
 
@@ -64,7 +69,7 @@ public class CourierNamePresenter extends Fragment {
     public void onResume() {
         super.onResume();
         registerListener();
-        refreshName();
+        refresh();
     }
 
     private void registerListener() {

@@ -16,14 +16,16 @@ import com.idamobile.vpb.courier.model.Order;
 import com.idamobile.vpb.courier.navigation.ExtrasBuilder;
 import com.idamobile.vpb.courier.network.core.DataHolder;
 import com.idamobile.vpb.courier.network.orders.GetOrdersResponse;
-import com.idamobile.vpb.courier.presenters.CourierNamePresenter;
 import com.idamobile.vpb.courier.security.SecuredActivity;
 import com.idamobile.vpb.courier.util.Versions;
 import com.idamobile.vpb.courier.widget.about.AboutFragmentDialogFactory;
 import com.idamobile.vpb.courier.widget.adapters.SectionListAdapter;
 import com.idamobile.vpb.courier.widget.adapters.SimpleIndexer;
+import com.idamobile.vpb.courier.widget.courier.CourierInfoViewPresenter;
 import com.idamobile.vpb.courier.widget.orders.*;
 import com.idamobile.vpb.courier.widget.orders.images.OrdersImageUploader;
+
+import java.util.List;
 
 @EActivity(value = R.layout.order_list_activity)
 public class OrderListActivity extends SecuredActivity {
@@ -47,6 +49,7 @@ public class OrderListActivity extends SecuredActivity {
     };
 
     private AboutFragmentDialogFactory aboutDialog;
+    private CourierInfoViewPresenter courierInfoViewPresenter;
 
     public OrderListActivity() {
         setShouldFinishIfNotLoggedIn();
@@ -79,8 +82,6 @@ public class OrderListActivity extends SecuredActivity {
 
     @AfterViews
     void setup() {
-        CourierNamePresenter.attach(this);
-
         ordersAdapter = new SectionListAdapter<Order>() {
             @Override
             protected View createNormalView(Order item, ViewGroup parent, LayoutInflater inflater) {
@@ -105,12 +106,14 @@ public class OrderListActivity extends SecuredActivity {
             }
         }, ordersAdapter));
 
+        courierInfoViewPresenter = new CourierInfoViewPresenter(this, orderList);
+        orderList.addHeaderView(courierInfoViewPresenter.getView(), null, false);
         orderList.setAdapter(ordersAdapter);
 
         orderList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Object item = orderList.getItemAtPosition(position);
+                Object item = orderList.getItemAtPosition(position - orderList.getHeaderViewsCount());
                 if (item instanceof Order) {
                     return createOrdersActionMode((Order) item);
                 } else {
@@ -121,7 +124,7 @@ public class OrderListActivity extends SecuredActivity {
         orderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Object item = ordersAdapter.getItem(position);
+                Object item = ordersAdapter.getItem(position - orderList.getHeaderViewsCount());
                 if (item instanceof Order) {
                     int orderId = ((Order) item).getId();
                     Bundle extras = ExtrasBuilder.orderDetailsBundle(orderId);
@@ -129,7 +132,6 @@ public class OrderListActivity extends SecuredActivity {
                 }
             }
         });
-        orderList.setEmptyView(emptyView);
 
         if (!Versions.hasHoneycombApi()) {
             registerForContextMenu(orderList);
@@ -164,6 +166,7 @@ public class OrderListActivity extends SecuredActivity {
         super.onResume();
         getMediator().getOrdersManager().registerForOrders(this, ordersWatcher);
         refreshOrders();
+        courierInfoViewPresenter.resume();
         imageUploader.onResume();
     }
 
@@ -172,6 +175,7 @@ public class OrderListActivity extends SecuredActivity {
         super.onPause();
         unregisterReceiver(ordersWatcher);
         imageUploader.onPause();
+        courierInfoViewPresenter.pause();
     }
 
     private void refreshOrders() {
@@ -184,7 +188,9 @@ public class OrderListActivity extends SecuredActivity {
         } else {
             progress.setVisibility(View.GONE);
             orderList.setVisibility(View.VISIBLE);
-            ordersAdapter.replaceAll(ordersManager.getOrders());
+            List<Order> orders = ordersManager.getOrders();
+            ordersAdapter.replaceAll(orders);
+            emptyView.setVisibility(orders.isEmpty() ? View.VISIBLE : View.GONE);
         }
     }
 

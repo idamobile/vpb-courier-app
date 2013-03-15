@@ -2,6 +2,7 @@ package com.idamobile.vpb.courier.widget.orders.awards;
 
 import android.content.Context;
 import com.idamobile.vpb.courier.R;
+import com.idamobile.vpb.courier.controllers.AwardManager;
 import com.idamobile.vpb.courier.model.CancellationReason;
 import lombok.Data;
 
@@ -51,9 +52,12 @@ public class AwardMessages {
     private final Context context;
     private final Random random;
 
-    public AwardMessages(Context context) {
+    private AwardManager.MedalDispenser medalDispenser;
+
+    public AwardMessages(Context context, AwardManager.MedalDispenser medalDispenser) {
         this.context = context;
         this.random = new Random();
+        this.medalDispenser = medalDispenser;
 
         this.POSITIVE_TEXTS = context.getResources().getStringArray(R.array.award_positive);
         this.FINAL_ORDER_POSITIVE_TEXTS = new int[] {
@@ -106,9 +110,18 @@ public class AwardMessages {
         return new Message(imageId, message);
     }
 
-    public Message getPositiveMessage() {
+    public Message getPositiveMessage(int totalCompleted) {
         int imageId = POSITIVE_IMAGES[random.nextInt(POSITIVE_IMAGES.length)];
-        CharSequence message = POSITIVE_TEXTS[random.nextInt(POSITIVE_TEXTS.length)];
+        final CharSequence message;
+        if (totalCompleted == 1) {
+            message = context.getString(R.string.text_first_completed_order);
+            imageId = R.drawable.new_award;
+        } else if (medalDispenser.isNewAchievementUnlocked(totalCompleted)) {
+            message = context.getString(R.string.text_award_unlocked, totalCompleted);
+            imageId = R.drawable.new_award;
+        } else {
+            message = POSITIVE_TEXTS[random.nextInt(POSITIVE_TEXTS.length)];
+        }
         return new Message(imageId, message);
     }
 
