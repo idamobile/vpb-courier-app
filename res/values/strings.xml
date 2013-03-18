@@ -138,6 +138,8 @@
     <string name="order_note_dialog_title">Заметка</string>
     <string name="order_note_save_failed">Не получилось сохранить. Проверьте, что SD-карта доступна.</string>
 
+    <string name="you_should_take_pictures_first">Сперва сделайте все фотографии</string>
+
     <!-- Awards -->
 
     <string name="text_client_would_cry">Клиент же будет плакать без карты.</string>

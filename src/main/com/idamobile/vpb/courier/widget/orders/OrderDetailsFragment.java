@@ -21,6 +21,7 @@ import com.idamobile.vpb.courier.R;
 import com.idamobile.vpb.courier.controllers.ImageManager;
 import com.idamobile.vpb.courier.model.ImageType;
 import com.idamobile.vpb.courier.model.Order;
+import com.idamobile.vpb.courier.model.OrderStatus;
 import com.idamobile.vpb.courier.model.ProtoMapEntry;
 import com.idamobile.vpb.courier.navigation.ExtrasBuilder;
 import com.idamobile.vpb.courier.network.images.ImageInfo;
@@ -149,9 +150,17 @@ public class OrderDetailsFragment extends Fragment {
         activateCardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                orderStatusPresenter.activateCard(order);
+                if (canActivateCard()) {
+                    orderStatusPresenter.activateCard(order);
+                } else {
+                    showYouCantActivateCardMessage();
+                }
             }
         });
+    }
+
+    private void showYouCantActivateCardMessage() {
+        Toast.makeText(getActivity(), R.string.you_should_take_pictures_first, Toast.LENGTH_SHORT).show();
     }
 
     private void restoreOrder(Bundle savedInstanceState) {
@@ -203,6 +212,17 @@ public class OrderDetailsFragment extends Fragment {
         }
     }
 
+    private boolean canActivateCard() {
+        if (order != null) {
+            if (order.getStatus() == OrderStatus.STATUS_DOCUMENTS_SUBMITTED) {
+                if (orderHasAllPictures()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private void refreshContent() {
         refreshImages();
         if (order != null) {
@@ -223,11 +243,6 @@ public class OrderDetailsFragment extends Fragment {
                     orderActionButtons.setVisibility(View.GONE);
                     activateCardButton.setVisibility(View.VISIBLE);
                     statusView.setText(R.string.order_status_submitted);
-                    if (orderHasAllPictures()) {
-                        activateCardButton.setEnabled(true);
-                    } else {
-                        activateCardButton.setEnabled(false);
-                    }
                     break;
                 case STATUS_ACTIVATED:
                     orderActionButtons.setVisibility(View.GONE);
