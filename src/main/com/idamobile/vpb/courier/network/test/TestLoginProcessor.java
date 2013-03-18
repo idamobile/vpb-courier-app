@@ -40,7 +40,7 @@ public class TestLoginProcessor extends AbstractHttpRequestProcessor {
         courier.setFirstName("Яков");
         courier.setLastName("Подшабашник");
         courier.setId(1);
-        courier.setCompletedOrders(0);//random.nextInt(1000));
+        courier.setCompletedOrders(random.nextInt(1000));
         return courier;
     }
 

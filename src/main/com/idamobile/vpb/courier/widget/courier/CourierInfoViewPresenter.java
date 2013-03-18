@@ -136,7 +136,11 @@ public class CourierInfoViewPresenter {
         }
         int MEDAL_SIZE = medals.get(0).getMedalBitmap().getWidth();
 
-        int rowsCount = (medals.size() / AWARDS_IN_A_ROW + 1);
+        int rowsCount = (medals.size() / AWARDS_IN_A_ROW);
+        if (medals.size() != rowsCount * AWARDS_IN_A_ROW) {
+            rowsCount++;
+        }
+
         Bitmap result = Bitmap.createBitmap(AWARDS_IN_A_ROW * MEDAL_SIZE + (AWARDS_IN_A_ROW - 1) * AWARD_OFFSET,
                 MEDAL_SIZE * rowsCount + AWARD_OFFSET * (rowsCount - 1), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
