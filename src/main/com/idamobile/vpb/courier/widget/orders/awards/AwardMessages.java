@@ -71,35 +71,48 @@ public class AwardMessages {
         this.NEGATIVE_TEXTS = new HashMap<CancellationReason, int[]>();
 
         NEGATIVE_TEXTS.put(CancellationReason.AGREEMENT_CAN_NOT_BE_SIGNED, new int[]{
-                R.string.text_1_agreement_can_not_be_signed,
+                R.string.text_1_delivery_failed,
+                R.string.text_2_delivery_failed,
+                R.string.text_3_delivery_failed,
+                R.string.text_4_delivery_failed,
         });
         NEGATIVE_TEXTS.put(CancellationReason.CLIENT_REJECTED_ORDER, new int[]{
                 R.string.text_1_client_rejected_order,
-                R.string.text_2_client_rejected_order,
-                R.string.text_client_fault,
+                R.string.text_1_delivery_failed,
+                R.string.text_2_delivery_failed,
+                R.string.text_3_delivery_failed,
+                R.string.text_4_delivery_failed,
         });
         NEGATIVE_TEXTS.put(CancellationReason.CLIENT_FORGOT_PASSPORT, new int[]{
                 R.string.text_1_client_forgot_passport,
-                R.string.text_2_client_forgot_passport,
+                R.string.text_1_delivery_failed,
+                R.string.text_2_delivery_failed,
+                R.string.text_3_delivery_failed,
+                R.string.text_4_delivery_failed,
         });
         NEGATIVE_TEXTS.put(CancellationReason.CLIENT_DID_NOT_ANSWER_THE_PHONE, new int[]{
                 R.string.text_1_client_did_not_answer_the_phone,
-                R.string.text_2_client_did_not_answer_the_phone,
-                R.string.text_3_client_did_not_answer_the_phone,
-                R.string.text_client_fault,
+                R.string.text_1_delivery_failed,
+                R.string.text_2_delivery_failed,
+                R.string.text_3_delivery_failed,
+                R.string.text_4_delivery_failed,
                 R.string.text_client_would_cry,
         });
         NEGATIVE_TEXTS.put(CancellationReason.CLIENT_MISSED_MEETING, new int[]{
                 R.string.text_1_client_missed_meeting,
-                R.string.text_2_client_missed_meeting,
-                R.string.text_client_fault,
+                R.string.text_1_delivery_failed,
+                R.string.text_2_delivery_failed,
+                R.string.text_3_delivery_failed,
+                R.string.text_4_delivery_failed,
                 R.string.text_client_would_cry,
         });
         NEGATIVE_TEXTS.put(CancellationReason.COURIER_MISSED_MEETING, new int[]{
                 R.string.text_1_courier_missed_meeting,
                 R.string.text_2_courier_missed_meeting,
-                R.string.text_3_courier_missed_meeting,
-                R.string.text_4_courier_missed_meeting,
+                R.string.text_1_delivery_failed,
+                R.string.text_2_delivery_failed,
+                R.string.text_3_delivery_failed,
+                R.string.text_4_delivery_failed,
         });
     }
 
@@ -132,7 +145,7 @@ public class AwardMessages {
         int messageId = strArray[random.nextInt(strArray.length)];
         if (messageId == R.string.text_client_would_cry) {
             imageId = CLIENT_CRY;
-        } else if (messageId == R.string.text_2_client_missed_meeting) {
+        } else if (messageId == R.string.text_1_client_missed_meeting) {
             imageId = CLIENT_SLEEP;
         }
 

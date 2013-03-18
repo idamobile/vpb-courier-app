@@ -140,30 +140,26 @@
 
     <!-- Awards -->
 
-    <string name="text_1_client_did_not_answer_the_phone">«Катя, возьми телефон. Это он, это он…»</string>
-    <string name="text_2_client_did_not_answer_the_phone">Доставим тому, кто отвечает на звонки.</string>
-    <string name="text_3_client_did_not_answer_the_phone">Что же он трубку не берет.</string>
-
-    <string name="text_client_fault">Ну хорошо, одним заказом меньше.</string>
     <string name="text_client_would_cry">Клиент же будет плакать без карты.</string>
-    <string name="text_first_completed_order">Поздравляю с первой успешной доставкой!</string>
-    <string name="text_award_unlocked">Поздравляю с новым достижением! %d успешных доставок!</string>
+    <string name="text_1_delivery_failed">Ладно, займемся другими заказами.</string>
+    <string name="text_2_delivery_failed">ОК. Поехали дальше.</string>
+    <string name="text_3_delivery_failed">Ну ничего, всякое бывает.</string>
+    <string name="text_4_delivery_failed">Ну хорошо, одним заказом меньше.</string>
 
-    <string name="text_1_client_missed_meeting">Клиент, ты где? Ау-у!</string>
-    <string name="text_2_client_missed_meeting">Ох уж эти пунктуальные клиенты.</string>
+    <string name="text_1_client_did_not_answer_the_phone">Доставим тому, кто отвечает на звонки.</string>
 
-    <string name="text_1_courier_missed_meeting">Ну ничего, всякое бывает.</string>
-    <string name="text_2_courier_missed_meeting">Другие заказы не пропустим.</string>
-    <string name="text_3_courier_missed_meeting">Ладно, займемся другими заказами.</string>
-    <string name="text_4_courier_missed_meeting">С кем не бывает.</string>
+    <string name="text_1_client_missed_meeting">Приятно иметь дело с пунктуальными клиентами.</string>
 
-    <string name="text_1_client_forgot_passport">В школе бы ему сказали: «а голову ты не забыл?».</string>
-    <string name="text_2_client_forgot_passport">Человек рассеянный с улицы бассейной.</string>
+    <string name="text_1_courier_missed_meeting">Другие заказы не пропустим.</string>
+    <string name="text_2_courier_missed_meeting">С кем не бывает.</string>
+
+    <string name="text_1_client_forgot_passport">Человек рассеянный с улицы бассейной.</string>
 
     <string name="text_1_client_rejected_order">Не понимают от чего отказываются.</string>
-    <string name="text_2_client_rejected_order">Назакажут, а потом отказываются.</string>
 
-    <string name="text_1_agreement_can_not_be_signed">ОК. Поехали дальше.</string>
+
+    <string name="text_first_completed_order">Поздравляю с первой успешной доставкой!</string>
+    <string name="text_award_unlocked">Поздравляю с новым достижением! %d успешных доставок!</string>
 
     <string-array name="award_positive">
         <item>Отлично сработано!</item>
