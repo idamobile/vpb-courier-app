@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ВПБ Курьер</string>
+    <string name="app_name">ВПБ Агент</string>
 
     <string name="press_back_again_to_exit">Нажмите еще раз для выхода</string>
 
@@ -178,7 +178,7 @@
         <item>Космическая доставка!</item>
         <item>Великолепно!</item>
         <item>Я тобой горжусь.</item>
-        <item>Ты лучший курьер, с кем я работал.</item>
+        <item>Ты лучший агент, с кем я работал.</item>
         <item>Хорошая работа!</item>
         <item>Здорово наблюдать твою работу.</item>
         <item>То, что надо!</item>

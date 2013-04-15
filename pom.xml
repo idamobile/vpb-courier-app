@@ -30,8 +30,8 @@
         <android.version>4.2_r1</android.version>
         <android.platform>17</android.platform>
 
-        <debug.name>vpb-courier-${project.version}-${maven.build.timestamp}</debug.name>
-        <release.name>vpb-courier-${project.version}-${maven.build.timestamp}</release.name>
+        <debug.name>vpb-agent-${project.version}-${maven.build.timestamp}</debug.name>
+        <release.name>vpb-agent-${project.version}-${maven.build.timestamp}</release.name>
 
         <manifest.folder>${project.build.directory}/generated-sources/manifest</manifest.folder>
         <generated.resources.folder>${project.build.directory}/generated-sources/r</generated.resources.folder>
