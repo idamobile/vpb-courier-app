@@ -35,8 +35,6 @@
 
         <manifest.folder>${project.build.directory}/generated-sources/manifest</manifest.folder>
         <generated.resources.folder>${project.build.directory}/generated-sources/r</generated.resources.folder>
-
-        <dozer.version>5.5.0b</dozer.version>
     </properties>
 
     <dependencyManagement>
