@@ -112,7 +112,8 @@ public class ImagesUploadProgressNotifier {
             if (orderImages != null) {
                 for (ImageInfo imageInfo : orderImages.getImages()) {
                     if (!uploadingFound && imageInfo.isUploading()) {
-                        int progress = (int) (imageInfo.getUploadedBytes() * 100 / imageInfo.getTotalBytes());
+                        int progress = imageInfo.getTotalBytes() > 0
+                                ? (int) (imageInfo.getUploadedBytes() * 100 / imageInfo.getTotalBytes()) : 0;
                         String message = context.getString(
                                 R.string.upload_progress_notification_message_format, progress);
                         builder.setContentText(message);

@@ -30,7 +30,7 @@ public class Order implements Serializable {
     private long statusUpdateTime;
 
     public String getFullName() {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         buffer.append(clientSecondName)
                 .append(" ")
                 .append(clientFirstName);
