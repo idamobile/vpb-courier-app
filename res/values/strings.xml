@@ -89,6 +89,7 @@
     <string name="order_status_new_format">Ожидает %s. Статус встречи:</string>
     <string name="order_details_additional_section">Прочее</string>
     <string name="order_details_type_section">Тип заявки</string>
+    <string name="order_type_instabank_card">Карта Instabank</string>
     <string name="order_not_found">Заказ не найден</string>
 
     <string name="confirm_remove_image_dialog_title">Удалить?</string>
@@ -138,7 +139,7 @@
     <string name="order_note_dialog_title">Заметка</string>
     <string name="order_note_save_failed">Не получилось сохранить. Проверьте, что SD-карта доступна.</string>
 
-    <string name="you_should_take_pictures_first">Сперва сделайте все фотографии</string>
+    <string name="you_should_take_pictures_first">Сперва сделайте все фотографии, отмеченные звездочкой</string>
 
     <!-- Awards -->
 

@@ -106,7 +106,7 @@ public class ImageManager {
         LoginManager loginManager = mediator.getLoginManager();
         int courierId = loginManager.getCourier().getId();
 
-        UploadImagesRequstGroup requestGroup = new UploadImagesRequstGroup();
+        UploadImagesRequestGroup requestGroup = new UploadImagesRequestGroup();
         for (Order order : mediator.getOrdersManager().getOrders()) {
             if (order.getStatus() == OrderStatus.STATUS_ACTIVATED) {
                 for (ImageType imageType : order.getImageTypes()) {
@@ -146,6 +146,20 @@ public class ImageManager {
         int courierId = mediator.getLoginManager().getCourier().getId();
         File file = filenameMapper.mapToUplodedFileName(courierId, orderId, imageId);
         return file.exists() || file.createNewFile();
+    }
+
+    public boolean orderHasAllPictures(Order order) {
+        OrderImages orderImages = getImages(order);
+        if (orderImages != null) {
+            for (ImageType imageType : order.getImageTypes()) {
+                ImageInfo imageInfo = orderImages.getInfoByImageType(imageType.getId());
+                if (imageType.isRequired() && !imageInfo.getFile().exists()) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     public void notifyImageInfoChanged(int orderId) {

@@ -7,11 +7,11 @@ import com.idamobile.vpb.courier.widget.orders.images.ImagesUploadProgressNotifi
 import org.apache.http.client.HttpClient;
 import org.apache.http.protocol.HttpContext;
 
-public class UploadImagesRequstGroup extends RequestGroup {
+public class UploadImagesRequestGroup extends RequestGroup {
 
     private transient ImagesUploadProgressNotifier progressNotifier;
 
-    public UploadImagesRequstGroup() {
+    public UploadImagesRequestGroup() {
         setExecutionPolicy(new UploadImageExecutionPolicy());
     }
 

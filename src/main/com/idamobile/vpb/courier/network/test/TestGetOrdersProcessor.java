@@ -81,7 +81,11 @@ public class TestGetOrdersProcessor extends AbstractHttpRequestProcessor {
         order.setClientAddress(getRandomString(address));
         order.setClientPhone("+7 912 372-43-12");
         order.setSubway(getRandomString(subwayNames));
-        order.setOrderType("Из интернет-банка");
+        switch (random.nextInt(1)) {
+            case 0:
+                order.setOrderType(OrderType.ORDER_TYPE_DELIVER_INSTABANK_CARD);
+                break;
+        }
         order.setId(id);
         if (random.nextBoolean()) {
             ProtoMap protoMap = new ProtoMap();
@@ -118,6 +122,7 @@ public class TestGetOrdersProcessor extends AbstractHttpRequestProcessor {
                 ImageType imageType = new ImageType();
                 imageType.setId(i);
                 imageType.setDescription("Описание фотографии " + (i + 1));
+                imageType.setRequired(random.nextBoolean());
                 order.getImageTypes().add(imageType);
             }
         }

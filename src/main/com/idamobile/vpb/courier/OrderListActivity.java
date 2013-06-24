@@ -113,23 +113,17 @@ public class OrderListActivity extends SecuredActivity {
         orderList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Object item = orderList.getItemAtPosition(position - orderList.getHeaderViewsCount());
-                if (item instanceof Order) {
-                    return createOrdersActionMode((Order) item);
-                } else {
-                    return false;
-                }
+                Object item = ordersAdapter.getItem(position - orderList.getHeaderViewsCount());
+                return createOrdersActionMode((Order) item);
             }
         });
         orderList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Object item = ordersAdapter.getItem(position - orderList.getHeaderViewsCount());
-                if (item instanceof Order) {
-                    int orderId = ((Order) item).getId();
-                    Bundle extras = ExtrasBuilder.orderDetailsBundle(orderId);
-                    getNavigationController().getOrderDetails().start(extras);
-                }
+                int orderId = ((Order) item).getId();
+                Bundle extras = ExtrasBuilder.orderDetailsBundle(orderId);
+                getNavigationController().getOrderDetails().start(extras);
             }
         });
 

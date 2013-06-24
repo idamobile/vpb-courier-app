@@ -1,7 +1,5 @@
 package com.idamobile.vpb.courier.widget.orders.images;
 
-import android.graphics.Bitmap;
-import android.support.v4.util.LruCache;
 import android.view.View;
 import android.view.ViewGroup;
 import com.idamobile.vpb.courier.ApplicationMediator;

@@ -25,7 +25,6 @@ import com.idamobile.vpb.courier.model.OrderStatus;
 import com.idamobile.vpb.courier.model.ProtoMapEntry;
 import com.idamobile.vpb.courier.navigation.ExtrasBuilder;
 import com.idamobile.vpb.courier.network.images.ImageInfo;
-import com.idamobile.vpb.courier.network.images.OrderImages;
 import com.idamobile.vpb.courier.security.crypto.CryptoCoder;
 import com.idamobile.vpb.courier.util.Intents;
 import com.idamobile.vpb.courier.util.Logger;
@@ -40,9 +39,9 @@ public class OrderDetailsFragment extends Fragment {
 
     public static final String TAG = OrderDetailsFragment.class.getSimpleName();
 
-    private static final int TAKE_PICKTURE_REQUEST_CODE = 332;
+    private static final int TAKE_PICTURE_REQUEST_CODE = 332;
 
-    private static final String PICKTURE_FILENAME_EXTRA = "picture-filename";
+    private static final String PICTURE_FILENAME_EXTRA = "picture-filename";
     private static final String IMAGE_TYPE_ID_EXTRA = "image-type-id";
     private static final String TMP_POSTFIX = ".tmp";
 
@@ -117,7 +116,7 @@ public class OrderDetailsFragment extends Fragment {
                 takePictureOutput = new File(imageInfo.getFile().getAbsoluteFile() + TMP_POSTFIX);
                 processingImageTypeId = imageInfo.getTypeId();
                 Intent intent = Intents.takePictureIntent(takePictureOutput);
-                startActivityForResult(intent, TAKE_PICKTURE_REQUEST_CODE);
+                startActivityForResult(intent, TAKE_PICTURE_REQUEST_CODE);
             }
 
             @Override
@@ -186,14 +185,14 @@ public class OrderDetailsFragment extends Fragment {
 
     private void saveProcessingPictureParams(Bundle outState) {
         if (takePictureOutput != null) {
-            outState.putString(PICKTURE_FILENAME_EXTRA, takePictureOutput.getAbsolutePath());
+            outState.putString(PICTURE_FILENAME_EXTRA, takePictureOutput.getAbsolutePath());
             outState.putInt(IMAGE_TYPE_ID_EXTRA, processingImageTypeId);
         }
     }
 
     private void restoreProcessingPictureParams(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            String path = savedInstanceState.getString(PICKTURE_FILENAME_EXTRA);
+            String path = savedInstanceState.getString(PICTURE_FILENAME_EXTRA);
             if (!TextUtils.isEmpty(path)) {
                 takePictureOutput = new File(path);
             }
@@ -215,9 +214,7 @@ public class OrderDetailsFragment extends Fragment {
     private boolean canActivateCard() {
         if (order != null) {
             if (order.getStatus() == OrderStatus.STATUS_DOCUMENTS_SUBMITTED) {
-                if (orderHasAllPictures()) {
-                    return true;
-                }
+                return mediator.getImageManager().orderHasAllPictures(order);
             }
         }
         return false;
@@ -257,7 +254,14 @@ public class OrderDetailsFragment extends Fragment {
                 default:
                     throw new IllegalStateException("Unknown order status: " + order.getStatus());
             }
-            orderTypeView.setText(order.getOrderType());
+            switch (order.getOrderType()) {
+                case ORDER_TYPE_DELIVER_INSTABANK_CARD:
+                    orderTypeView.setText(getString(R.string.order_type_instabank_card));
+                    break;
+                default:
+                    orderTypeView.setText(order.getOrderType().name());
+                    break;
+            }
             addressView.setText(order.getClientAddress());
             metroView.setText(order.getSubway());
             navigateButton.setOnClickListener(new View.OnClickListener() {
@@ -295,19 +299,6 @@ public class OrderDetailsFragment extends Fragment {
         }
     }
 
-    private boolean orderHasAllPictures() {
-        OrderImages orderImages = mediator.getImageManager().getImages(order);
-        if (orderImages != null) {
-            for (ImageInfo imageInfo : orderImages.getImages()) {
-                if (!imageInfo.getFile().exists()) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        return false;
-    }
-
     private void refreshImages() {
         imagesGrid.setOrder(order);
     }
@@ -329,7 +320,7 @@ public class OrderDetailsFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == TAKE_PICKTURE_REQUEST_CODE) {
+        if (requestCode == TAKE_PICTURE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 cryptImage();
             }

@@ -70,13 +70,13 @@ public class OrderImageView {
         if (order != null && imageView != null) {
             ImageInfo info = getImageInfo();
             if (info != null) {
-                if (!mediator.getImageManager().isUploaded(order.getId(), info.getTypeId())) {
-                    if (info.getFile().exists()) {
-                        if (order.getStatus() != OrderStatus.STATUS_ACTIVATED) {
+                if (order.getStatus() != OrderStatus.STATUS_ACTIVATED) {
+                    if (!mediator.getImageManager().isUploaded(order.getId(), info.getTypeId())) {
+                        if (info.getFile().exists()) {
                             removePictureClicked();
+                        } else {
+                            takePictureClicked();
                         }
-                    } else {
-                        takePictureClicked();
                     }
                 }
             }
@@ -126,7 +126,11 @@ public class OrderImageView {
             } else {
                 removeView.setVisibility(View.GONE);
                 if (!uploaded) {
-                    imageView.setImageResource(R.drawable.ic_take_picture);
+                    if (image.isRequired()) {
+                        imageView.setImageResource(R.drawable.ic_take_picture_required);
+                    } else {
+                        imageView.setImageResource(R.drawable.ic_take_picture);
+                    }
                 } else {
                     imageView.setImageResource(R.drawable.ic_uploaded);
                 }

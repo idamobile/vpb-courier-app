@@ -44,6 +44,11 @@ enum OrderStatus {
 message ImageTypeProtobufDTO {
     required int32 id = 1;
     required string description = 2;
+    required bool required = 3;
+}
+
+enum OrderType {
+    ORDER_TYPE_DELIVER_INSTABANK_CARD = 1;
 }
 
 message OrderProtobufDTO {
@@ -57,7 +62,7 @@ message OrderProtobufDTO {
     required string subway = 10;
     required int64 meetTimeFrom = 11;
     required int64 meetTimeTo = 12;
-    required string orderType = 13;
+    required OrderType orderType = 13;
     optional Map attributes = 14;
     repeated ImageTypeProtobufDTO imageTypes = 15;
 }

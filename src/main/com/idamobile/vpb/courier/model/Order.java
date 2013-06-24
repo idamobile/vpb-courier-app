@@ -23,7 +23,7 @@ public class Order implements Serializable {
     @Field private String subway;
     @Field private long meetTimeFrom;
     @Field private long meetTimeTo;
-    @Field private String orderType;
+    @Field private OrderType orderType;
     @Field(optional = true) private ProtoMap attributes = new ProtoMap();
     @Field private List<ImageType> imageTypes = new ArrayList<ImageType>();
 
