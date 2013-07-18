@@ -122,7 +122,7 @@ public class TestGetOrdersProcessor extends AbstractHttpRequestProcessor {
                 ImageType imageType = new ImageType();
                 imageType.setId(i);
                 imageType.setDescription("Описание фотографии " + (i + 1));
-                imageType.setRequired(random.nextBoolean());
+                imageType.setRequiredImg(random.nextBoolean());
                 order.getImageTypes().add(imageType);
             }
         }

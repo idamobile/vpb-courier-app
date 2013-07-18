@@ -44,7 +44,7 @@ enum OrderStatus {
 message ImageTypeProtobufDTO {
     required int32 id = 1;
     required string description = 2;
-    required bool required = 3;
+    required bool requiredImg = 3;
 }
 
 enum OrderType {

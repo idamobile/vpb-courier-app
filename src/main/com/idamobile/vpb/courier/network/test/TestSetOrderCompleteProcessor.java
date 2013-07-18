@@ -30,7 +30,7 @@ public class TestSetOrderCompleteProcessor extends AbstractHttpRequestProcessor 
             ImageType imageType = new ImageType();
             imageType.setId(i);
             imageType.setDescription("Описание фотографии " + (i + 1));
-            imageType.setRequired(random.nextBoolean());
+            imageType.setRequiredImg(random.nextBoolean());
             response.getImageTypes().add(imageType);
         }
         UpdateOrderResponseMapper responseMapper = new UpdateOrderResponseMapper();

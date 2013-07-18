@@ -126,7 +126,7 @@ public class OrderImageView {
             } else {
                 removeView.setVisibility(View.GONE);
                 if (!uploaded) {
-                    if (image.isRequired()) {
+                    if (image.isRequiredImg()) {
                         imageView.setImageResource(R.drawable.ic_take_picture_required);
                     } else {
                         imageView.setImageResource(R.drawable.ic_take_picture);

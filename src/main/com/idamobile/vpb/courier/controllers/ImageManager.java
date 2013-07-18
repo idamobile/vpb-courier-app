@@ -153,7 +153,7 @@ public class ImageManager {
         if (orderImages != null) {
             for (ImageType imageType : order.getImageTypes()) {
                 ImageInfo imageInfo = orderImages.getInfoByImageType(imageType.getId());
-                if (imageType.isRequired() && !imageInfo.getFile().exists()) {
+                if (imageType.isRequiredImg() && !imageInfo.getFile().exists()) {
                     return false;
                 }
             }

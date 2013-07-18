@@ -12,5 +12,5 @@ import java.io.Serializable;
 public class ImageType implements Serializable {
     @Field private int id;
     @Field private String description;
-    @Field private boolean required;
+    @Field private boolean requiredImg;
 }
