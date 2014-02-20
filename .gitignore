@@ -3,3 +3,4 @@
 target/**
 tmp/**
 src/main/com/idamobile/vpb/courier/config/Config.java
+*.apk
