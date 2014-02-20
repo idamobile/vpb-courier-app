@@ -8,9 +8,9 @@ import com.idamobile.vpb.courier.controllers.OrdersManager;
 import com.idamobile.vpb.courier.model.cache.Cache;
 import com.idamobile.vpb.courier.model.cache.DefaultCache;
 import com.idamobile.vpb.courier.model.cache.DefaultFullNameMapper;
-import com.idamobile.vpb.courier.network.core.DefaultHttpClientFactory;
 import com.idamobile.vpb.courier.network.core.NetworkManager;
 import com.idamobile.vpb.courier.network.login.NotAuthorizedResponseProcessor;
+import com.idamobile.vpb.courier.network.test.TestHttpClientFactory;
 import com.idamobile.vpb.courier.widget.orders.images.ImagesUploadProgressNotifier;
 
 public class ApplicationMediator {
@@ -38,8 +38,8 @@ public class ApplicationMediator {
     }
 
     private void setupNetworkManager() {
-        networkManager = new NetworkManager(this, new DefaultHttpClientFactory(context));
-//        networkManager = new NetworkManager(this, new TestHttpClientFactory());
+//        networkManager = new NetworkManager(this, new DefaultHttpClientFactory(context));
+        networkManager = new NetworkManager(this, new TestHttpClientFactory());
         networkManager.addProcessor(new NotAuthorizedResponseProcessor(getContext()));
     }
 

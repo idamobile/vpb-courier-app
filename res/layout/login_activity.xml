@@ -14,8 +14,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/large_padding"
+            android:layout_marginLeft="@dimen/normal_padding"
+            android:layout_marginRight="@dimen/normal_padding"
             android:scaleType="centerInside"
-            android:src="@drawable/vpb_big_logo"/>
+            android:src="@drawable/home_trust_logo"/>
 
         <LinearLayout
             android:layout_width="210dp"
